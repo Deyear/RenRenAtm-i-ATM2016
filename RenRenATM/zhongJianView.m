@@ -12,6 +12,12 @@
 #import "zhongJianView.h"
 #import "AFNetworking/AFNetworking.h"
 #import <CoreLocation/CoreLocation.h>
+#import "JHChainableAnimations.h"
+
+//立体控件————第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
 @interface zhongJianView ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     
@@ -29,8 +35,13 @@
     NSDictionary * dict;
     NSArray *servicesArr;
     UIView *xianShiView;
-    
+    UILabel *   servicesLabel;
+    UIView *addV;
+    NSDictionary *Dic ;
 }
+
+
+
 @end
 
 @implementation zhongJianView
@@ -48,6 +59,11 @@
     xianShiView.backgroundColor = [UIColor greenColor];
     [self initTab];                   //初始化_tableView
     [self initializeLocationService]; //初始化定位设置
+    
+    servicesLabel = [[UILabel alloc]init];
+    servicesArr = [[NSArray alloc]init];
+    addV = [[UIView alloc]init];
+    
 }
 
 
@@ -100,7 +116,7 @@
     if (userArray ==nil) {
  
         
-        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=services"];
+        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=services,evaluations"];
         //        114.215.203.95:82/v1/atms?relation=services&longitude=114.315065&latitude=30.600915&radius=1000000
         
         NSString *longitudelongitude = [NSString stringWithFormat:@"%f",locationInfo.coordinate.longitude];
@@ -139,11 +155,12 @@
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
 //    return  320*ydp;
 //    return 100;
-    NSDictionary *Dic = userArray[indexPath.row];
-    NSArray *servicesArr = Dic[@"services"];
-    NSInteger _int = servicesArr.count;
+//    NSDictionary *Dic = userArray[indexPath.row];
+//    servicesArr = Dic[@"services"];
+//    NSInteger _int = servicesArr.count;
     
-    return  100 +_int*25;
+//    return  100 +_int*25;
+    return  100 ;
 }
 
 
@@ -209,16 +226,23 @@
         [callPhoneButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:callPhoneButton];
         
-////        显示服务者
-//        UIButton *xianShi = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-50, 70, 50, 20)];
-//        [xianShi setTitle:@"服务" forState:UIControlStateNormal];
-//        xianShi.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-////        [xianShi setBackgroundImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
-//        [xianShi addTarget:self action:@selector(xianShi:) forControlEvents:UIControlEventTouchUpInside];
-//        [cell addSubview:xianShi];
+//        显示服务者
+        CGRect frame = CGRectMake(SCREEN_WIDTH-50, 60, 50, 40);
+        HTPressableButton *xianShi = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+        xianShi.buttonColor = [UIColor whiteColor];
+        xianShi.shadowHeight = 5;
+        xianShi.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
+        
+        [xianShi setTitle:@"服务" forState:UIControlStateNormal];
+        [xianShi setTitleColor: [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]forState:UIControlStateNormal];
+        xianShi.backgroundColor = [UIColor whiteColor];
+//        [xianShi setBackgroundImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
+        [xianShi setTag:1];
+        [xianShi addTarget:self action:@selector(xianShi:) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:xianShi];
         
         for (int i = 0; i<userArray.count; i++) {
-            NSDictionary *Dic = userArray[indexPath.row];
+            Dic = userArray[indexPath.row];
             userNameLabel.text =  Dic[@"username"];
             
             float _latitude = [Dic[@"latitude"] floatValue];
@@ -230,27 +254,27 @@
             CLLocation *before=[[CLLocation alloc] initWithLatitude:_latitude longitude:_longtitude];
             //         计算距离
             CLLocationDistance meters=[current distanceFromLocation:before];
-            float _meter = meters/1000;
+            float _meter = meters/1000000;
             //        NSLog(@"=======distance%f=====_meter%f===",distance,_meter);
             meterLabel.text = [NSString stringWithFormat:@"相距：%.2f km",_meter];
+        
+                servicesArr = Dic[@"services"];
+     
+               
             
-             servicesArr = Dic[@"services"];
-            for (int i=0; i<servicesArr.count; i++)
-            {
-                
-                dict = servicesArr[i];
-                UILabel *   servicesLabel = [[UILabel alloc]initWithFrame:CGRectMake(16,  105+25*i, SCREEN_WIDTH/2-10, 25)];
-//                servicesLabel.backgroundColor = [UIColor blueColor];
-                //服务者的订单状况
-                servicesLabel.text = dict[@"name"];
-                servicesLabel.font = [UIFont systemFontOfSize:14];
-                //                NSLog(@"=========text=======%@",servicesLabel.text);
-                [cell addSubview:servicesLabel];
-            }
         }
  
  
     }
+    //上面的灰色
+    UIImageView *topGrayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 5)];
+    topGrayView.image = [UIImage imageNamed:@"RenRenGray"];
+    [cell addSubview:topGrayView];
+    
+    UIColor* color=[UIColor whiteColor];//通过RGB来定义颜色
+    cell.selectedBackgroundView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    
+    cell.selectedBackgroundView.backgroundColor=color;
     return cell;
 }
 
@@ -267,8 +291,58 @@
 
 
 -(void)xianShi:(UIButton *)sender{
-//    NSLog(@"===========servicesArr=======%ld",servicesArr.count);
-    [self.view addSubview:xianShiView];
+    UITableViewCell *cell = sender.superview;
+    NSIndexPath *path = [_tableView indexPathForCell: cell];
+//    NSLog(@"-----------row--------%@",userArray[path.row]);
+ 
+    NSDictionary *dic = userArray[path.row];
+    NSArray *Arr = dic[@"services"];
+    
+  
+    
+    UIControl *contr = [[UIControl alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        contr.backgroundColor = [UIColor blackColor];
+        contr.alpha = 0.5;
+        [contr addTarget:self action:@selector(clickBack:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:contr ];
+  
+    addV = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-20*(Arr.count + 1))/2, (SCREEN_HEIGHT-20*(Arr.count + 1))/2+10, 20*(Arr.count + 1), 20*(Arr.count + 1))];
+    addV.backgroundColor = [UIColor whiteColor];
+    addV.alpha = 0.8;
+    addV.layer.borderWidth = 3;
+    addV.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+    addV.layer.cornerRadius = 20*(Arr.count + 1)/2*1.2;
+//    addV.rotate(360).anchorTopLeft.thenAfter(0.5).rotate(360).anchorCenter.animate(0.5);
+    addV.makeScale(1.2).spring.animate(2.0);
+    [self.view addSubview:addV];
+ 
+    for (int i=0; i<Arr.count; i++)
+    {
+        dict = servicesArr[i];
+        servicesLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,  (10+20*i)*1.2, 20*(Arr.count + 1)*1.2, 20)];
+        //                servicesLabel.backgroundColor = [UIColor blueColor];
+        //服务者的订单状况
+        servicesLabel.text = dict[@"name"];
+        servicesLabel.font = [UIFont systemFontOfSize:13];
+        servicesLabel.textColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+        servicesLabel.textAlignment = NSTextAlignmentCenter;
+        [UIView animateKeyframesWithDuration:0.2 * i delay:2 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+            servicesLabel.rotate(360).anchorTopLeft.thenAfter(0.1).rotate(360).anchorCenter.animate(0.2 * i);
+        } completion:nil];
+        [addV addSubview:servicesLabel];
+        //
+        }
+
+    }
+
+
+-(void)clickBack:(UIControl *)sender
+{
+    [UIView animateKeyframesWithDuration:3 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+        addV.hidden = YES;
+        sender.hidden = YES;
+        sender.enabled = NO;
+    } completion:nil ];
 }
 /*
 #pragma mark - Navigation

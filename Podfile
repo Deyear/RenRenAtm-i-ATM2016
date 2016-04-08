@@ -3,4 +3,5 @@ pod 'AMap2DMap', '~> 3.3.0'
 pod 'AMapSearch', '~> 3.2.0'
 pod 'AMapLocation', '~> 1.1.1'
 pod 'PopMenu', '~> 2.4'
- 
+pod 'HTPressableButton', '~> 1.3.2'
+pod 'JHChainableAnimations', '~> 1.3.0'

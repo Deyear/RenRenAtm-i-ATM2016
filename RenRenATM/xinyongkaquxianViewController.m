@@ -2,8 +2,8 @@
 //  xinyongkaquxianViewController.m
 //  RenRenATM
 //
-//  Created by 方少言 on 16/1/12.
-//  Copyright © 2016年 com.fsy. All rights reserved.
+//
+//
 //
 #import "xinyongkaquxianViewController.h"
 #define NUMBERS @"0123456789"
@@ -13,6 +13,12 @@
 #import "SettingViewController.h"
 #import "LoginViewController.h"
 #import "AFNetworking.h"
+
+//立体控件————第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
+
 @interface xinyongkaquxianViewController ()<UITextFieldDelegate,CLLocationManagerDelegate>
 {
     CLLocationManager *_locationManager;
@@ -26,6 +32,7 @@
     UIButton *shiwuyuanButton,*wuyuanButton,*shiyuanButton;
     
     UITextView *infoView;
+    UITextField *daishoukuanrenField,*daishoukuanRenHaoMaField;
 }
 @end
 
@@ -214,7 +221,7 @@
     [baiSeBeiJingView addSubview:yifenzhongLabel];
     
     
-    for (int i = 0 ; i< 6; i++) {
+    for (int i = 0 ; i< 7; i++) {
         if (i<5) {
             modelView = [[UIImageView alloc]initWithFrame:CGRectMake(15,5+ yifenzhongLabel.frame.origin.y + yifenzhongLabel.frame.size.height + i*modelViewHeight, SCREEN_WIDTH-30, modelViewHeight)];
             modelView.backgroundColor = [UIColor whiteColor];
@@ -368,11 +375,13 @@
                 [modelView addSubview:shiwuyuanlabel];
                 
                 //其它金额button
-                UIButton *qitajineButton = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*3 -15, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5 + 10, 20)];
+                CGRect frame = CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*3 -15, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5 + 10, 20);
+                HTPressableButton *qitajineButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+                qitajineButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+                qitajineButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
                 [qitajineButton setTitle:@"其他金额" forState:UIControlStateNormal];
-                //                qitajineButton.backgroundColor = [UIColor greenColor];
                 qitajineButton.titleLabel.font = [UIFont systemFontOfSize:11];
-                [qitajineButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [qitajineButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [qitajineButton addTarget:self action:@selector(qiTaJinEClick:) forControlEvents:UIControlEventTouchUpInside];
                 //                qitajineButton.adjustsFontSizeToFitWidth  = YES;
                 [modelView addSubview:qitajineButton];
@@ -412,17 +421,7 @@
             }
             if (i==4) {
 //                //所需时间
-//                UITextField *timeField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, (SCREEN_WIDTH -110), modelViewHeight)];
-//                timeField.placeholder = [NSString stringWithFormat:@"所需时间"];
-//                timeField.font = [UIFont systemFontOfSize:15];
-//                timeField.textColor = [UIColor grayColor];
-//                timeField.textAlignment = NSTextAlignmentCenter;
-//                timeField.adjustsFontSizeToFitWidth = YES;
-//                [modelView addSubview:timeField];
                 modelView.userInteractionEnabled = YES;
-//                timeField.userInteractionEnabled = YES;
-                
-                
                 //其它shiLabelLabel
                 UILabel *shiLabel = [[UILabel alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*2, (modelViewHeight  - 20)/2,  20, 20)];
                 shiLabel.text = @"时";
@@ -454,7 +453,7 @@
             }
             
         }
-        else if(i == 5)
+       else if (i == 5)
         {
             //先判断有否在做
             if ([success isEqualToString:@"1"]) {
@@ -492,9 +491,8 @@
                 daishoukuanrenLabel.adjustsFontSizeToFitWidth = YES;
                 daishoukuanrenLabel.textAlignment = NSTextAlignmentCenter;
                 [modelView addSubview:daishoukuanrenLabel];
-                
                 //待收款人
-                UITextField *daishoukuanrenField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, (SCREEN_WIDTH -110), modelViewHeight)];
+                daishoukuanrenField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, (SCREEN_WIDTH -110), modelViewHeight)];
                 daishoukuanrenField.placeholder = [NSString stringWithFormat:@"收款人姓名"];
                 daishoukuanrenField.font = [UIFont systemFontOfSize:15];
                 daishoukuanrenField.textColor = [UIColor grayColor];
@@ -506,18 +504,76 @@
             }
             else
             {
-                
             }
+        }else if (i == 6){
             
+            //先判断有否在做
+            if ([success isEqualToString:@"1"]) {
+                modelView = [[UIImageView alloc]initWithFrame:CGRectMake(15,5+ yifenzhongLabel.frame.origin.y + yifenzhongLabel.frame.size.height + 5*modelViewHeight, SCREEN_WIDTH-30, modelViewHeight)];
+                modelView.backgroundColor = [UIColor whiteColor];
+                [baiSeBeiJingView addSubview:modelView];
+                
+                //左
+                UILabel *zuoXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 1, modelViewHeight)];
+                zuoXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+                [modelView addSubview:zuoXianLabel];
+                //右
+                UILabel *youXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(modelView.frame.size.width-1, 0, 1, modelViewHeight)];
+                youXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+                [modelView addSubview:youXianLabel];
+                
+                //上
+                UILabel *shangXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, modelView.frame.size.width, 0.5)];
+                shangXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+                [modelView addSubview:shangXianLabel];
+                
+                
+                //下
+                UILabel *xiaXianLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, modelView.frame.size.height -0.5, modelView.frame.size.width, 1)];
+                xiaXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+                [modelView addSubview:xiaXianLabel];
+                
+                //左中
+                UILabel *zuozhongXianLabel = [[UILabel alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-30)/4, modelViewHeight/4, 1, modelViewHeight/2)];
+                zuozhongXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
+                [modelView addSubview:zuozhongXianLabel];
+                
+                UILabel *daishoukuanrenLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, (SCREEN_WIDTH-30)/4 - 10, modelView.frame.size.height)];
+                daishoukuanrenLabel.text = @"收款号码";
+                daishoukuanrenLabel.adjustsFontSizeToFitWidth = YES;
+                daishoukuanrenLabel.textAlignment = NSTextAlignmentCenter;
+                [modelView addSubview:daishoukuanrenLabel];
+                  
             
+                daishoukuanRenHaoMaField = [[UITextField alloc]initWithFrame:CGRectMake(80, 0, (SCREEN_WIDTH -110), modelViewHeight)];
+                daishoukuanRenHaoMaField.placeholder = [NSString stringWithFormat:@"代收款人号码"];
+                daishoukuanRenHaoMaField.font = [UIFont systemFontOfSize:15];
+                daishoukuanRenHaoMaField.textColor = [UIColor grayColor];
+                daishoukuanRenHaoMaField.textAlignment = NSTextAlignmentCenter;
+                daishoukuanRenHaoMaField.adjustsFontSizeToFitWidth = YES;
+                [modelView addSubview:daishoukuanRenHaoMaField];
+                modelView.userInteractionEnabled = YES;
+                daishoukuanRenHaoMaField.userInteractionEnabled = YES;
+            }
+            else
+            {
+            }
+
+            
+       
         }
+        
     }
     //设置白色背景的尺寸
     baiSeBeiJingView.frame = CGRectMake(0, topImageView.frame.origin.y + topImageView.frame.size.height, SCREEN_WIDTH, modelView.frame.origin.y + modelViewHeight + 10) ;
     
     //最下面的发布button
-    UIButton *fabuButton  = [[UIButton alloc]initWithFrame:CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight)];
-    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
+    CGRect frame = CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight);
+    HTPressableButton *fabuButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+    [fabuButton setTitle:@"Rounded" forState:UIControlStateNormal];
+//    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
+    fabuButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+    fabuButton.shadowColor = [UIColor colorWithRed:71/255.0f green:94/255.0f blue:181/255.0f alpha:1];
     fabuButton.layer.masksToBounds = YES;
     fabuButton.layer.cornerRadius = modelViewHeight/8;
     [fabuButton setTitle:@"发布" forState:UIControlStateNormal];
@@ -786,7 +842,50 @@
         session.requestSerializer = [AFJSONRequestSerializer serializer];
         session.responseSerializer = [AFJSONResponseSerializer serializer];
         [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-        NSDictionary *parameters = @{@"money":howMuchMoney.text,
+        
+        if ([success isEqualToString:@"1"]) {
+            NSLog(@"11111111");
+
+            NSDictionary *extra_fields = @{
+                                           @"receiver":daishoukuanrenField.text,
+                                           @"receiver_phone":daishoukuanRenHaoMaField.text
+                                           };
+            NSError *error = nil;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:extra_fields options:NSJSONWritingPrettyPrinted error:&error];
+            
+            NSDictionary *parameters = @{@"money":howMuchMoney.text,
+                                         @"dealt_at":placeField.text,
+                                         @"sent_at":placeField.text,
+                                         @"tip":qitajinejutizhilabel.text,
+                                         @"service_item_id":type,
+                                         @"time_limit":[NSString stringWithFormat:@"%d",needTimeSecond],
+                                         @"status":@"101",
+                                         @"service_charge":NeedMoney.text,
+                                         @"sent_by":user_id,
+                                         @"extra_fields":jsonData
+                                        };
+            NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders"];
+            
+            [session POST:str parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                //            NSLog(@"formData%@",formData);
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                //            NSLog(@"uploadProgress%@",uploadProgress);
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                [UIView animateKeyframesWithDuration:5 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                } completion:nil];
+                
+                //            NSLog(@"===============responseObject===========%@",responseObject);
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"发布成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                
+                [alert show];
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                //            NSLog(@"error%@",error);
+            }];
+
+        }else{
+         NSDictionary *parameters = @{@"money":howMuchMoney.text,
                                      @"dealt_at":placeField.text,
                                      @"sent_at":placeField.text,
                                      @"tip":qitajinejutizhilabel.text,
@@ -796,24 +895,30 @@
                                      @"service_charge":NeedMoney.text,
                                      @"sent_by":user_id};
         NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders"];
+            
+            [session POST:str parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+                //            NSLog(@"formData%@",formData);
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                //            NSLog(@"uploadProgress%@",uploadProgress);
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                
+                [UIView animateKeyframesWithDuration:5 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
+                    [self dismissViewControllerAnimated:YES completion:nil];
+                } completion:nil];
+                
+                //            NSLog(@"===============responseObject===========%@",responseObject);
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"发布成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                
+                [alert show];
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                //            NSLog(@"error%@",error);
+            }];
+            
+        }
         
-        [session POST:str parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-//            NSLog(@"formData%@",formData);
-        } progress:^(NSProgress * _Nonnull uploadProgress) {
-//            NSLog(@"uploadProgress%@",uploadProgress);
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            
-            [UIView animateKeyframesWithDuration:5 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
-                [self dismissViewControllerAnimated:YES completion:nil];
-            } completion:nil];
-            
-//            NSLog(@"===============responseObject===========%@",responseObject);
-                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"发布成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
-            
-                    [alert show];
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//            NSLog(@"error%@",error);
-        }];
+       
+        
+    
         
     }
     

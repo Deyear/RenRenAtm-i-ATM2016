@@ -15,4 +15,5 @@
 }
 @property(nonatomic,strong) NSString *type;
 @property(nonatomic,strong) NSString *titleName;
+@property(assign,nonatomic)NSInteger page;
 @end

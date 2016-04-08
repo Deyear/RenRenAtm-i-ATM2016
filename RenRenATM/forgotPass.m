@@ -114,10 +114,10 @@
         [session GET:str parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"-----%@",responseObject);
+//            NSLog(@"-----%@",responseObject);
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"========%@",error);
+//            NSLog(@"========%@",error);
         }];
         
         checkRightButton.userInteractionEnabled=NO;

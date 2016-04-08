@@ -13,6 +13,8 @@
 
 #import "DingDanZhuangtai.h"
 #import "AFNetworking/AFNetworking.h"
+ 
+
 
 
 @interface DingDanZhuangtai ()<UIAlertViewDelegate>
@@ -41,6 +43,11 @@
     IBOutlet UILabel *typeleixingLabel;
     IBOutlet UILabel *typeshixianLabel;
     IBOutlet UILabel *typefabutimeLabel;
+    IBOutlet UILabel *ShouKuanRen;
+    IBOutlet UILabel *typeShouKuanRen;
+    IBOutlet UILabel *ShouKuanHaoMa;
+    IBOutlet UILabel *typeShouKuanHaoMa;
+    IBOutlet UIView *ThirdView;
     
     IBOutlet UIImageView *yiFen;
     IBOutlet UIImageView *erFen;
@@ -120,17 +127,6 @@
     
     
 //    五星评价
-//    for (int i = 0 ; i<5; i++) {
-//        //五角星评分
-//    }
-//    if (arr[0][@"general_evaluation"] != 1) {
-//        yiFen.image = [UIImage imageNamed:@"home_order_receiving_star1"];
-//    }
-    
-//    if (arr[0][@"general_evaluation"] == 2) {
-//        yiFen.image = [UIImage imageNamed:@"home_order_receiving_star1"];
-//    }
-    
 //    分数
     nameLabel.font = [UIFont systemFontOfSize:15];
     wufenLabel.textColor = [UIColor orangeColor];
@@ -144,10 +140,7 @@
                  UIImageView *_image = fenShuArr[i];
                  _image.image = [UIImage imageNamed:@"home_order_receiving_star1"];
               }
-              
-    
-        
-        NSLog(@"=======fenshu====%@", arr[0] );
+//        NSLog(@"=======fenshu====%@", arr[0] );
     }
    
     
@@ -253,7 +246,32 @@
             jiaoYi.hidden = YES;
         }
     }
-     NSLog(@"=======username===========%@",xiangQingArray[@"status"]);
+//     NSLog(@"=======username===========%@",xiangQingArray[@"status"]);
+    
+    //    代收款人和代收款人联系电话
+    NSDictionary *str2 = xiangQingArray[@"extra_fields"];
+//    NSLog(@"----------extra_fields--------%@",str2);
+    if ([xiangQingArray[@"extra_fields"] isEqual:[NSNull null]])
+    {
+//        NSLog(@"空");
+        typeShouKuanRen.hidden = YES;
+        ShouKuanRen.hidden = YES;
+        typeShouKuanHaoMa.hidden = YES;
+        ShouKuanHaoMa.hidden = YES;
+    }
+    else
+    {
+        NSDictionary *extraInfo = [NSJSONSerialization JSONObjectWithData:[xiangQingArray[@"extra_fields"] dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:NULL];
+        NSString *na = extraInfo[@"receiver"];
+        NSString *pho = extraInfo[@"receiver_phone"];
+        typeShouKuanRen.text = na;
+        typeShouKuanHaoMa.text = pho;
+        typeShouKuanRen.textColor = [UIColor grayColor];
+        typeShouKuanRen.font = [UIFont systemFontOfSize:15];
+        typeShouKuanHaoMa.textColor = [UIColor grayColor];
+        typeShouKuanHaoMa.font = [UIFont systemFontOfSize:15];
+//        NSLog(@"----------receiver_phone--------%@",na);
+    }
 }
 
 
@@ -309,7 +327,7 @@
             //            NSLog(@"%@",str);
         
         if ([jieshoudingdanButton.titleLabel.text  isEqual: @"完成订单"]) {
-            NSLog(@"完成订单");
+//            NSLog(@"完成订单");
             NSDictionary *paratemetrs = @{@"sent_by":user_id,
                                           @"status":@"301"};
             
@@ -320,7 +338,7 @@
             [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
             
             [session PATCH:str parameters:paratemetrs success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"==========取消========%@",responseObject);
+//                NSLog(@"==========取消========%@",responseObject);
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil
                                                                message:@"成功完成订单" delegate:nil
                                                      cancelButtonTitle:@"确定"
@@ -339,7 +357,7 @@
             }];
         
         }else if ([jieshoudingdanButton.titleLabel.text  isEqual: @"评价"]){
-             NSLog(@"评价");
+//             NSLog(@"评价");
              con = [[UIControl alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
             con.backgroundColor = [UIColor blackColor];
             con.alpha = 0.5;
@@ -359,7 +377,7 @@
             [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
             
             [session PATCH:str parameters:paratemetrs success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"==========取消========%@",responseObject);
+//                NSLog(@"==========取消========%@",responseObject);
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil
                                                                message:@"取消订单成功" delegate:nil
                                                      cancelButtonTitle:@"确定"
@@ -408,7 +426,7 @@
         [current setBackgroundImage:_image  forState:UIControlStateNormal];
     }
     
-    NSLog(@"%ld",_tag);
+//    NSLog(@"%ld",_tag);
 //    NSLog(@"-------------btn------------%lu",(unsigned long)btn.count);
  
 }
@@ -417,7 +435,7 @@
 //提交评价
 -(void)tiJiao
 {
-    NSLog(@"===========得到评分==========%ld",(long)_tag);
+//    NSLog(@"===========得到评分==========%ld",(long)_tag);
     NSString *juTi = [NSString stringWithFormat:@"%ld",_tag];
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *access_token = [userDefault objectForKey:@"access_token"];
@@ -435,7 +453,7 @@
     session.responseSerializer = [AFJSONResponseSerializer serializer];
     [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     [session POST:str parameters:paratemetrs success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-    NSLog(@"==========评价========%@",responseObject);
+//    NSLog(@"==========评价========%@",responseObject);
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil
                                                    message:@"成功完成评价" delegate:nil
                                          cancelButtonTitle:@"确定"

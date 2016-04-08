@@ -10,6 +10,10 @@
 #import "AFNetworking.h"
 #import <PopMenu.h>
 
+//立体按钮————第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
 @interface WaiHuiViewController ()<UITextFieldDelegate,CLLocationManagerDelegate,UIAlertViewDelegate>
 {
     CLLocationManager *_locationManager;
@@ -365,11 +369,15 @@
                 [modelView addSubview:lingYuanlabel];
                 
                 //其它金额button
-                UIButton *qitajineButton = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-30)/4-15 + (SCREEN_WIDTH-30)/4*3/5*3, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5+10, 20)];
+                //其它金额button
+                CGRect frame = CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*3 -15, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5 + 10, 20);
+                HTPressableButton *qitajineButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+                qitajineButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+                qitajineButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
                 [qitajineButton setTitle:@"其他金额" forState:UIControlStateNormal];
 //                qitajineButton.backgroundColor = [UIColor greenColor];
                 qitajineButton.titleLabel.font = [UIFont systemFontOfSize:11];
-               [qitajineButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+               [qitajineButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [qitajineButton addTarget:self action:@selector(qiTaJinEClick:) forControlEvents:UIControlEventTouchUpInside];
 //                qitajineButton.adjustsFontSizeToFitWidth  = YES;
                 [modelView addSubview:qitajineButton];
@@ -456,13 +464,17 @@
     //设置白色背景的尺寸
     baiSeBeiJingView.frame = CGRectMake(0, topImageView.frame.origin.y + topImageView.frame.size.height, SCREEN_WIDTH, modelView.frame.origin.y + modelViewHeight + 10) ;
     
-    //最下面的发布button
-    UIButton *fabuButton  = [[UIButton alloc]initWithFrame:CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight)];
-    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
+    CGRect frame = CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight);
+    HTPressableButton *fabuButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+    [fabuButton setTitle:@"Rounded" forState:UIControlStateNormal];
+    //    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
+    fabuButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+    fabuButton.shadowColor = [UIColor colorWithRed:71/255.0f green:94/255.0f blue:181/255.0f alpha:1];
     fabuButton.layer.masksToBounds = YES;
     fabuButton.layer.cornerRadius = modelViewHeight/8;
     [fabuButton setTitle:@"发布" forState:UIControlStateNormal];
     [fabuButton addTarget:self action:@selector(fabu) forControlEvents:UIControlEventTouchUpInside];
+
     
     [self.view addSubview:fabuButton];
     

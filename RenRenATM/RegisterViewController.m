@@ -9,7 +9,7 @@
 #import "RegisterViewController.h"
 #import "AFNetworking.h"
 #import "agreeView.h"
-#import "MustLogin.h"
+//#import "MustLogin.h"
 @interface RegisterViewController ()<UIScrollViewDelegate,UIAlertViewDelegate,UITextFieldDelegate>
 {
     UIButton *buttonOne,*buttonTwo,*bageButton,*zhuceRightButton;
@@ -57,6 +57,50 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back-Small"] style:UIBarButtonItemStylePlain target:self action:@selector(BackView)];
     //添加下面的两个界面
     [self LeftView];
+    [self RightView];
+    uiRightView.hidden = YES;
+    SelfScrollerView.hidden = NO;
+    
+    
+    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
+    for (int i = 0; i<2; i++) {
+        switch (i) {
+            case 0:
+                //按钮One
+                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
+                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
+                buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+                [buttonOne setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
+                buttonOne.layer.borderWidth = 1;
+                buttonOne.layer.cornerRadius = 12;
+                buttonOne.layer.masksToBounds = YES;
+                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:buttonOne];
+                break;
+            case 1:
+                //按钮Two
+                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20, SCREEN_WIDTH/3-5, 25)];
+                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
+                buttonTwo.backgroundColor = [UIColor whiteColor];
+                [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
+                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]CGColor];
+                buttonTwo.layer.cornerRadius = 12;
+                buttonTwo.layer.masksToBounds = YES;
+                buttonTwo.layer.borderWidth = 1;
+                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:buttonTwo];
+                break;
+                
+                
+            default:
+                break;
+        }
+    }
+
+    
 }
 
 
@@ -75,44 +119,7 @@
     [self.view addSubview:SelfScrollerView];
     
     //添加两个个按钮
-    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
-    for (int i = 0; i<2; i++) {
-        switch (i) {
-            case 0:
-                //按钮One
-                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
-                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                [buttonOne setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonOne.layer.borderWidth = 1;
-                buttonOne.layer.cornerRadius = 12;
-                buttonOne.layer.masksToBounds = YES;
-                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
-                [SelfScrollerView addSubview:buttonOne];
-                break;
-            case 1:
-                //按钮Two
-                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20, SCREEN_WIDTH/3-5, 25)];
-                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonTwo.backgroundColor = [UIColor whiteColor];
-                [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
-                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]CGColor];
-                buttonTwo.layer.cornerRadius = 12;
-                buttonTwo.layer.masksToBounds = YES;
-                buttonTwo.layer.borderWidth = 1;
-                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
-                [SelfScrollerView addSubview:buttonTwo];
-                break;
-                
-                
-            default:
-                break;
-        }
-    }
-
+   
     
     //手机号
     UILabel *namelabel = [[UILabel alloc]initWithFrame:CGRectMake(30, buttonTwo.frame.origin.y + 50,60 , 20)];
@@ -283,7 +290,7 @@
     [zhuceRightButton addTarget:self action:@selector(zhuceRight) forControlEvents:UIControlEventTouchUpInside];
     [SelfScrollerView addSubview:zhuceRightButton];
     
-#pragma marks SelfScrollerView的滚动高度
+//滚动高度
     [SelfScrollerView setBounces:NO];
         SelfScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, zhuceRightButton.frame.origin.y + 64 );
     
@@ -317,44 +324,44 @@
     uiRightView.userInteractionEnabled = YES;
     [self.view addSubview:uiRightView];
     
-    //添加两个个按钮
-    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
-    for (int i = 0; i<2; i++) {
-        switch (i) {
-            case 0:
-                //按钮One
-                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
-                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonOne.backgroundColor = [UIColor whiteColor];
-                [buttonOne setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
-                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonOne.layer.borderWidth = 1;
-                buttonOne.layer.cornerRadius = 12;
-                buttonOne.layer.masksToBounds = YES;
-                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
-                [uiRightView addSubview:buttonOne];
-                break;
-            case 1:
-                //按钮Two
-                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20, SCREEN_WIDTH/3-5, 25)];
-                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonTwo.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                [buttonTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonTwo.layer.borderWidth = 1;
-                buttonTwo.layer.cornerRadius = 12;
-                buttonTwo.layer.masksToBounds = YES;
-                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
-                [uiRightView addSubview:buttonTwo];
-                break;
-                
-                
-            default:
-                break;
-        }
-    }
+//    //添加两个个按钮
+//    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
+//    for (int i = 0; i<2; i++) {
+//        switch (i) {
+//            case 0:
+//                //按钮One
+//                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
+//                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
+//                buttonOne.backgroundColor = [UIColor whiteColor];
+//                [buttonOne setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
+//                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
+//                buttonOne.layer.borderWidth = 1;
+//                buttonOne.layer.cornerRadius = 12;
+//                buttonOne.layer.masksToBounds = YES;
+//                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+//                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
+//                [uiRightView addSubview:buttonOne];
+//                break;
+//            case 1:
+//                //按钮Two
+//                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20, SCREEN_WIDTH/3-5, 25)];
+//                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
+//                buttonTwo.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+//                [buttonTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
+//                buttonTwo.layer.borderWidth = 1;
+//                buttonTwo.layer.cornerRadius = 12;
+//                buttonTwo.layer.masksToBounds = YES;
+//                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+//                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
+//                [uiRightView addSubview:buttonTwo];
+//                break;
+//                
+//                
+//            default:
+//                break;
+//        }
+//    }
 
     //手机号
     UILabel *namelabel = [[UILabel alloc]initWithFrame:CGRectMake(30, buttonTwo.frame.origin.y + 60,60 , 20)];
@@ -633,8 +640,9 @@
 
 -(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    MustLogin *login = [[MustLogin alloc]init];
-    [self presentViewController:login animated:YES completion:nil];
+//    MustLogin *login = [[MustLogin alloc]init];
+//    [self presentViewController:login animated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -642,16 +650,29 @@
 -(void)buttonOneSelect
 {
     zhucefangshi=1;
-    [uiRightView removeFromSuperview];
-    [self LeftView];
+//    [uiRightView removeFromSuperview];
+//    [self LeftView];
+    buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
+    buttonTwo.backgroundColor =  [UIColor whiteColor] ;
+     [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+     [buttonOne setTitleColor:[UIColor whiteColor]  forState:UIControlStateNormal];
+    uiRightView.hidden = YES;
+    SelfScrollerView.hidden = NO;
+    
 
 }
 //按钮Two的点击事件
 -(void)buttonTwoSelect
 {
     zhucefangshi =2;
-        [SelfScrollerView removeFromSuperview];
-    [self RightView];
+//        [SelfScrollerView removeFromSuperview];
+//    [self RightView];
+    buttonTwo.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
+    buttonOne.backgroundColor = [UIColor whiteColor];
+     [buttonOne setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+     [buttonTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    uiRightView.hidden = NO;
+    SelfScrollerView.hidden =YES;
 //    UIAlertView *aaa= [[UIAlertView alloc]initWithTitle:@"选择营业时间" message:nil delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"1",@"2",@"3",@"5",@"6",@"8",@"9",@"5",@"4",@"3",@"3",@"4", nil];
 //    [aaa show];
 }

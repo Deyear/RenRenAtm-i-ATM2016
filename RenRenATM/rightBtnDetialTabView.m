@@ -12,6 +12,7 @@
 #import "AFNetworking/AFNetworking.h"
 #import "AllTableViewCell.h"
 #import "DingDanZhuangtai.h"
+#import "MJRefresh.h"
 
 @interface rightBtnDetialTabView ()
 {
@@ -21,6 +22,7 @@
     NSArray *Array;
 //    IBOutlet UITableView *_tableView;
     UITableView *uiTableView;
+    NSString *SortType;
     
     
 }
@@ -38,20 +40,36 @@
 @synthesize titleName;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    SortType =@ "-time_limit";
+    
     self.view.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
     tittleLabel.text = titleName;
+    
+    //刷新监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shuaxin) name:@"tongzhi111" object:nil];
+    
+    //    从第一页开始刷新
+    __strong  rightBtnDetialTabView *wakeSelf =self;
+    wakeSelf.page =0;
+}
+
+//刷新
+-(void)shuaxin
+{
+    [self viewTwoLeft:@"0"];
 }
 
 
 //加载完成后左边的“全部”定单界面
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self viewTwoLeft];
+    [self viewTwoLeft:@"0"];
 }
 
 
 //构造左边的“全部”定单界面
--(void)viewTwoLeft
+-(void)viewTwoLeft:(NSString *)refreshPage
 {
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *access_token = [userDefault objectForKey:@"access_token"];
@@ -69,7 +87,7 @@
         NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
         NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
         NSString *token = [NSString stringWithFormat:@"Basic %@",encodeResult];
-                NSLog(@"encodeResult:%@",token);
+//                NSLog(@"encodeResult:%@",token);
         
                 AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
         
@@ -80,16 +98,23 @@
                 [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
                 NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders?relation=sender,receiver,evaluations",user_id];
                 //    NSLog(@"%@",str);
-                //分类——信用卡取现
-                NSString *search = [NSString stringWithFormat:@"[\"=\", \"service_item_id\", \"%@\"]",type];
-                //    NSLog(@"%@",search);
         
-                NSDictionary *paratemetrs = @{@"search":search};
+            NSString *search = [NSString stringWithFormat:@"[\"=\", \"service_item_id\", \"%@\"]",type];
+                    NSLog(@"--search--------%@",search);
+        
+                NSDictionary *paratemetrs = @{@"page":refreshPage,
+                                              @"search":search,
+                                              @"sort":SortType};
         
                 [session GET:str parameters:paratemetrs progress:^(NSProgress * _Nonnull downloadProgress) {
+                    
+                    
                     //            NSLog(@"全部订单数据%@",downloadProgress);
-                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {            //            NSLog(@"======================全部订单数据%@",responseObject);
+                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+           NSLog(@"======================全部订单数据%@",responseObject);
             Array = responseObject;
+                  
+            NSLog(@"-------个数-------%lu",(unsigned long)Array.count);
             if (Array.count == 0) {
                 UILabel *NilLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, SCREEN_HEIGHT/2-20-64, SCREEN_WIDTH - 60 , 40)];
                 NilLabel.text = @"暂无该类型订单~~~";
@@ -118,6 +143,18 @@
     uiTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     uiTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:uiTableView];
+    __strong  rightBtnDetialTabView *wakeSelf =self;
+    [uiTableView addLegendHeaderWithRefreshingBlock:^{
+        
+        wakeSelf.page --;
+        [wakeSelf viewTwoLeft:[NSString stringWithFormat:@"%ld",(long)wakeSelf.page]];
+        [uiTableView.header endRefreshing];
+    }];
+    [uiTableView addLegendFooterWithRefreshingBlock:^{
+        wakeSelf.page ++;
+       [wakeSelf viewTwoLeft:[NSString stringWithFormat:@"%ld",(long)wakeSelf.page]];
+        [uiTableView.footer endRefreshing];
+    }];
 
 }
 
@@ -181,11 +218,13 @@
     
     NSUInteger row = [indexPath row];
     //    NSLog(@"%@",Array[row]);
+   
     NSArray  *all_service_itemArray1 = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零", nil];
     int type_ser = [Array[row][@"service_item_id"] intValue];
     //    NSLog(@"\\\\\\\\\\\\\%d",type_ser);
     
     typeMoney.text  =[NSString stringWithFormat:@"%@%@¥",all_service_itemArray1[type_ser],Array[row][@"money"]];
+    
     
     //    NSLog(@"----------------------------%@",typeMoney.text);
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -201,6 +240,10 @@
         //他人发布
         whoFabuLabel.text =[NSString stringWithFormat:@"%@发布",Array[row][@"sender"][@"username"]] ;
     }
+    
+    
+
+   
     
     //右侧状态标签
     if([status isEqualToString:@"101"])
@@ -242,7 +285,7 @@
 {
     DingDanZhuangtai *detail = [[DingDanZhuangtai alloc]init];
     detail.xiangQingArray = Array[indexPath.row];
-    NSLog(@"=========1111111111===========%@",Array[indexPath.row]);
+//    NSLog(@"=========1111111111===========%@",Array[indexPath.row]);
     [self presentViewController:detail animated:NO completion:nil];
 }
 

@@ -1,35 +1,58 @@
 //
 //  SecondViewController.m
-//  RenRenATM
 //
-//  Created by 方少言 on 15/12/22.
-//  Copyright © 2015年 com.fsy. All rights reserved.
+//
+//
+//
+//
+//
+//订单页面
+//全部列表及其事件
 //
 
-#define cellHeight SCREEN_HEIGHT/10
-#define ydp (SCREEN_HEIGHT/1400)
-#define xdp (SCREEN_WIDTH/750)
+
+
+
+
+
+#define cellHeight SCREEN_HEIGHT/10   //单元格的行高
+#define ydp (SCREEN_HEIGHT/1400)      //高度的单位值
+#define xdp (SCREEN_WIDTH/750)        //宽度的单位值
+
+//本项目
 #import "SecondViewController.h"
-#import "SettingViewController.h"
-#import "AFNetworking/AFNetworking.h"
-#import "AllTableViewCell.h"
-#import "MJRefresh.h"
-#import "LoginViewController.h"
 #import "rightBtnDetialTabView.h"
 #import "MustLogin.h"
 #import "DingDanZhuangtai.h"
- 
+#import "AllTableViewCell.h"
+
+//第三方
+#import "AFNetworking/AFNetworking.h"
+#import "MJRefresh.h"
+
+//刷新
+#import "MJRefresh.h"
+
+
 
 
 @interface SecondViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UIGestureRecognizerDelegate,UIAlertViewDelegate>
 {
-    UIControl *sixView;
+//
+    UILabel *tipLabel,*paotuiLabel,*placeLabel,*timeLimitLabel,*juliLabel,*typeMoney,*whoFabuLabel,*zhuangtaiLabel,*xianLabel;
+//
     UIButton *quanbuButton,*fenleiButton,*gezhongButton;
-    UILabel *xianLabel;
+//    分类下面的八行按钮
+    UIControl *detialListView;
+//    
     UIScrollView *TwoScrollerView;
+//    
     UITableView *uiTableView;
+//    
     NSArray *Array;
-        UILabel *tipLabel,*paotuiLabel,*placeLabel,*timeLimitLabel,*juliLabel,*typeMoney,*whoFabuLabel,*zhuangtaiLabel;
+    
+    NSString *SortType;
+
 }
 
 @end
@@ -37,29 +60,48 @@
 
 @implementation SecondViewController
 
+#pragma mark - view的生命周期
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+   
 
-    sixView = [[UIControl alloc]init];
+//    从第一页开始刷新
     __strong  SecondViewController *wakeSelf =self;
     wakeSelf.page =0;
+    SortType =@ "-time_limit";
     
-    [self Top];//顶部的背景颜色和“订单”
+    [self initALL];                     //初始化views——全局变量
+    
+    [self Top];                           //顶部的背景颜色和“订单”
+    
     [self QuanbuFenleiButtonAndXianLabel];//全部与分类button操作及两条线
-    [self ScrollerViewInit];//构造用于跳转的ScrollerView
-    [self quanbu];//全部和分类订单下的显示列表
+    
+    [self ScrollerViewInit];              //构造用于跳转的ScrollerView
+    
+    [self quanbu];                        //全部和分类订单下的显示列表
     
     
 }
+
+
 
 
 //加载完成后左边的“全部”定单界面
 -(void)viewDidAppear:(BOOL)animated
 {
-    [self viewTwoLeft];
+    [self viewTwoLeft:@"1"];
 }
 
 
+#pragma mark - init初始化——>全局变量
+-(void)initALL
+{
+    detialListView = [[UIControl alloc]init];      //分类下面的八行按钮
+}
+
+
+#pragma mark - init初始化——>视图
 //顶部的背景颜色和“订单”
 -(void)Top
 {
@@ -114,24 +156,25 @@
     TwoScrollerView.showsHorizontalScrollIndicator=NO;
     TwoScrollerView.backgroundColor =[UIColor clearColor];
     TwoScrollerView.delegate = self;
+    
+    
     [self.view addSubview:TwoScrollerView];
     
-    [self viewTwoLeft];//构造左边的全部定单界面
+    [self viewTwoLeft:@"1"];//构造左边的全部定单界面
     [self viewTwoRight];//构造右边的分类界面
 }
 
 
 //构造左边的“全部”定单界面
--(void)viewTwoLeft
+-(void)viewTwoLeft:(NSString *)refreshPage
 {
+    
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *access_token = [userDefault objectForKey:@"access_token"];
      NSString *user_id = [userDefault objectForKey:@"user_id"];
 //    NSLog(@"-----------------------------%@,------%@,--------%@",userDefault,access_token,user_id);
     
     if (access_token==nil) {
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"请先登录后操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
         UIAlertView *_alert = [[UIAlertView alloc]initWithTitle:@"您尚未登录！" message:@"请先登录后操作" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [_alert show];
     }
@@ -147,12 +190,19 @@
         session.requestSerializer = [AFJSONRequestSerializer serializer];
         session.responseSerializer = [AFJSONResponseSerializer serializer];
         [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+//        NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders?relation=sender,receiver,evaluations",user_id];
         NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders?relation=sender,receiver,evaluations",user_id];
-        [session GET:str parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        NSDictionary *parameters=@{
+                                   @"page":refreshPage,
+                                   @"sort":SortType
+                                   };
+        [session GET:str parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
 //            NSLog(@"全部订单数据%@",downloadProgress);
+            
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//            NSLog(@"======================全部订单数据%@",responseObject);
+//            NSLog(@"============全部订单数据==========全部订单数据%@",responseObject);
             Array = responseObject;
+//            NSLog(@"-------个数-------%lu",(unsigned long)Array.count);
             if (Array.count == 0) {
               UILabel *NilLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, SCREEN_HEIGHT/2-20-64, SCREEN_WIDTH - 60 , 40)];
                 NilLabel.text = @"暂无该类型订单~~~";
@@ -195,14 +245,14 @@
     for (int i = 0;  i<8; i++) {
         //每一行的背景View
 //        sixView = [[UIControl alloc]initWithFrame:CGRectMake(0, cellHeight*i + 30*(i/3), SCREEN_WIDTH, cellHeight)];
-        sixView = [[UIControl alloc]initWithFrame:CGRectMake(0, TwoScrollerView.frame.size.height/8 * i, SCREEN_WIDTH, TwoScrollerView.frame.size.height/8)];
-        sixView.backgroundColor = [UIColor whiteColor];
+        detialListView = [[UIControl alloc]initWithFrame:CGRectMake(0, TwoScrollerView.frame.size.height/8 * i, SCREEN_WIDTH, TwoScrollerView.frame.size.height/8)];
+        detialListView.backgroundColor = [UIColor whiteColor];
         
         //给每一个sixView添加一个tag
-        [sixView setTag:i + 10000];
-        [sixView addTarget:self action:@selector(SelectedSixView:) forControlEvents:UIControlEventTouchUpInside];
+        [detialListView setTag:i + 10000];
+        [detialListView addTarget:self action:@selector(SelectedSixView:) forControlEvents:UIControlEventTouchUpInside];
         
-        [RightView addSubview:sixView];
+        [RightView addSubview:detialListView];
         RightView.userInteractionEnabled = YES;
 //        NSLog(@"RightView is %@",RightView);
         
@@ -210,7 +260,7 @@
 //        UIImageView *leftView= [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, cellHeight-20, cellHeight-20)];
          UIImageView *leftView= [[UIImageView alloc]initWithFrame:CGRectMake(10, 0, cellHeight-20, cellHeight-20)];
         leftView.image = [UIImage imageNamed:imageArray[i]];
-        [sixView addSubview:leftView];
+        [detialListView addSubview:leftView];
         
         
         //每一行左侧的内容显示
@@ -218,19 +268,19 @@
          UILabel *NameLabel = [[UILabel alloc]initWithFrame:CGRectMake(leftView.frame.size.width + 15, cellHeight/2-20, 100, 20)];
         NameLabel.text = nameArray[i];
         NameLabel.font = [UIFont systemFontOfSize:15];
-        [sixView addSubview: NameLabel];
+        [detialListView addSubview: NameLabel];
         
         
         //右侧箭头显示
         UIImageView *rightView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 40, (cellHeight - 20)/2, 20, 20)];
         rightView.image = [UIImage imageNamed:@"right-Small"];
-        [sixView addSubview:rightView];
-        [sixView viewWithTag:i];
+        [detialListView addSubview:rightView];
+        [detialListView viewWithTag:i];
 //        NSLog(@"+++++++++++++%ld",(long)sixView.tag);
         if (i==0||i==1||i==3||i==4) {
             UILabel *xianLabelSix = [[UILabel alloc]initWithFrame:CGRectMake(NameLabel.frame.origin.x, cellHeight-1, SCREEN_WIDTH-NameLabel.frame.origin.x, 1)];
             xianLabelSix.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.1];
-            [sixView addSubview: xianLabelSix];
+            [detialListView addSubview: xianLabelSix];
         }
     }
     
@@ -293,56 +343,6 @@
 }
 
 
-////点击每一行进行的事件
-//-(void)DoList
-//{
-//    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-//    NSString *access_token = [userDefault objectForKey:@"access_token"];
-//    NSString *user_id = [userDefault objectForKey:@"user_id"];
-//    
-//    if (access_token==nil) {
-//        MustLogin *login = [[MustLogin alloc]init];
-//        [self presentViewController:login animated:YES completion:nil];
-//    }
-//    else
-//    {
-//        
-//        NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
-//        NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-//        NSString *token = [NSString stringWithFormat:@"Basic %@",encodeResult];
-//        //        NSLog(@"encodeResult:%@",token);
-//        
-//        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-//        session.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-//        session.requestSerializer = [AFJSONRequestSerializer serializer];
-//        session.responseSerializer = [AFJSONResponseSerializer serializer];
-//        [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-//        NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders?relation=sender",user_id];
-//        [session GET:str parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-//            //            NSLog(@"全部订单数据%@",downloadProgress);
-//        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//            //            NSLog(@"全部订单数据%@",responseObject);
-//            Array = responseObject;
-//            if (Array.count == 0) {
-//                UILabel *NilLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, SCREEN_HEIGHT/2-20-64, SCREEN_WIDTH - 60 , 40)];
-//                NilLabel.text = @"暂无该类型订单~~~";
-//                NilLabel.textAlignment = NSTextAlignmentCenter;
-//                
-//                [uiTableView removeFromSuperview];
-//                [TwoScrollerView addSubview:NilLabel];
-//            }
-//            else
-//            {
-//                [self leftTableView];
-//            }
-//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//            
-//        }];
-//        
-//    }
-//}
-
-
 //左边的界面列表
 -(void)leftTableView
 {
@@ -353,10 +353,18 @@
     uiTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [TwoScrollerView addSubview:uiTableView];
     __strong  SecondViewController *wakeSelf =self;
-    wakeSelf.page =0;
+//      wakeSelf.page =0;
     [uiTableView addLegendHeaderWithRefreshingBlock:^{
-        [self viewTwoLeft];
+         wakeSelf.page --;
+        [wakeSelf viewTwoLeft:[NSString stringWithFormat:@"%ld",(long)wakeSelf.page]];
+        [uiTableView.header endRefreshing];
+    }];
+    
+    [uiTableView addLegendFooterWithRefreshingBlock:^{
+          wakeSelf.page ++;
+        [wakeSelf  viewTwoLeft:[NSString stringWithFormat:@"%ld",(long)wakeSelf.page]];
         [uiTableView.footer endRefreshing];
+
     }];
 }
 
@@ -526,7 +534,7 @@
 {
     DingDanZhuangtai *detail = [[DingDanZhuangtai alloc]init];
     detail.xiangQingArray = Array[indexPath.row];
-    NSLog(@"=========1111111111===========%@",Array[indexPath.row]);
+//    NSLog(@"=========1111111111===========%@",Array[indexPath.row]);
     [self presentViewController:detail animated:NO completion:nil];
 }
 

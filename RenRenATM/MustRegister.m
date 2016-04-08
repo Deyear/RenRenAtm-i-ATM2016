@@ -62,6 +62,48 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back-Small"] style:UIBarButtonItemStylePlain target:self action:@selector(BackView)];
     //添加下面的两个界面
     [self LeftView];
+    [self RightView];
+    uiRightView.hidden = YES;
+    
+    //添加两个个按钮
+    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
+    for (int i = 0; i<2; i++) {
+        switch (i) {
+            case 0:
+                //按钮One
+                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 84, (SCREEN_WIDTH/3)-5, 25)];
+                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
+                buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+                [buttonOne setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
+                buttonOne.layer.borderWidth = 1;
+                buttonOne.layer.cornerRadius = 12;
+                buttonOne.layer.masksToBounds = YES;
+                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:buttonOne];
+                break;
+            case 1:
+                //按钮Two
+                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 84 , SCREEN_WIDTH/3-5, 25)];
+                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
+                buttonTwo.backgroundColor = [UIColor whiteColor];
+                [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
+                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]CGColor];
+                buttonTwo.layer.cornerRadius = 12;
+                buttonTwo.layer.masksToBounds = YES;
+                buttonTwo.layer.borderWidth = 1;
+                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:buttonTwo];
+                break;
+                
+                
+            default:
+                break;
+        }
+    }
+
 }
 
 //两个个界面的构造事件左边服务者UIScrollView
@@ -78,44 +120,6 @@
     SelfScrollerView.delegate = self;
     [self.view addSubview:SelfScrollerView];
     
-    //添加两个个按钮
-    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
-    for (int i = 0; i<2; i++) {
-        switch (i) {
-            case 0:
-                //按钮One
-                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
-                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                [buttonOne setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonOne.layer.borderWidth = 1;
-                buttonOne.layer.cornerRadius = 12;
-                buttonOne.layer.masksToBounds = YES;
-                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
-                [SelfScrollerView addSubview:buttonOne];
-                break;
-            case 1:
-                //按钮Two
-                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20 , SCREEN_WIDTH/3-5, 25)];
-                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonTwo.backgroundColor = [UIColor whiteColor];
-                [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
-                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]CGColor];
-                buttonTwo.layer.cornerRadius = 12;
-                buttonTwo.layer.masksToBounds = YES;
-                buttonTwo.layer.borderWidth = 1;
-                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
-                [SelfScrollerView addSubview:buttonTwo];
-                break;
-                
-                
-            default:
-                break;
-        }
-    }
     
     
     //手机号
@@ -320,44 +324,6 @@
     uiRightView.userInteractionEnabled = YES;
     [self.view addSubview:uiRightView];
     
-    //添加两个个按钮
-    NSArray *FourArray = @[@"服务者入口",@"个人用户入口"];
-    for (int i = 0; i<2; i++) {
-        switch (i) {
-            case 0:
-                //按钮One
-                buttonOne = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/6, 20, (SCREEN_WIDTH/3)-5, 25)];
-                [buttonOne setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonOne.backgroundColor = [UIColor whiteColor];
-                [buttonOne setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
-                buttonOne.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonOne.layer.borderWidth = 1;
-                buttonOne.layer.cornerRadius = 12;
-                buttonOne.layer.masksToBounds = YES;
-                buttonOne.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonOne addTarget:self action:@selector(buttonOneSelect) forControlEvents:UIControlEventTouchUpInside];
-                [uiRightView addSubview:buttonOne];
-                break;
-            case 1:
-                //按钮Two
-                buttonTwo = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+5, 20, SCREEN_WIDTH/3-5, 25)];
-                [buttonTwo setTitle:FourArray[i] forState:UIControlStateNormal];
-                buttonTwo.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                [buttonTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-                buttonTwo.titleLabel.font = [UIFont systemFontOfSize:14];
-                buttonTwo.layer.borderWidth = 1;
-                buttonTwo.layer.cornerRadius = 12;
-                buttonTwo.layer.masksToBounds = YES;
-                buttonTwo.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-                [buttonTwo addTarget:self action:@selector(buttonTwoSelect) forControlEvents:UIControlEventTouchUpInside];
-                [uiRightView addSubview:buttonTwo];
-                break;
-                
-                
-            default:
-                break;
-        }
-    }
     
     //手机号
     UILabel *namelabel = [[UILabel alloc]initWithFrame:CGRectMake(30, buttonTwo.frame.origin.y + 60,60 , 20)];
@@ -464,10 +430,10 @@
         AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
         [session GET:str parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@",responseObject);
+//            NSLog(@"%@",responseObject);
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"%@",error);
+//            NSLog(@"%@",error);
         }];
         
         checkRightButton.userInteractionEnabled=NO;
@@ -491,10 +457,10 @@
         [session GET:str parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
             
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSLog(@"%@",responseObject);
+//            NSLog(@"%@",responseObject);
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"%@",error);
+//            NSLog(@"%@",error);
         }];
         
         checkRightButton.userInteractionEnabled=NO;
@@ -516,7 +482,7 @@
 -(void)zhuceRight
 {
     if (zhucefangshi == 1) {
-        NSLog(@"1");
+//        NSLog(@"1");
         if (nameleftField.text.length != 11) {
             UIAlertView *alert =[[UIAlertView alloc]initWithTitle:nil message:@"请正确输入手机号" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
             [alert show];
@@ -560,16 +526,16 @@
             NSDictionary *parameters = @{@"username":nameleftField.text,@"password":phoneLeftField.text,@"password_repeat":mimaleftField.text,@"role":getiOrdianpu,@"service_item_ids":service_item_ids,@"captcha":codeLeftField.text};
             AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
             [session POST:str parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                NSLog(@"formData%@",formData);
+//                NSLog(@"formData%@",formData);
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                NSLog(@"uploadProgress%@",uploadProgress);
+//                NSLog(@"uploadProgress%@",uploadProgress);
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"responseObject%@",responseObject);
+//                NSLog(@"responseObject%@",responseObject);
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"注册成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
                 zhucechenggongAlert = alert;
                 [alert show];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"error%@",error);
+//                NSLog(@"error%@",error);
             }];
         }
         
@@ -603,23 +569,23 @@
             NSDictionary *parameters = @{@"username":nameRightField.text,@"password":phoneRightField.text,@"password_repeat":mimaRightField.text,@"captcha":codeRightField.text};
             AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
             [session POST:test parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                NSLog(@"formData%@",formData);
+//                NSLog(@"formData%@",formData);
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                NSLog(@"uploadProgress%@",uploadProgress);
+//                NSLog(@"uploadProgress%@",uploadProgress);
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"responseObject%@",responseObject);
+//                NSLog(@"responseObject%@",responseObject);
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"注册成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
                 zhucechenggongAlert = alert;
                 [alert show];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                NSLog(@"error%@",error);
+//                NSLog(@"error%@",error);
                 
             }];
         }
     }
     else
     {
-        NSLog(@"囧");
+//        NSLog(@"囧");
     }
 }
 
@@ -631,18 +597,28 @@
 -(void)buttonOneSelect
 {
     zhucefangshi=1;
-    [uiRightView removeFromSuperview];
-    [self LeftView];
+    //    [uiRightView removeFromSuperview];
+    //    [self LeftView];
+    buttonOne.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
+    buttonTwo.backgroundColor =  [UIColor whiteColor] ;
+    [buttonTwo setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+    [buttonOne setTitleColor:[UIColor whiteColor]  forState:UIControlStateNormal];
+    uiRightView.hidden = YES;
+    SelfScrollerView.hidden = NO;;
     
 } 
 //按钮Two的点击事件
 -(void)buttonTwoSelect
 {
     zhucefangshi =2;
-    [SelfScrollerView removeFromSuperview];
-    [self RightView];
-    //    UIAlertView *aaa= [[UIAlertView alloc]initWithTitle:@"选择营业时间" message:nil delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"1",@"2",@"3",@"5",@"6",@"8",@"9",@"5",@"4",@"3",@"3",@"4", nil];
-    //    [aaa show];
+    //        [SelfScrollerView removeFromSuperview];
+    //    [self RightView];
+    buttonTwo.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
+    buttonOne.backgroundColor = [UIColor whiteColor];
+    [buttonOne setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]  forState:UIControlStateNormal];
+    [buttonTwo setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    uiRightView.hidden = NO;
+    SelfScrollerView.hidden =YES;
 }
 #pragma mark 60秒倒计时
 -(void)timeFireMethod
@@ -683,19 +659,19 @@
     {
         //NSLog(@"alert1 button index=%ld is clicked.....", (long)buttonIndex);
         if(buttonIndex == 0){
-            NSLog(@"0");
+//            NSLog(@"0");
             [self.navigationController popViewControllerAnimated:NO];
         }
         else
         {
-            NSLog(@"😳");
+//            NSLog(@"😳");
         }
     }
 }
 //八个选择功能
 -(void)bageTap:(UITapGestureRecognizer*)sender
 {
-    NSLog(@"%ld",(long)sender.view.tag);
+//    NSLog(@"%ld",(long)sender.view.tag);
     NSString *strId = [NSString stringWithFormat:@"%ld",(long)sender.view.tag];
     //    int StrId = [strId intValue] - 100;
     UIButton * button =(UIButton*)[ self.view  viewWithTag:[strId intValue]];

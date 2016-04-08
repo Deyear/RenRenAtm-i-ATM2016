@@ -12,12 +12,18 @@
 #import "AFNetworking/AFNetworking.h"
 #import "CustomAnnotationView.h"
 #import <AMapSearchKit/AMapSearchKit.h>
-//#import "MAAnnotation.h"
+
+//立体按钮————第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
+
 
 @interface ThreeViewController ()<CLLocationManagerDelegate,AMapSearchDelegate>
 {
     AMapSearchAPI *search;
-    UIButton *rightButton,*showYinHangAtm;
+    UIButton *rightButton;
+    HTPressableButton *showYinHangAtm;
     NSString *fileName;
     NSArray *userArray;
     NSMutableArray *mArr;
@@ -88,8 +94,11 @@
 //初始化定位地图及右下角定位按钮
 - (void)initControls
 {
-    showYinHangAtm = [UIButton buttonWithType:UIButtonTypeCustom];
-    showYinHangAtm.frame = CGRectMake(0, CGRectGetHeight(_mapView.bounds) - 50, 150, 30);
+    CGRect frame = CGRectMake(0, CGRectGetHeight(_mapView.bounds) - 50, 150, 30);
+    showYinHangAtm = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRect];
+    showYinHangAtm.buttonColor = [UIColor whiteColor] ;
+    showYinHangAtm.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
+    [showYinHangAtm setTitle:@"Rect" forState:UIControlStateNormal];
     showYinHangAtm.layer.cornerRadius = 5;
 //    showYinHangAtm.backgroundColor = [UIColor redColor];
     [showYinHangAtm setTitle:@"显示银行和ATM" forState:UIControlStateNormal];
@@ -255,9 +264,9 @@ else
 
 //    if (userArray ==nil) {
         //取出当前位置的坐标
-                NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
-        
-        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=services"];
+//                NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
+    
+        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=servicesz"];
         //        114.215.203.95:82/v1/atms?relation=services&longitude=114.315065&latitude=30.600915&radius=1000000
 
         NSString *longitudelongitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
@@ -292,7 +301,7 @@ else
                     
                     [mArr addObject:str];
                 //                pointAnnotation.subtitle = @"信用卡取现\n银行卡取现";
-                    pointAnnotation.subtitle = @"店铺";
+                    pointAnnotation.subtitle = @"(服务商铺)";
                     
                     //添加大头针
                     [_mapView addAnnotation:pointAnnotation];
@@ -323,7 +332,7 @@ else
         }
     
         //添加商铺的图标
-        BOOL b=[[annotation subtitle] isEqualToString:@"店铺"];
+        BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
         BOOL c=[[annotation subtitle] isEqualToString:@"银行"];
         bool d=[[annotation subtitle] isEqualToString:@"ATM"];
         if(b){

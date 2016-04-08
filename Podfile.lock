@@ -2,27 +2,32 @@ PODS:
   - AMap2DMap (3.3.0)
   - AMapLocation (1.1.1)
   - AMapSearch (3.2.0)
+  - HTPressableButton (1.3.2):
+    - HTPressableButton/All (= 1.3.2)
+  - HTPressableButton/All (1.3.2)
+  - JHChainableAnimations (1.3.0)
   - pop (1.0.9)
   - PopMenu (2.4):
     - pop
     - XHRealTimeBlur
-  - REMenu (1.10)
   - XHRealTimeBlur (1.7)
 
 DEPENDENCIES:
   - AMap2DMap (~> 3.3.0)
   - AMapLocation (~> 1.1.1)
   - AMapSearch (~> 3.2.0)
-  - PopMenu
-  - REMenu (~> 1.10)
+  - HTPressableButton (~> 1.3.2)
+  - JHChainableAnimations (~> 1.3.0)
+  - PopMenu (~> 2.4)
 
 SPEC CHECKSUMS:
   AMap2DMap: e53461cdc345375e514579db17dbd721ff9ed9eb
   AMapLocation: fc0245146ef90811f9590d428e9035a2a64f4526
   AMapSearch: a885f0702578a441a22cb66fa74f8918c6d19e6f
+  HTPressableButton: 8e0108962e6e4620378dcfccdaaf363a10e98fa2
+  JHChainableAnimations: 22085fcb04ca87349e584573558e637f659fd769
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   PopMenu: 26b97baeaf250070f4f61b93727ca86d127d7bc5
-  REMenu: 30dad195930adf6c5eeb8041e3257aa60bf9fa49
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
 
 COCOAPODS: 0.39.0

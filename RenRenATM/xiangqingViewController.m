@@ -4,13 +4,21 @@
 //
 //
 //
-//
+//接单————详情页面
 
 
 #define ydp (SCREEN_HEIGHT/1400)
 #define xdp (SCREEN_WIDTH/750)
 #import "xiangqingViewController.h"
 #import "AFNetworking/AFNetworking.h"
+
+//立体按钮——第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
+
+
+
 @interface xiangqingViewController ()
 {
     NSArray *all_service_itemArray;
@@ -51,14 +59,24 @@
     nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(22*xdp, 33*ydp, 400*xdp, 40*ydp)];
     nameLabel.font = [UIFont boldSystemFontOfSize:17];
 //    nameLabel.text = xiangqingArray[@"sender"][@"username"];
-    nameLabel.text = @"请接单";
+//    nameLabel.text = @"请接单";
+     NSString *str1 = [xiangqingArray[@"sender"][@"username"] substringWithRange:NSMakeRange(0, 7)];
+    nameLabel.text = [NSString stringWithFormat:@"%@****",str1];
 //    nameLabel.backgroundColor = [UIColor greenColor];
     [whiteImageView addSubview:nameLabel];
     
-    for (int i = 0 ; i<5; i++) {
+ 
         //五角星评分
+    NSInteger fenshu = [xiangqingArray[@"senderAvgOfGeneralEvaluation"] integerValue];
+    for (int i = 0 ; i<5; i++) {
+        
         UIImageView *FiveView = [[UIImageView alloc]initWithFrame:CGRectMake(22*xdp + 35*xdp*i, 80*ydp, 35*xdp, 35*xdp)];
-        FiveView.image = [UIImage imageNamed:@"home_order_receiving_star2"];
+        FiveView.userInteractionEnabled = NO;
+        if (i < fenshu) {
+            FiveView.image = [UIImage imageNamed:@"home_order_receiving_star1"];
+        }else{
+            FiveView.image = [UIImage imageNamed:@"home_order_receiving_star2"];
+        }
         FiveView.userInteractionEnabled = NO;
         [whiteImageView addSubview:FiveView];
     }
@@ -67,7 +85,7 @@
     UILabel *wufenLabel = [[UILabel alloc]initWithFrame:CGRectMake(200*xdp, 77*ydp, 130*xdp, 40*ydp)];
     nameLabel.font = [UIFont systemFontOfSize:15];
     wufenLabel.textColor = [UIColor orangeColor];
-    wufenLabel.text = @"5.0分";
+    wufenLabel.text = [NSString stringWithFormat:@"%ld分",(long)fenshu];
     [whiteImageView addSubview:wufenLabel];
     
     //一条线
@@ -101,7 +119,11 @@
     [whiteImageView addSubview:shuxianLabel];
     
     //接受订单
-    UIButton *jieshoudingdanButton = [[UIButton alloc]initWithFrame:CGRectMake(570*xdp, 40*ydp, 160*xdp, 50*xdp)];
+    CGRect frame = CGRectMake(570*xdp, 40*ydp, 160*xdp, 50*xdp);
+    HTPressableButton *jieshoudingdanButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+    jieshoudingdanButton.buttonColor = [UIColor whiteColor];
+    jieshoudingdanButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+    [jieshoudingdanButton setDisabledButtonColor:[UIColor ht_sunflowerColor]];
     [jieshoudingdanButton setTitle:@"接收订单" forState:UIControlStateNormal];
     [jieshoudingdanButton setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
     jieshoudingdanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -109,11 +131,16 @@
     [jieshoudingdanButton addTarget:self action:@selector(jiedan) forControlEvents:UIControlEventTouchUpInside];
     [whiteImageView addSubview: jieshoudingdanButton];
     
-    //拨打电话
-    UIButton *callPhoneButton = [[UIButton alloc]initWithFrame:CGRectMake(630*xdp, 150*ydp, 50*xdp, 50*xdp)];
-    [callPhoneButton setBackgroundImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
-    [callPhoneButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
-    [whiteImageView addSubview:callPhoneButton];
+//    //拨打电话
+//    CGRect frame1 = CGRectMake(630*xdp, 150*ydp, 70*xdp, 70*xdp);
+//    HTPressableButton *callPhoneButton = [[HTPressableButton alloc] initWithFrame:frame1 buttonStyle:HTPressableButtonStyleCircular];
+//    callPhoneButton.buttonColor = [UIColor whiteColor];
+//    callPhoneButton.shadowColor = [UIColor colorWithRed:255/255.0f green:122/255.0f blue:0/255.0f alpha:1];
+//    callPhoneButton.shadowHeight = 1;
+//    [callPhoneButton setImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
+//    [callPhoneButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
+//    [whiteImageView addSubview:callPhoneButton];
+    
     //----------------------------------上下两个view-------------------------//
     
     
@@ -256,7 +283,7 @@
             [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
         
             [session PATCH:str parameters:paratemetrs success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                NSLog(@"=============response===========%@",responseObject);
+//                NSLog(@"=============response===========%@",responseObject);
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"抢单成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
                 //创建通知

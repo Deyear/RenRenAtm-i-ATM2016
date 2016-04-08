@@ -4,7 +4,10 @@
 //
 //
 //
-//发单界面
+//接单界面
+
+
+
 #define ydp (SCREEN_HEIGHT/1400)
 #define xdp (SCREEN_WIDTH/750)
 #define cellHeight SCREEN_HEIGHT/7.5
@@ -17,6 +20,10 @@
 #import "xiangqingViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
+//立体按钮——第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
+
 
 @interface HomeVCTestViewController ()<CLLocationManagerDelegate>
 {
@@ -28,7 +35,7 @@
     float latitude,longtitude,currentLatitude,currentLongtitude;
     UILabel *tipLabel,*paotuiLabel,*placeLabel,*timeLimitLabel,*juliLabel,*moneyLabel;
     NSString *SortType;
-    UIButton *dingdanzhuangtaiButton;
+    HTPressableButton *dingdanzhuangtaiButton;
     CLLocationManager *_locationManager;
     NSUserDefaults *userDefaults ;
 }
@@ -104,7 +111,7 @@
     [uiTableView removeFromSuperview];
 //    NSLog(@"SortType2:%@",SortType);
     
-    NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders?relation=sender"];
+    NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders?relation=sender,senderAvgOfGeneralEvaluation"];
     
     //    NSLog(@"%@",str);
     NSString *search = [NSString stringWithFormat:@"[\"and\",  [\"=\", \"status\", \"101\"], [\"=\", \"service_item_id\", \"%@\"], [\"=\", \"deleted\", \"0\"]]",typeStr];
@@ -318,10 +325,11 @@
         [cell addSubview:moneyLabel];
         
         //订单状态按钮
-        dingdanzhuangtaiButton = [[UIButton alloc]initWithFrame:CGRectMake(600*xdp, 120*ydp, 140*xdp, 60*ydp)];
-//        dingdanzhuangtaiButton.enabled = false;
+        CGRect frame = CGRectMake(600*xdp, 120*ydp, 140*xdp, 60*ydp);
+        dingdanzhuangtaiButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+        dingdanzhuangtaiButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+        dingdanzhuangtaiButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
         dingdanzhuangtaiButton.userInteractionEnabled = YES;
-        [dingdanzhuangtaiButton setBackgroundImage:[UIImage imageNamed:@"RenRenBlue"] forState:UIControlStateNormal];
         dingdanzhuangtaiButton.titleLabel.font = [UIFont systemFontOfSize:15];
         dingdanzhuangtaiButton.titleLabel.adjustsFontSizeToFitWidth = YES;
         [cell addSubview:dingdanzhuangtaiButton];
@@ -353,13 +361,7 @@
         topGrayView.image = [UIImage imageNamed:@"RenRenGray"];
         [cell addSubview:topGrayView];
        
-        for (int i = 0 ; i<5; i++) {
-            //五角星评分
-            UIImageView *FiveView = [[UIImageView alloc]initWithFrame:CGRectMake(125*xdp + 30*xdp*i, 80*ydp, 25*xdp, 25*xdp)];
-            FiveView.image = [UIImage imageNamed:@"home_order_receiving_star1"];
-            FiveView.userInteractionEnabled = NO;
-            [cell addSubview:FiveView];
-        }
+       
         //赏金label
         tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(125*xdp, 125*ydp, 120*xdp, 30*ydp)];
 //        tipLabel.backgroundColor = [UIColor blueColor];
@@ -403,9 +405,10 @@
     
     NSString *status0 =[NSString stringWithFormat:@"%@",Array[row][@"status"]];
     if ([status0 isEqualToString:@"101"]) {
-        NSString *jieDanTiShi = @"接单后显示服务者";
-//        moneyLabel.text = [NSString stringWithFormat:@"%@ %@ %@¥",moneyWho,moneyType,moneyCount];
-        moneyLabel.text = [NSString stringWithFormat:@"%@ %@ %@¥",jieDanTiShi,moneyType,moneyCount];
+//        NSString *jieDanTiShi = @"接单后显示服务者";
+         NSString *str1 = [moneyWho substringWithRange:NSMakeRange(0, 7)];
+        moneyLabel.text = [NSString stringWithFormat:@"%@**** %@ %@¥",str1,moneyType,moneyCount];
+ 
 
     }
     
@@ -482,6 +485,37 @@
     //订单状态值
     [dingdanzhuangtaiButton setTitle:ordersStatus forState:UIControlStateNormal];
 
+//    NSLog(@"------senderAvgOfGeneralEvaluation----------%ld",[Array[row][@"senderAvgOfGeneralEvaluation"] integerValue]);
+     //五角星评分
+    NSInteger fenshu = [Array[row][@"senderAvgOfGeneralEvaluation"] integerValue];
+    for (int i = 0 ; i<5; i++) {
+       
+        UIImageView *FiveView = [[UIImageView alloc]initWithFrame:CGRectMake(125*xdp + 30*xdp*i, 80*ydp, 25*xdp, 25*xdp)];
+        FiveView.userInteractionEnabled = NO;
+        if (i < fenshu) {
+             FiveView.image = [UIImage imageNamed:@"home_order_receiving_star1"];
+        }else{
+             FiveView.image = [UIImage imageNamed:@"home_order_receiving_star2"];
+        }
+        [cell addSubview:FiveView];
+    }
+    
+    
+    
+//    if ([arr isEqual:@[] ]) {
+//        wufenLabel.text = @"0分";
+//    }else{
+//        jieshoudingdanButton.hidden = YES;
+//        wufenLabel.text = [NSString stringWithFormat:@"%@分",arr[0][@"general_evaluation"]];
+//        NSArray * fenShuArr = @[yiFen,erFen,sanFen,siFen,wuFen];
+//        for (int i = 0 ; i<[arr[0][@"general_evaluation"] integerValue] ; i++) {
+//            UIImageView *_image = fenShuArr[i];
+//            _image.image = [UIImage imageNamed:@"home_order_receiving_star1"];
+//        }
+//        //        NSLog(@"=======fenshu====%@", arr[0] );
+//    }
+    
+    
     UIColor* color=[UIColor whiteColor];//通过RGB来定义颜色
     cell.selectedBackgroundView=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
 

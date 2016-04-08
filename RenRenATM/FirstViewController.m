@@ -55,7 +55,7 @@
     NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
     NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
     
-        NSLog(@"=========encodeResult:%@",encodeResult);
+//        NSLog(@"=========encodeResult:%@",encodeResult);
 }
 
 
