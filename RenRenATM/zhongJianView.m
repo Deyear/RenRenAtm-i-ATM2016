@@ -133,7 +133,7 @@
          {
              //        NSLog(@"%@",downloadProgress);
          } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                          NSLog(@"------responseObject-------%@",responseObject);
+//                          NSLog(@"------responseObject-------%@",responseObject);
              userArray = responseObject;
              //             同步数据到_collectionView
              [_tableView reloadData];
@@ -221,19 +221,19 @@
         
 //        电话
         //拨打电话
-        UIButton *callPhoneButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-100, 70, 20, 20)];
+        UIButton *callPhoneButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-56, 12, 20, 24)];
         [callPhoneButton setBackgroundImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
         [callPhoneButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
         [cell addSubview:callPhoneButton];
         
 //        显示服务者
-        CGRect frame = CGRectMake(SCREEN_WIDTH-50, 60, 50, 40);
+        CGRect frame = CGRectMake(SCREEN_WIDTH-80, 55, 80, 40);
         HTPressableButton *xianShi = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
         xianShi.buttonColor = [UIColor whiteColor];
         xianShi.shadowHeight = 5;
+        xianShi.cornerRadius = 8;
         xianShi.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
-        
-        [xianShi setTitle:@"服务" forState:UIControlStateNormal];
+        [xianShi setTitle:@"服务内容" forState:UIControlStateNormal];
         [xianShi setTitleColor: [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1]forState:UIControlStateNormal];
         xianShi.backgroundColor = [UIColor whiteColor];
 //        [xianShi setBackgroundImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
@@ -297,21 +297,18 @@
  
     NSDictionary *dic = userArray[path.row];
     NSArray *Arr = dic[@"services"];
-    
-  
-    
     UIControl *contr = [[UIControl alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT)];
         contr.backgroundColor = [UIColor blackColor];
         contr.alpha = 0.5;
         [contr addTarget:self action:@selector(clickBack:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:contr ];
   
-    addV = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-20*(Arr.count + 1))/2, (SCREEN_HEIGHT-20*(Arr.count + 1))/2+10, 20*(Arr.count + 1), 20*(Arr.count + 1))];
+    addV = [[UIView alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-100)/2, (SCREEN_HEIGHT-20*(Arr.count + 1))/2+10, 100, 20*(Arr.count + 1))];
     addV.backgroundColor = [UIColor whiteColor];
     addV.alpha = 0.8;
     addV.layer.borderWidth = 3;
     addV.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
-    addV.layer.cornerRadius = 20*(Arr.count + 1)/2*1.2;
+    addV.layer.cornerRadius = 20*(Arr.count + 1)/4;
 //    addV.rotate(360).anchorTopLeft.thenAfter(0.5).rotate(360).anchorCenter.animate(0.5);
     addV.makeScale(1.2).spring.animate(2.0);
     [self.view addSubview:addV];
@@ -319,8 +316,8 @@
     for (int i=0; i<Arr.count; i++)
     {
         dict = servicesArr[i];
-        servicesLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,  (10+20*i)*1.2, 20*(Arr.count + 1)*1.2, 20)];
-        //                servicesLabel.backgroundColor = [UIColor blueColor];
+        servicesLabel = [[UILabel alloc]initWithFrame:CGRectMake(20,  (10+20*i)*1.2, 80, 20)];
+//        servicesLabel.backgroundColor = [UIColor blueColor];
         //服务者的订单状况
         servicesLabel.text = dict[@"name"];
         servicesLabel.font = [UIFont systemFontOfSize:13];

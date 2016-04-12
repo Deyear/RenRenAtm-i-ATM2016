@@ -6,10 +6,18 @@ PODS:
     - HTPressableButton/All (= 1.3.2)
   - HTPressableButton/All (1.3.2)
   - JHChainableAnimations (1.3.0)
+  - MOBFoundation (1.5.1)
   - pop (1.0.9)
   - PopMenu (2.4):
     - pop
     - XHRealTimeBlur
+  - ShareSDK3 (3.2.5):
+    - ShareSDK3/ShareSDK (= 3.2.5)
+  - ShareSDK3/ShareSDK (3.2.5)
+  - ShareSDK3/ShareSDKPlatforms/QQ (3.2.5)
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo (3.2.5)
+  - ShareSDK3/ShareSDKPlatforms/WeChat (3.2.5)
+  - ShareSDK3/ShareSDKUI (3.2.5)
   - XHRealTimeBlur (1.7)
 
 DEPENDENCIES:
@@ -18,7 +26,13 @@ DEPENDENCIES:
   - AMapSearch (~> 3.2.0)
   - HTPressableButton (~> 1.3.2)
   - JHChainableAnimations (~> 1.3.0)
+  - MOBFoundation
   - PopMenu (~> 2.4)
+  - ShareSDK3
+  - ShareSDK3/ShareSDKPlatforms/QQ
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo
+  - ShareSDK3/ShareSDKPlatforms/WeChat
+  - ShareSDK3/ShareSDKUI
 
 SPEC CHECKSUMS:
   AMap2DMap: e53461cdc345375e514579db17dbd721ff9ed9eb
@@ -26,8 +40,10 @@ SPEC CHECKSUMS:
   AMapSearch: a885f0702578a441a22cb66fa74f8918c6d19e6f
   HTPressableButton: 8e0108962e6e4620378dcfccdaaf363a10e98fa2
   JHChainableAnimations: 22085fcb04ca87349e584573558e637f659fd769
+  MOBFoundation: 79efc94db961fe5a08cf32de69166f6a29a3b2b5
   pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   PopMenu: 26b97baeaf250070f4f61b93727ca86d127d7bc5
+  ShareSDK3: ccdd8ec971044703e7722e19c2f3b38fb03775e2
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
 
 COCOAPODS: 0.39.0

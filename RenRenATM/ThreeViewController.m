@@ -2,11 +2,14 @@
 //  ThreeViewController.m
 //  RenRenATM
 //
-//  Created by 方少言 on 15/12/22.
-//  Copyright © 2015年 com.fsy. All rights reserved.
-
+//
+//
+//
 //6bec592d15603e556999915510e4bd6e
 //
+//
+//附近ATM
+
 #import "ThreeViewController.h"
 #import "SettingViewController.h"
 #import "AFNetworking/AFNetworking.h"
@@ -64,7 +67,7 @@
     //2D栅格地图配置用户Key       ea69d48202fe213e54212233cb95c759
 //    [AMapSearchServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
 //    [MAMapServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
-    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
+//    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
     [MAMapServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
     _mapView = [[MAMapView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-self.tabBarController.tabBar.frame.size.height)];
     _mapView.delegate = self;
@@ -193,8 +196,8 @@ else
     //    NSLog(@"------------%@",response.pois);
     
     //通过 AMapPOISearchResponse 对象处理搜索结果
-    NSString *strCount = [NSString stringWithFormat:@"count: %d",response.count];
-    NSString *strSuggestion = [NSString stringWithFormat:@"Suggestion: %@", response.suggestion];
+//    NSString *strCount = [NSString stringWithFormat:@"count: %ld",(long)response.count];
+//    NSString *strSuggestion = [NSString stringWithFormat:@"Suggestion: %@", response.suggestion];
     NSString *strPoi = @"";
     
     
@@ -297,11 +300,13 @@ else
                     //取得所有商铺位置坐标
                     pointAnnotation.coordinate = CLLocationCoordinate2DMake(latitude ,longitude);
                     pointAnnotation.title = userArray[i][@"username"];
-                    NSString *str = userArray[i][@"username"];
+ 
                     
-                    [mArr addObject:str];
-                //                pointAnnotation.subtitle = @"信用卡取现\n银行卡取现";
-                    pointAnnotation.subtitle = @"(服务商铺)";
+//                    NSString *str = userArray[i][@"username"];
+//                    
+//                    [mArr addObject:str];
+//                    pointAnnotation.subtitle = @"信用卡取现\n银行卡取现";
+//                    pointAnnotation.subtitle = @"(服务商铺)";
                     
                     //添加大头针
                     [_mapView addAnnotation:pointAnnotation];
@@ -332,15 +337,16 @@ else
         }
     
         //添加商铺的图标
-        BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
+//        BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
         BOOL c=[[annotation subtitle] isEqualToString:@"银行"];
         bool d=[[annotation subtitle] isEqualToString:@"ATM"];
-        if(b){
-            annotationView.image = [UIImage imageNamed:@"map_shoing"];
+        if(d){
+           annotationView.image = [UIImage imageNamed:@"map_atm"];
         }else if(c){
             annotationView.image = [UIImage imageNamed:@"map_bank"];
-        }else if (d){
-            annotationView.image = [UIImage imageNamed:@"map_atm"];
+        }else{
+            
+             annotationView.image = [UIImage imageNamed:@"map_shoing"];
         }
         
         // 不需要气泡弹出

@@ -11,6 +11,7 @@
 #define xdp (SCREEN_WIDTH/750)
 #import "xiangqingViewController.h"
 #import "AFNetworking/AFNetworking.h"
+#import "goMap.h"
 
 //立体按钮——第三方
 #import "HTPressableButton.h"
@@ -99,18 +100,17 @@
     [whiteImageView addSubview:leftPlaceView];
     
     //地点label
-    UILabel *placeLabel = [[UILabel alloc]initWithFrame:CGRectMake(80*xdp, 155*ydp, 490*xdp, 30*xdp)];
-    placeLabel.font = [UIFont systemFontOfSize:15];
-    placeLabel.textColor = [UIColor grayColor];
-//    NSLog(@"===交易地点为===%@",xiangqingArray[@"dealt_at"]);
+    UIButton *placeLabel = [[UIButton alloc]initWithFrame:CGRectMake(80*xdp, 155*ydp, 490*xdp, 30*xdp)];
+    placeLabel.titleLabel.font = [UIFont systemFontOfSize:15];
+    [placeLabel setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     if ([xiangqingArray[@"dealt_at"] isEqual:[NSNull null]]) {
-        placeLabel.text = @"暂无详细交易地点";
+        [placeLabel setTitle:@"暂无详细交易地点" forState:UIControlStateNormal];
     }
     else
     {
-    placeLabel.text = xiangqingArray[@"dealt_at"];
+        [placeLabel setTitle:[NSString stringWithFormat:@"%@",xiangqingArray[@"dealt_at"]] forState:UIControlStateNormal];
     }
-
+    [placeLabel addTarget:self action:@selector(clickMap:) forControlEvents:UIControlEventTouchUpInside];
     [whiteImageView addSubview:placeLabel];
     
     //一条线
@@ -131,15 +131,7 @@
     [jieshoudingdanButton addTarget:self action:@selector(jiedan) forControlEvents:UIControlEventTouchUpInside];
     [whiteImageView addSubview: jieshoudingdanButton];
     
-//    //拨打电话
-//    CGRect frame1 = CGRectMake(630*xdp, 150*ydp, 70*xdp, 70*xdp);
-//    HTPressableButton *callPhoneButton = [[HTPressableButton alloc] initWithFrame:frame1 buttonStyle:HTPressableButtonStyleCircular];
-//    callPhoneButton.buttonColor = [UIColor whiteColor];
-//    callPhoneButton.shadowColor = [UIColor colorWithRed:255/255.0f green:122/255.0f blue:0/255.0f alpha:1];
-//    callPhoneButton.shadowHeight = 1;
-//    [callPhoneButton setImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
-//    [callPhoneButton addTarget:self action:@selector(callPhone:) forControlEvents:UIControlEventTouchUpInside];
-//    [whiteImageView addSubview:callPhoneButton];
+ 
     
     //----------------------------------上下两个view-------------------------//
     
@@ -237,18 +229,6 @@
 
 }
 
-
-//自动拨号功能
--(void)callPhone:(UIButton *)sender
-{
-    NSString *phoneNum = [[NSString alloc]initWithString:nameLabel.text];// 电话号码
-    
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
-    
-    [[UIApplication sharedApplication] openURL:url];
-}
-
-
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
         if(buttonIndex == 0)
@@ -263,7 +243,7 @@
             NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
             NSString *access_token = [userDefault objectForKey:@"access_token"];
             NSString *user_id = [userDefault objectForKey:@"user_id"];
-            NSString *user_name = [userDefault objectForKey:@"user_name"];
+//            NSString *user_name = [userDefault objectForKey:@"user_name"];
             NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
         
             NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
@@ -306,6 +286,15 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+-(void)clickMap:(UIButton *)sender
+{
+    goMap *vc= [[goMap alloc]init];
+    vc.dic = sender.titleLabel.text;
+    [self presentViewController:vc animated:YES completion:nil];
+    NSLog(@"点击了");
 }
 
 /*

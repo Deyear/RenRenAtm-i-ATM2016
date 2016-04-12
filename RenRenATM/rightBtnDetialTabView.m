@@ -100,7 +100,7 @@
                 //    NSLog(@"%@",str);
         
             NSString *search = [NSString stringWithFormat:@"[\"=\", \"service_item_id\", \"%@\"]",type];
-                    NSLog(@"--search--------%@",search);
+//                    NSLog(@"--search--------%@",search);
         
                 NSDictionary *paratemetrs = @{@"page":refreshPage,
                                               @"search":search,

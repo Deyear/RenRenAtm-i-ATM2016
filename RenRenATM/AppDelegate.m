@@ -2,8 +2,8 @@
 //  AppDelegate.m
 //  RenRenATM
 //
-//  Created by 方少言 on 15/12/22.
-//  Copyright © 2015年 com.fsy. All rights reserved.
+//
+//
 //
 //#define LinkPageOne @"FirstBlood.png"
 #define LinkPageOne @"yindao.png"
@@ -12,6 +12,28 @@
 #import "AppDelegate.h"
 #import "CenterViewController.h"
 #import <MAMapKit/MAMapServices.h>
+
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
+
+//腾讯开放平台（对应QQ和QQ空间）SDK头文件
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+
+//微信SDK头文件
+#import "WXApi.h"
+
+//新浪微博SDK头文件
+#import "WeiboSDK.h"
+//新浪微博SDK需要在项目Build Settings中的Other Linker Flags添加"-ObjC"
+
+#import <ShareSDKConnector/ShareSDKConnector.h>
+//微信SDK头文件
+#import "WXApi.h"
+//初始化的import参数注意要链接原生微信SDK。
+
+
+
 @interface AppDelegate ()
 {
     //滚动引导页
@@ -48,6 +70,48 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    
+   
+    [ShareSDK registerApp:@"1179caf0bf21c"
+     
+//     微信平台，qq平台
+          activePlatforms:@[
+                            @(SSDKPlatformTypeWechat),
+                            @(SSDKPlatformTypeQQ)]
+                 onImport:^(SSDKPlatformType platformType)
+     {
+         switch (platformType)
+         {
+             case SSDKPlatformTypeWechat:
+                 [ShareSDKConnector connectWeChat:[WXApi class]];
+                 break;
+             case SSDKPlatformTypeQQ:
+                 [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+                 break;
+             default:
+                 break;
+         }
+     }
+          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo)
+     {
+         
+         switch (platformType)
+         {
+             case SSDKPlatformTypeWechat:
+                 [appInfo SSDKSetupWeChatByAppId:@"wxb0dbf99dfdae906e"
+                                       appSecret:@"16276e229af30d8138b76118a02f92a4"];
+                 break;
+             case SSDKPlatformTypeQQ:
+                 [appInfo SSDKSetupQQByAppId:@"1105324014"
+                                      appKey:@"XtLb782mgHS6GDev"
+                                    authType:SSDKAuthTypeBoth];
+                 break;
+ 
+             default:
+                 break;
+         }
+     }];
 }
 
 

@@ -2,12 +2,16 @@
 //  SettingViewController.m
 //  RenRenATM
 //
-//  Created by 方少言 on 15/12/22.
-//  Copyright © 2015年 com.fsy. All rights reserved.
+//
+//
 //
 
 #import "SettingViewController.h"
-
+#import <ShareSDK/ShareSDK.h>
+#import <ShareSDKUI/ShareSDK+SSUI.h>
+//立体控件————第三方
+#import "HTPressableButton.h"
+#import "UIColor+HTColor.h"
 @interface SettingViewController ()
 
 @end
@@ -129,15 +133,33 @@
     }
     else
     {
+
+        
+//        分享
+        //其它金额button
+        CGRect frame = CGRectMake(15, 30, SCREEN_WIDTH - 30, 44);
+        HTPressableButton *fenXiangButon = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+        fenXiangButon.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+        fenXiangButon.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.8];
+        [fenXiangButon setTitle:@"分享" forState:UIControlStateNormal];
+        [fenXiangButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        fenXiangButon.userInteractionEnabled = YES;
+        fenXiangButon.layer.masksToBounds = YES;
+        fenXiangButon.layer.cornerRadius = 5;
+        [fenXiangButon addTarget:self action:@selector(fenXiang) forControlEvents:UIControlEventTouchUpInside];
+        [AllImageView addSubview:fenXiangButon];
+        
+        
         //退出登录按钮
-//        UIButton *logoffButon = [[UIButton alloc]initWithFrame:CGRectMake(15, AllImageView.frame.size.height-60, SCREEN_WIDTH - 30, 44)];
-        UIButton *logoffButon = [[UIButton alloc]initWithFrame:CGRectMake(15, 100, SCREEN_WIDTH - 30, 44)];
+        CGRect frame1 = CGRectMake(15, 100, SCREEN_WIDTH - 30, 44);
+        HTPressableButton *logoffButon = [[HTPressableButton alloc] initWithFrame:frame1 buttonStyle:HTPressableButtonStyleRounded];
+        logoffButon.buttonColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:1];
+        logoffButon.shadowColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:0.8];
         [logoffButon setTitle:@"退出登录" forState:UIControlStateNormal];
         [logoffButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         logoffButon.userInteractionEnabled = YES;
         logoffButon.layer.masksToBounds = YES;
         logoffButon.layer.cornerRadius = 5;
-        logoffButon.backgroundColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:1];
         [logoffButon addTarget:self action:@selector(logoff) forControlEvents:UIControlEventTouchUpInside];
         [AllImageView addSubview:logoffButon];
     }
@@ -199,6 +221,55 @@
     else
     {
         NSLog(@"退出登录未知错误");
+    }
+}
+
+-(void)fenXiang
+{
+    //1、创建分享参数
+    NSArray* imageArray = @[[UIImage imageNamed:@"图标.png"]];
+//    （注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
+    if (imageArray) {
+        
+        NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+        [shareParams SSDKSetupShareParamsByText:@"分享人人ATM"
+                                         images:imageArray
+                                            url:[NSURL URLWithString:@"https://itunes.apple.com/us/app/ren-renatm/id1091937247?mt=8"]
+                                          title:@"人人是ATM机，处处可金融交易！"
+                                           type:SSDKContentTypeAuto];
+        //2、分享（可以弹出我们的分享菜单和编辑界面）
+        [ShareSDK showShareActionSheet:nil
+                                 items:nil
+                           shareParams:shareParams
+                   onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                       
+                       switch (state) {
+                           case SSDKResponseStateSuccess:
+                           {
+                               UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                                   message:nil
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"确定"
+                                                                         otherButtonTitles:nil];
+                               [alertView show];
+                               break;
+                           }
+                           case SSDKResponseStateFail:
+                           {
+                               UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                               message:[NSString stringWithFormat:@"%@",error]
+                                                                              delegate:nil
+                                                                     cancelButtonTitle:@"OK"
+                                                                     otherButtonTitles:nil, nil];
+                               [alert show];
+                               break;
+                           }
+                           default:
+                               break;
+                       }
+                       
+                   }];
+
     }
 }
 /*
