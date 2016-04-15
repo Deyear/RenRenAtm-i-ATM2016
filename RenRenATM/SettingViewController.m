@@ -140,7 +140,8 @@
         CGRect frame = CGRectMake(15, 30, SCREEN_WIDTH - 30, 44);
         HTPressableButton *fenXiangButon = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
         fenXiangButon.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-        fenXiangButon.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.8];
+        fenXiangButon.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.4];
+        fenXiangButon.shadowHeight = 4;
         [fenXiangButon setTitle:@"分享" forState:UIControlStateNormal];
         [fenXiangButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         fenXiangButon.userInteractionEnabled = YES;
@@ -154,7 +155,8 @@
         CGRect frame1 = CGRectMake(15, 100, SCREEN_WIDTH - 30, 44);
         HTPressableButton *logoffButon = [[HTPressableButton alloc] initWithFrame:frame1 buttonStyle:HTPressableButtonStyleRounded];
         logoffButon.buttonColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:1];
-        logoffButon.shadowColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:0.8];
+        logoffButon.shadowColor = [UIColor colorWithRed:255.0f/255.0f green:78.0f/255.0f blue:73.0f/255.0f alpha:0.5];
+        logoffButon.shadowHeight = 4;
         [logoffButon setTitle:@"退出登录" forState:UIControlStateNormal];
         [logoffButon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         logoffButon.userInteractionEnabled = YES;

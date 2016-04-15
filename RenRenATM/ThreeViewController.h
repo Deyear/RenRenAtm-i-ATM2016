@@ -16,6 +16,8 @@
     AMapNearbySearchManager *_nearbyManager;
     CLLocation *_currentLocation;
     AMapSearchAPI *_search;
+    NSArray *atmArray;
 }
+@property(nonatomic,strong) NSArray *atmArray;
 
 @end

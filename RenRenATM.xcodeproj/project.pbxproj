@@ -120,6 +120,7 @@
 		729D12BD1CAD00AB00C7F3D0 /* zhongJianView.m in Sources */ = {isa = PBXBuildFile; fileRef = 729D12BB1CAD00AB00C7F3D0 /* zhongJianView.m */; };
 		729D12BE1CAD00AB00C7F3D0 /* zhongJianView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 729D12BC1CAD00AB00C7F3D0 /* zhongJianView.xib */; };
 		729D12C41CAD24B300C7F3D0 /* caitiao.png in Resources */ = {isa = PBXBuildFile; fileRef = 729D12C31CAD24B300C7F3D0 /* caitiao.png */; };
+		72A87BA01CBDED8400E02D4C /* httpATM.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A87B9F1CBDED8400E02D4C /* httpATM.m */; };
 		72CE1B3D1CBB58F500E84E35 /* 图标.png in Resources */ = {isa = PBXBuildFile; fileRef = 72CE1B3C1CBB58F500E84E35 /* 图标.png */; };
 		72E8EAFA1C87D312005DBE8D /* rightBtnDetialTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E8EAF81C87D312005DBE8D /* rightBtnDetialTabView.m */; };
 		72FABF2A1CA510E3007CB971 /* DingDanZhuangtai.m in Sources */ = {isa = PBXBuildFile; fileRef = 72FABF281CA510E3007CB971 /* DingDanZhuangtai.m */; };
@@ -314,6 +315,8 @@
 		729D12BB1CAD00AB00C7F3D0 /* zhongJianView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = zhongJianView.m; sourceTree = "<group>"; };
 		729D12BC1CAD00AB00C7F3D0 /* zhongJianView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = zhongJianView.xib; sourceTree = "<group>"; };
 		729D12C31CAD24B300C7F3D0 /* caitiao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = caitiao.png; sourceTree = "<group>"; };
+		72A87B9E1CBDED8400E02D4C /* httpATM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpATM.h; sourceTree = "<group>"; };
+		72A87B9F1CBDED8400E02D4C /* httpATM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = httpATM.m; sourceTree = "<group>"; };
 		72CE1B3C1CBB58F500E84E35 /* 图标.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "图标.png"; sourceTree = "<group>"; };
 		72E8EAF71C87D312005DBE8D /* rightBtnDetialTabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rightBtnDetialTabView.h; sourceTree = "<group>"; };
 		72E8EAF81C87D312005DBE8D /* rightBtnDetialTabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = rightBtnDetialTabView.m; sourceTree = "<group>"; };
@@ -396,6 +399,7 @@
 		410EB0971C296A0700510DB9 /* RenRenATM */ = {
 			isa = PBXGroup;
 			children = (
+				72A87B961CBDD77B00E02D4C /* modal */,
 				41EAFFA41C47334200091B6A /* AllTableViewCell.h */,
 				41EAFFA51C47334200091B6A /* AllTableViewCell.m */,
 				41EAFF9F1C47311B00091B6A /* ThirdTableViewCell.h */,
@@ -412,9 +416,9 @@
 				729D12B91CAD007100C7F3D0 /* FuWuZhe */,
 				410EB0B01C296D9400510DB9 /* CenterView */,
 				410EB09B1C296A0700510DB9 /* AppDelegate.h */,
+				410EB09C1C296A0700510DB9 /* AppDelegate.m */,
 				410EB09F1C296A0700510DB9 /* ViewController.m */,
 				41EAFF381C44EAE100091B6A /* xinyongkaquxianViewController.h */,
-				410EB09C1C296A0700510DB9 /* AppDelegate.m */,
 				410EB09E1C296A0700510DB9 /* ViewController.h */,
 				410EB0A11C296A0700510DB9 /* Main.storyboard */,
 				410EB0A41C296A0700510DB9 /* Assets.xcassets */,
@@ -460,8 +464,7 @@
 			children = (
 				410EB0CA1C296F5000510DB9 /* ThreeViewController.h */,
 				410EB0CB1C296F5000510DB9 /* ThreeViewController.m */,
-				416EE2651C7C220500516953 /* CustomCalloutView.h */,
-				416EE2661C7C220500516953 /* CustomCalloutView.m */,
+				72DF87DD1CBF470500710E2C /* 气泡 */,
 				416EE2681C7C22A700516953 /* CustomAnnotationView.h */,
 				416EE2691C7C22A700516953 /* CustomAnnotationView.m */,
 			);
@@ -746,6 +749,15 @@
 			path = colorsLine;
 			sourceTree = "<group>";
 		};
+		72A87B961CBDD77B00E02D4C /* modal */ = {
+			isa = PBXGroup;
+			children = (
+				72A87B9E1CBDED8400E02D4C /* httpATM.h */,
+				72A87B9F1CBDED8400E02D4C /* httpATM.m */,
+			);
+			name = modal;
+			sourceTree = "<group>";
+		};
 		72B2C0C51C84127400235E01 /* HomeImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -769,6 +781,15 @@
 				72CE1B3C1CBB58F500E84E35 /* 图标.png */,
 			);
 			path = "分享图片";
+			sourceTree = "<group>";
+		};
+		72DF87DD1CBF470500710E2C /* 气泡 */ = {
+			isa = PBXGroup;
+			children = (
+				416EE2651C7C220500516953 /* CustomCalloutView.h */,
+				416EE2661C7C220500516953 /* CustomCalloutView.m */,
+			);
+			name = "气泡";
 			sourceTree = "<group>";
 		};
 		72ECD20B1C908D70002925E6 /* FenLei */ = {
@@ -1018,6 +1039,7 @@
 				41AFA7A81C3F51A300DD4171 /* UIButton+AFNetworking.m in Sources */,
 				410EB0D31C29730100510DB9 /* SettingViewController.m in Sources */,
 				411AF44E1C48B73C00504B6F /* MJRefreshComponent.m in Sources */,
+				72A87BA01CBDED8400E02D4C /* httpATM.m in Sources */,
 				410EB09D1C296A0700510DB9 /* AppDelegate.m in Sources */,
 				720ED5951CBC8BED005F210A /* goMap.m in Sources */,
 				729D12BD1CAD00AB00C7F3D0 /* zhongJianView.m in Sources */,

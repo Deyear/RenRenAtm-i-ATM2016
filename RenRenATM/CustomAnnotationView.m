@@ -5,8 +5,8 @@
 //  Created by 方少言 on 16/2/23.
 //  Copyright © 2016年 com.fsy. All rights reserved.
 //
-#define kCalloutWidth       200.0
-#define kCalloutHeight      70.0
+#define kCalloutWidth       180.0
+#define kCalloutHeight      80.0
 #import "CustomAnnotationView.h"
 
 @interface CustomAnnotationView ()
@@ -35,6 +35,7 @@
 //         self.calloutView.image = self.image;
         self.calloutView.title = self.annotation.title;
         self.calloutView.subtitle = self.annotation.subtitle;
+        
         
         [self addSubview:self.calloutView];
     }

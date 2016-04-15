@@ -1,6 +1,6 @@
 //
 //  zhongJianView.m
-//  RenRenATM
+//
 //
 //
 //  
@@ -14,6 +14,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import "JHChainableAnimations.h"
 
+#import "httpATM.h"
 //立体控件————第三方
 #import "HTPressableButton.h"
 #import "UIColor+HTColor.h"
@@ -40,8 +41,6 @@
     NSDictionary *Dic ;
 }
 
-
-
 @end
 
 @implementation zhongJianView
@@ -50,12 +49,9 @@
     [super viewDidLoad];
    topView.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
     
-//    userDefaults = [NSUserDefaults standardUserDefaults];
-//    currentLatitude = [userDefaults floatForKey:@"currentLatitude"];
-//    currentLongtitude = [userDefaults floatForKey:@"currentLongtitude"];
-////        NSLog(@"==========%lf\n%lf===",currentLatitude,currentLongtitude);
-//    NSLog(@"%@",userArray);
-    xianShiView = [[UIView alloc]init];\
+    
+ 
+    xianShiView = [[UIView alloc]init];
     xianShiView.backgroundColor = [UIColor greenColor];
     [self initTab];                   //初始化_tableView
     [self initializeLocationService]; //初始化定位设置
@@ -64,6 +60,8 @@
     servicesArr = [[NSArray alloc]init];
     addV = [[UIView alloc]init];
     
+    
+    [self addATM];
 }
 
 
@@ -105,44 +103,7 @@
 }
 
 
-//获取当前的地理坐标
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
-{
-    if (locationInfo == nil) {
-        locationInfo = locations.lastObject;
-//                NSLog(@"--------latitude------%f",locationInfo.coordinate.latitude);
-    }
-    
-    if (userArray ==nil) {
- 
-        
-        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=services,evaluations"];
-        //        114.215.203.95:82/v1/atms?relation=services&longitude=114.315065&latitude=30.600915&radius=1000000
-        
-        NSString *longitudelongitude = [NSString stringWithFormat:@"%f",locationInfo.coordinate.longitude];
-        NSString *latitudelatitude = [NSString stringWithFormat:@"%f",locationInfo.coordinate.latitude];
-        NSDictionary *paratemetrs = @{@"longitude":longitudelongitude,
-                                      @"latitude":latitudelatitude,
-                                      @"radius":@"1000000"};
-        
-        //                NSLog(@"========%@",paratemetrs);
-        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-        
-        [session GET:str parameters:paratemetrs progress:^(NSProgress * _Nonnull downloadProgress)
-         
-         {
-             //        NSLog(@"%@",downloadProgress);
-         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                          NSLog(@"------responseObject-------%@",responseObject);
-             userArray = responseObject;
-             //             同步数据到_collectionView
-             [_tableView reloadData];
-             
-         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             
-         }];
-    }
-}
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -153,13 +114,6 @@
 
 //每行CELL的高度
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *) indexPath {
-//    return  320*ydp;
-//    return 100;
-//    NSDictionary *Dic = userArray[indexPath.row];
-//    servicesArr = Dic[@"services"];
-//    NSInteger _int = servicesArr.count;
-    
-//    return  100 +_int*25;
     return  100 ;
 }
 
@@ -340,6 +294,15 @@
         sender.hidden = YES;
         sender.enabled = NO;
     } completion:nil ];
+}
+
+-(void)addATM{
+    
+    [httpATM setphone:@"" setint:^(NSDictionary *dic) {
+        userArray = dic;
+        //        NSLog(@"%@",dic);
+         [_tableView reloadData];
+    }];
 }
 /*
 #pragma mark - Navigation

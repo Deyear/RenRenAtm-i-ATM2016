@@ -2,13 +2,20 @@
 //  CustomCalloutView.m
 //  RenRenATM
 //
-//  Created by 方少言 on 16/2/23.
-//  Copyright © 2016年 com.fsy. All rights reserved.
 //
+//
+//自定义气泡
+
+
+
+
+
 #define kPortraitMargin     5
-#define kPortraitWidth      70
+//图片宽度
+#define kPortraitWidth      60
 #define kPortraitHeight     50
 
+//标题宽度
 #define kTitleWidth         120
 #define kTitleHeight        20
 #define kArrorHeight        10
@@ -27,17 +34,21 @@
     
     [self drawInContext:UIGraphicsGetCurrentContext()];
     
-    self.layer.shadowColor = [[UIColor clearColor] CGColor];
+//    边框颜色
+    self.layer.shadowColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
     self.layer.shadowOpacity = 1.0;
     self.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-    
+     
+    self.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
 }
 
 - (void)drawInContext:(CGContextRef)context
 {
     
-    CGContextSetLineWidth(context, 2.0);
-    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8].CGColor);
+    CGContextSetLineWidth(context, 4.0);
+//    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:0.3 green:0.3 blue:0.3 alpha:0.8].CGColor);
+//    气泡背景颜色
+     CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     
     [self getDrawPath:context];
     CGContextFillPath(context);
@@ -46,18 +57,24 @@
 
 - (void)getDrawPath:(CGContextRef)context
 {
+    
     CGRect rrect = self.bounds;
+//    CGRect rrect = CGRectMake(0, 0, 200, 600);
+    
+    
     CGFloat radius = 6.0;
+    
     CGFloat minx = CGRectGetMinX(rrect),
     midx = CGRectGetMidX(rrect),
     maxx = CGRectGetMaxX(rrect);
+    
     CGFloat miny = CGRectGetMinY(rrect),
     maxy = CGRectGetMaxY(rrect)-kArrorHeight;
     
     CGContextMoveToPoint(context, midx+kArrorHeight, maxy);
     CGContextAddLineToPoint(context,midx, maxy+kArrorHeight);
     CGContextAddLineToPoint(context,midx-kArrorHeight, maxy);
-    
+                           
     CGContextAddArcToPoint(context, minx, maxy, minx, miny, radius);
     CGContextAddArcToPoint(context, minx, minx, maxx, miny, radius);
     CGContextAddArcToPoint(context, maxx, miny, maxx, maxx, radius);
@@ -77,25 +94,31 @@
 
 - (void)initSubViews
 {
-    // 添加图片，即商户图
-    self.portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(kPortraitMargin, kPortraitMargin, kPortraitWidth, kPortraitHeight)];
-    
-    self.portraitView.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.portraitView];
+//    // 添加图片，即商户图
+//    self.portraitView = [[UIImageView alloc] initWithFrame:CGRectMake(kPortraitMargin, kPortraitMargin, kPortraitWidth, kPortraitHeight)];
+//    
+//    self.portraitView.backgroundColor = [UIColor clearColor];
+//    [self addSubview:self.portraitView];
     
     // 添加标题，即商户名
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPortraitMargin * 2 + kPortraitWidth, kPortraitMargin, kTitleWidth, kTitleHeight)];
+    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, kPortraitMargin, 160, kTitleHeight*2)];
     self.titleLabel.font = [UIFont boldSystemFontOfSize:14];
-    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.numberOfLines = 0;
+    self.titleLabel.textColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
     self.titleLabel.text = @"titletitletitletitle";
     [self addSubview:self.titleLabel];
     
-    // 添加副标题，即商户地址
-    self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPortraitMargin * 2 + kPortraitWidth, kPortraitMargin * 2 + kTitleHeight, kTitleWidth, kTitleHeight)];
-    self.subtitleLabel.font = [UIFont systemFontOfSize:12];
-    self.subtitleLabel.textColor = [UIColor lightGrayColor];
+    // 服务类型
+    self.subtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, kPortraitMargin+ kTitleHeight*2, 100, kTitleHeight)];
+    self.subtitleLabel.numberOfLines = 0;
+    
+    self.subtitleLabel.font = [UIFont systemFontOfSize:13];
+    self.subtitleLabel.textColor = [UIColor colorWithRed: 0 green:0 blue:0 alpha:0.5];
     self.subtitleLabel.text = @"subtitleLabelsubtitleLabelsubtitleLabel";
     [self addSubview:self.subtitleLabel];
+    
+       
+ 
 }
 - (void)setTitle:(NSString *)title
 {

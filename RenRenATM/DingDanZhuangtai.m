@@ -1,6 +1,6 @@
 //
 //  DingDanZhuangtai.m
-//  RenRenATM
+//
 //
 //
 //
@@ -13,7 +13,7 @@
 
 #import "DingDanZhuangtai.h"
 #import "AFNetworking/AFNetworking.h"
- 
+#import "goMap.h"
 
 
 
@@ -470,6 +470,12 @@
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"数据异常，该单无法接收" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alert show];
     }];
+}
+- (IBAction)clickLocation:(id)sender {
+    goMap *vc = [[goMap alloc]init];
+    vc.dic = placeLabel.text;
+    NSLog(@"-----vc-------%@",vc.dic);
+    [self presentViewController:vc animated:YES completion:nil];
 }
 /*
 #pragma mark - Navigation

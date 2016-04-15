@@ -10,6 +10,6 @@
 
 @interface CustomCalloutView : UIView
 @property (nonatomic, strong) UIImage *image; //商户图
-@property (nonatomic, copy) NSString *title; //商户名
-@property (nonatomic, copy) NSString *subtitle; //地址
+@property (nonatomic, copy) NSString *title; //名字
+@property (nonatomic, copy) NSString *subtitle;//服务类型
 @end

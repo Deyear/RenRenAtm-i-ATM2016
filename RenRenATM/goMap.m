@@ -38,8 +38,9 @@
  
     [self beforeInit];             //加载后的配置
     [self searchGeocode];          //正向地理编码
+   }
 
-}
+
 
 -(void)viewDidAppear:(BOOL)animated
 {

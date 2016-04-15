@@ -66,7 +66,6 @@
 //    nameLabel.backgroundColor = [UIColor greenColor];
     [whiteImageView addSubview:nameLabel];
     
- 
         //五角星评分
     NSInteger fenshu = [xiangqingArray[@"senderAvgOfGeneralEvaluation"] integerValue];
     for (int i = 0 ; i<5; i++) {

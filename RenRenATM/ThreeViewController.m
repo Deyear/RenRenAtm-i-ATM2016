@@ -4,17 +4,16 @@
 //
 //
 //
-//
+
 //6bec592d15603e556999915510e4bd6e
 //
-//
-//附近ATM
-
 #import "ThreeViewController.h"
 #import "SettingViewController.h"
 #import "AFNetworking/AFNetworking.h"
 #import "CustomAnnotationView.h"
 #import <AMapSearchKit/AMapSearchKit.h>
+#import "httpATM.h"
+#import "JHChainableAnimations.h"
 
 //立体按钮————第三方
 #import "HTPressableButton.h"
@@ -29,9 +28,11 @@
     HTPressableButton *showYinHangAtm;
     NSString *fileName;
     NSArray *userArray;
-    NSMutableArray *mArr;
-    MAPointAnnotation *pointAnnotation;
-    
+//    NSMutableArray *mArr;
+    MAPointAnnotation *pointAnnotation,*pointAnnotation1;
+    UILabel *_label;
+    UIControl *mapBackView1;
+    UIView *labelsV;
 }
 @property(strong,nonatomic)AMapLocationManager *locationManager;
 @end
@@ -39,25 +40,41 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
+    
     [self initMapView];//初始化地图
     [self initControls];//初始化定位地图及右下角定位按钮
     
-    
+    labelsV = [[UIView alloc]init];
     //配置用户的Key
     [AMapLocationServices sharedServices].apiKey =@"6bec592d15603e556999915510e4bd6e";
     self.locationManager = [[AMapLocationManager alloc] init];
     self.locationManager.delegate = self;
-
-
-//    //初始化检索对象
-//    [self initSearch];
-//   mArr = [[NSMutableArray alloc]init];
     
     
+    //    //初始化检索对象
+    //    [self initSearch];
+    //   mArr = [[NSMutableArray alloc]init];
+    
+    
+    
+    //    //配置用户Key
+    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
+    //初始化检索对象
+    search = [[AMapSearchAPI alloc] init];
+    search.delegate = self;
+    
+    if (showYinHangAtm.tag == 1) {
+        [self addATM];
+    }
   
+ 
     
-   
+    
+    
+    
+    
+    
+    
 }
 
 
@@ -65,9 +82,9 @@
 - (void)initMapView
 {
     //2D栅格地图配置用户Key       ea69d48202fe213e54212233cb95c759
-//    [AMapSearchServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
-//    [MAMapServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
-//    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
+    //    [AMapSearchServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
+    //    [MAMapServices sharedServices].apiKey = @"ea69d48202fe213e54212233cb95c759";
+    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
     [MAMapServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
     _mapView = [[MAMapView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds)-self.tabBarController.tabBar.frame.size.height)];
     _mapView.delegate = self;
@@ -103,7 +120,7 @@
     showYinHangAtm.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] ;
     [showYinHangAtm setTitle:@"Rect" forState:UIControlStateNormal];
     showYinHangAtm.layer.cornerRadius = 5;
-//    showYinHangAtm.backgroundColor = [UIColor redColor];
+    //    showYinHangAtm.backgroundColor = [UIColor redColor];
     [showYinHangAtm setTitle:@"显示银行和ATM" forState:UIControlStateNormal];
     [showYinHangAtm setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
     showYinHangAtm.titleLabel.font = [UIFont systemFontOfSize:17];
@@ -113,8 +130,8 @@
     showYinHangAtm.layer.masksToBounds = YES;
     [showYinHangAtm setTag:1];
     [showYinHangAtm addTarget:self action:@selector(showAction:)
-              forControlEvents:UIControlEventTouchUpInside];
-     [_mapView addSubview:showYinHangAtm];
+             forControlEvents:UIControlEventTouchUpInside];
+    [_mapView addSubview:showYinHangAtm];
     
     if (_mapView.userTrackingMode != MAUserTrackingModeFollow)
     {   //改变定位模式,追踪用户的location更新
@@ -135,20 +152,7 @@
 }
 
 
-//显示银行和ATM的跳转
--(void)showAction:(UIButton *)sender
-{
-    if (sender.tag == 1) {
-        [sender setTag:2];
-        [sender setTitle:@"隐藏银行和ATM" forState:UIControlStateNormal];
-//        NSLog(@"-------%ld",(long)sender.tag);
-    }else{
-        [sender setTag:1];
-        [sender setTitle:@"显示银行和ATM" forState:UIControlStateNormal];
-//        NSLog(@"-------%ld",(long)sender.tag);
-    }
-    
-}
+
 
 
 //地图跟着位置移动
@@ -170,13 +174,13 @@
     {
         //location没有更新的图片
         [_locationButton setImage:[UIImage imageNamed:@"dingwei"] forState:UIControlStateNormal];
-}
-else
-{
+    }
+    else
+    {
         //location更新的图片
         [_locationButton setImage:[UIImage imageNamed:@""]
-                     forState:UIControlStateNormal];
-}
+                         forState:UIControlStateNormal];
+    }
 }
 
 
@@ -188,27 +192,25 @@ else
 //实现POI搜索对应的回调函数
 - (void)onPOISearchDone:(AMapPOISearchBaseRequest *)request response:(AMapPOISearchResponse *)response
 {
+//        NSLog(@"------------%@",response.pois);
+    
+    
     if(response.pois.count == 0)
     {
         return;
     }
-    
-    //    NSLog(@"------------%@",response.pois);
-    
     //通过 AMapPOISearchResponse 对象处理搜索结果
-//    NSString *strCount = [NSString stringWithFormat:@"count: %ld",(long)response.count];
+//    NSString *strCount = [NSString stringWithFormat:@"count: %d",response.count];
 //    NSString *strSuggestion = [NSString stringWithFormat:@"Suggestion: %@", response.suggestion];
     NSString *strPoi = @"";
     
     
     //    NSLog(@"%@",response.pois);
     for (AMapPOI *p in response.pois) {
-        
-        
-        //        NSLog(@"================name of back %@",p.name);
+//        NSLog(@"================name of back %@",p.name);
         
         strPoi = [NSString stringWithFormat:@"%@\nPOI: %@", strPoi, p.description];
-        MAPointAnnotation *pointAnnotation1 = [[MAPointAnnotation alloc] init];
+        pointAnnotation1 = [[MAPointAnnotation alloc] init];
         CGFloat latitude = p.location.latitude;
         CGFloat longitude = p.location.longitude;
         //取得所有商铺位置坐标
@@ -221,105 +223,41 @@ else
         }else{
             pointAnnotation1.subtitle = @"银行";
         }
-        
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (showYinHangAtm.tag == 2) {
-                [_mapView addAnnotation:pointAnnotation1];
-                //                 NSLog(@"加载图标后tag%ld",(long)showYinHangAtm.tag);
-            }else if (showYinHangAtm.tag == 1)
-            {
-                for (MAPointAnnotation *an  in _mapView.annotations) {
-                    if ([an.subtitle isEqualToString:pointAnnotation1.subtitle]) {
-                        [_mapView removeAnnotations:_mapView.annotations];
-                        [_mapView addAnnotation:pointAnnotation];
-                    }
-                }
-                
-                
-            }
-        });
+        if (showYinHangAtm.tag == 2) {
+            [_mapView addAnnotation:pointAnnotation1];
+        }
+
     }
+    
+    
+    
 }
 
 
 //添加大头针标志
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation
 {
-
+    
     //    //配置用户Key
-        [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
+    [AMapSearchServices sharedServices].apiKey = @"6bec592d15603e556999915510e4bd6e";
     //初始化检索对象
     search = [[AMapSearchAPI alloc] init];
     search.delegate = self;
     
     //构造AMapPOIAroundSearchRequest对象，设置周边请求参数
     AMapPOIAroundSearchRequest *request = [[AMapPOIAroundSearchRequest alloc] init];
-    request.location = [AMapGeoPoint locationWithLatitude:userLocation.coordinate.latitude longitude:userLocation.coordinate.longitude];
-//        NSLog(@"+++++++++%F",request.location.longitude);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    float currentLatitude = [userDefaults floatForKey:@"currentLatitude"];
+    float currentLongtitude = [userDefaults floatForKey:@"currentLongtitude"];
+    request.location = [AMapGeoPoint locationWithLatitude:currentLatitude longitude:currentLongtitude];
+    //        NSLog(@"+++++++++%F",request.location.longitude);
     request.keywords = @"银行";
-//    request.types = @"餐饮服务|生活服务";
+    //    request.types = @"餐饮服务|生活服务";
     request.sortrule = 0;
     request.requireExtension = YES;
     request.radius = 1000;
     //发起周边搜索
     [search AMapPOIAroundSearch: request];
-
-//    if (userArray ==nil) {
-        //取出当前位置的坐标
-//                NSLog(@"latitude : %f,longitude: %f",userLocation.coordinate.latitude,userLocation.coordinate.longitude);
-    
-        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/atm?relation=servicesz"];
-        //        114.215.203.95:82/v1/atms?relation=services&longitude=114.315065&latitude=30.600915&radius=1000000
-
-        NSString *longitudelongitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
-        NSString *latitudelatitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
-        NSDictionary *paratemetrs = @{@"longitude":longitudelongitude,
-                                      @"latitude":latitudelatitude,
-                                      @"radius":@"3000"};
-//                NSLog(@"========%@",paratemetrs);
-        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-        
-        [session GET:str parameters:paratemetrs progress:^(NSProgress * _Nonnull downloadProgress) {
-            //        NSLog(@"%@",downloadProgress);
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                    NSLog(@"-------------%@",responseObject);
-            
-            userArray = responseObject;
-//            NSLog(@"-------userArrayuserArrayuserArray%@",userArray);
-       
-            
-            
-                if (userArray.count>0) {
-                for (int i = 0; i<userArray.count; i++) {
-                    pointAnnotation = [[MAPointAnnotation alloc] init];
-                    float latitude = [userArray[i][@"latitude"] floatValue];
-                    CGFloat longitude = [userArray[i][@"longitude"] floatValue];
-                    
-//                    NSLog(@"latide=====%lf",latitude);
-                    //取得所有商铺位置坐标
-                    pointAnnotation.coordinate = CLLocationCoordinate2DMake(latitude ,longitude);
-                    pointAnnotation.title = userArray[i][@"username"];
- 
-                    
-//                    NSString *str = userArray[i][@"username"];
-//                    
-//                    [mArr addObject:str];
-//                    pointAnnotation.subtitle = @"信用卡取现\n银行卡取现";
-//                    pointAnnotation.subtitle = @"(服务商铺)";
-                    
-                    //添加大头针
-                    [_mapView addAnnotation:pointAnnotation];
-                }
-            }
-            
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            
-        }];
-//    }
-//    else{
-//        
-//    }
 }
 
 
@@ -335,18 +273,17 @@ else
         {
             annotationView = [[CustomAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:reuseIndetifier];
         }
-    
+        
         //添加商铺的图标
-//        BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
+        BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
         BOOL c=[[annotation subtitle] isEqualToString:@"银行"];
         bool d=[[annotation subtitle] isEqualToString:@"ATM"];
-        if(d){
-           annotationView.image = [UIImage imageNamed:@"map_atm"];
+        if(b){
+            annotationView.image = [UIImage imageNamed:@"map_shoing"];
         }else if(c){
             annotationView.image = [UIImage imageNamed:@"map_bank"];
-        }else{
-            
-             annotationView.image = [UIImage imageNamed:@"map_shoing"];
+        }else if (d){
+            annotationView.image = [UIImage imageNamed:@"map_atm"];
         }
         
         // 不需要气泡弹出
@@ -360,13 +297,159 @@ else
 }
 
 
-//    NSString *result = [NSString stringWithFormat:@"%@ \n %@ \n %@", strCount, strSuggestion, strPoi];
-//    NSLog(@"-------------Place: %@", result);
+
+//显示银行和ATM的跳转
+-(void)showAction:(UIButton *)sender
+{
+    if (sender.tag == 1) {
+        [sender setTag:2];
+        [sender setTitle:@"隐藏银行和ATM" forState:UIControlStateNormal];
+        //                NSLog(@"-------%ld",(long)sender.tag);
+    }else{
+        [sender setTag:1];
+        [sender setTitle:@"显示银行和ATM" forState:UIControlStateNormal];
+        //                NSLog(@"-------%ld",(long)sender.tag);
+    }
+    
+    
+    if (showYinHangAtm.tag == 2) {
+        [_mapView addAnnotation:pointAnnotation];
+    }else if (showYinHangAtm.tag == 1)
+    {
+        for (MAPointAnnotation *an  in _mapView.annotations) {
+            [_mapView removeAnnotations:_mapView.annotations];
+
+        }
+ 
+            [self addATM];
+     
+    }
+    
+    
+    
+}
+
+
+
+-(void)addATM{
+
+    [httpATM setphone:@"" setint:^(NSDictionary *dic) {
+        userArray = dic;
+//                NSLog(@"%@",dic);
+        if (userArray.count>0) {
+            for (int i = 0; i<userArray.count; i++) {
+                pointAnnotation = [[MAPointAnnotation alloc] init];
+                float latitude = [userArray[i][@"latitude"] floatValue];
+                CGFloat longitude = [userArray[i][@"longitude"] floatValue];
+                //                    NSLog(@"latide=====%lf",latitude);
+                //取得所有商铺位置坐标
+                pointAnnotation.coordinate = CLLocationCoordinate2DMake(latitude ,longitude);
+                pointAnnotation.title = userArray[i][@"username"];
+                NSString *str = userArray[i][@"username"];
+//                NSLog(@"-------userArray-------%@",userArray[i][@"services"]);
+                
+                NSArray *servicesArr = userArray[i][@"services"];
+                
+                
+                
+//                [mArr addObject:str];
+                pointAnnotation.subtitle = @"(服务商铺)";
+            
+                //添加大头针
+                [_mapView addAnnotation:pointAnnotation];
+//                NSLog(@"%@",pointAnnotation);
+            }
+        }
+    }];
+}
+
+
+//点击气泡事件
+-(void)mapView:(MAMapView *)mapView didSelectAnnotationView:(MAAnnotationView *)view
+{
+//    NSLog(@"be clicked");
+    
+   
+   
+ 
+    
+    
     
 
+    
+    CustomCalloutView *cu;
+    cu = view.subviews.firstObject;
+    UILabel *currenLabel = cu.subviews.firstObject;
+    
+ 
+    
+    if (userArray.count>0) {
+        
+        for (int i = 0; i<userArray.count; i++) {
+            
+            if (currenLabel.text == userArray[i][@"username"]) {
+                NSArray *servicesArr = userArray[i][@"services"];
+//                NSLog(@"-------superview-------------%@",servicesArr );
+                labelsV = [[UIView alloc]initWithFrame:CGRectMake(-80,10 , 80, 40+12* servicesArr.count)];
+                labelsV.backgroundColor = [UIColor whiteColor];
+                
+                labelsV.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                labelsV.layer.cornerRadius = 6;
+                //    边框颜色
+                labelsV.layer.shadowColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                labelsV.layer.shadowOpacity = 1.0;
+                labelsV.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+                labelsV.makeScale(1.1).spring.animate(2.0);
+                
+                UILabel *type = [[UILabel alloc]initWithFrame:CGRectMake(0, 11,88, 10)];
+                type.text = @"服务内容：";
+                type.textAlignment = NSTextAlignmentCenter;
+                type.textAlignment = NSTextAlignmentCenter;
+                type.backgroundColor = [UIColor whiteColor];
+                type.font = [UIFont systemFontOfSize:13];
+                type.textColor = [UIColor blackColor];
+                [labelsV addSubview:type];
 
-
-
+                
+                //有点击事件的背景view的
+                mapBackView1=[[UIControl alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+                mapBackView1.backgroundColor=[UIColor whiteColor];
+                mapBackView1.alpha=0.1;
+                [mapBackView1 addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview: mapBackView1];
+                
+                for (int i=0; i<servicesArr.count; i++)
+                {
+                    
+                    NSDictionary *nameDic = servicesArr[i];
+                    NSString *name = nameDic[@"name"];
+                    
+                    _label = [[UILabel alloc]initWithFrame:CGRectMake(0, (30+12*i)*1.1, 88, 10)];
+                    _label.text = name;
+                    _label.textAlignment = NSTextAlignmentCenter;
+                    _label.backgroundColor = [UIColor whiteColor];
+                    _label.font = [UIFont systemFontOfSize:12];
+                    _label.textColor = [UIColor colorWithRed: 0 green:0 blue:0 alpha:0.5];
+                    [labelsV addSubview:_label];
+                    labelsV.hidden = NO;
+                    
+                    
+                    [view addSubview:labelsV];
+                }
+              
+            }else{
+//                [labelsV removeFromSuperview];
+            }
+            
+        }
+        
+       
+        
+    }
+    
+   
+    
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -374,7 +457,13 @@ else
     // Dispose of any resources that can be recreated.
 }
 
+-(void)backClick:(UIColor *)sender
+{
+//    labelsV.hidden = YES;
+    [labelsV removeFromSuperview];
+    [mapBackView1 removeFromSuperview];
+}
 
-
+ 
 
 @end

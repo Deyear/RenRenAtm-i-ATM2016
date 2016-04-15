@@ -170,6 +170,17 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c5O-68-fUW" userLabel="点击地点">
+                            <rect key="frame" x="8" y="63" width="252" height="42"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="42" id="4GP-1O-5HS"/>
+                                <constraint firstAttribute="width" constant="252" id="HXg-gl-g12"/>
+                            </constraints>
+                            <state key="normal" title=" "/>
+                            <connections>
+                                <action selector="clickLocation:" destination="-1" eventType="touchUpInside" id="W9B-cF-Qsc"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -192,6 +203,7 @@
                         <constraint firstItem="STT-O8-6Qb" firstAttribute="top" secondItem="ysp-Ae-rLn" secondAttribute="bottom" constant="5" id="Ukt-rm-abh"/>
                         <constraint firstItem="Pwi-rB-Vua" firstAttribute="centerX" secondItem="ndV-v4-mqL" secondAttribute="centerX" id="WI5-EI-ztF"/>
                         <constraint firstItem="b3x-vU-LTk" firstAttribute="leading" secondItem="X2C-gg-SHT" secondAttribute="leading" id="WPN-mw-OPN"/>
+                        <constraint firstItem="c5O-68-fUW" firstAttribute="leading" secondItem="X2C-gg-SHT" secondAttribute="leading" constant="8" id="XAm-MQ-owC"/>
                         <constraint firstItem="erg-gh-zA8" firstAttribute="leading" secondItem="4Ex-BC-V2D" secondAttribute="leading" id="XgW-at-TlR"/>
                         <constraint firstItem="9Pe-6v-IrZ" firstAttribute="height" secondItem="ysp-Ae-rLn" secondAttribute="height" id="Xph-Ec-CY1"/>
                         <constraint firstItem="4Ex-BC-V2D" firstAttribute="height" secondItem="IH8-rh-smT" secondAttribute="height" id="YIO-hp-CK4"/>
@@ -199,6 +211,7 @@
                         <constraint firstItem="IH8-rh-smT" firstAttribute="centerY" secondItem="STT-O8-6Qb" secondAttribute="centerY" id="a9K-4N-vEs"/>
                         <constraint firstItem="4Ex-BC-V2D" firstAttribute="leading" secondItem="IH8-rh-smT" secondAttribute="trailing" constant="2" id="b1k-ko-zu5"/>
                         <constraint firstItem="41v-h9-LaV" firstAttribute="width" secondItem="Tzx-ai-Q7n" secondAttribute="width" id="bTI-MC-EcS"/>
+                        <constraint firstAttribute="bottom" secondItem="c5O-68-fUW" secondAttribute="bottom" id="bsG-gA-wKx"/>
                         <constraint firstItem="s6y-Uf-0F9" firstAttribute="centerY" secondItem="41v-h9-LaV" secondAttribute="centerY" id="cSs-I5-5rT"/>
                         <constraint firstItem="IH8-rh-smT" firstAttribute="height" secondItem="STT-O8-6Qb" secondAttribute="height" id="gNc-nt-s5j"/>
                         <constraint firstItem="Tzx-ai-Q7n" firstAttribute="height" secondItem="4Ex-BC-V2D" secondAttribute="height" id="hWx-jc-TKl"/>
@@ -380,12 +393,6 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-t0-Ytm">
-                            <rect key="frame" x="120" y="36" width="173" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4T-Vo-5fc">
                             <rect key="frame" x="120" y="98" width="173" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -404,6 +411,12 @@
                                 <constraint firstAttribute="width" constant="85" id="EVn-Xo-6s2"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxw-t0-Ytm">
+                            <rect key="frame" x="120" y="36" width="173" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
