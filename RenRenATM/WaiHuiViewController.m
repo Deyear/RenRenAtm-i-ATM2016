@@ -5,14 +5,9 @@
 #define TopViewHeight ((SCREEN_HEIGHT -44)/10*3)
 #define modelViewHeight ((SCREEN_HEIGHT -44)/12)
 
-#import "SettingViewController.h"
-#import "LoginViewController.h"
 #import "AFNetworking.h"
 #import <PopMenu.h>
-
-//立体按钮————第三方
-#import "HTPressableButton.h"
-#import "UIColor+HTColor.h"
+#import "MustLogin.h"
 
 @interface WaiHuiViewController ()<UITextFieldDelegate,CLLocationManagerDelegate,UIAlertViewDelegate>
 {
@@ -52,11 +47,6 @@
         dengLuLabel.text =phoneNumber;
     }
     
-    NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
-    
-    NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-    
-//    NSLog(@"encodeResult:%@",encodeResult);
     
 }
 
@@ -238,7 +228,7 @@
             [modelView addSubview:zuozhongXianLabel];
         
             //左侧L五个abel显示
-            NSArray *array = [NSArray arrayWithObjects:@"所需金额",@"费用",@"外汇币种",@"给予赏金",@"所在位置",@"所需时间", nil];
+            NSArray *array = [NSArray arrayWithObjects:@"所需金额",@"费用",@"外汇币种",@"给予赏金",@"所在位置",@"有效时间", nil];
             UILabel *fourZuoLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, (SCREEN_WIDTH-30)/4 - 10, modelView.frame.size.height)];
             fourZuoLabel.text = array[i];
             fourZuoLabel.adjustsFontSizeToFitWidth = YES;
@@ -369,17 +359,13 @@
                 [modelView addSubview:lingYuanlabel];
                 
                 //其它金额button
-                //其它金额button
                 CGRect frame = CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*3 -15, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5 + 10, 20);
-                HTPressableButton *qitajineButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
-                qitajineButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                qitajineButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
+                BFPaperButton *qitajineButton = [[BFPaperButton alloc] initWithFrame:frame];
+                qitajineButton.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
                 [qitajineButton setTitle:@"其他金额" forState:UIControlStateNormal];
-//                qitajineButton.backgroundColor = [UIColor greenColor];
                 qitajineButton.titleLabel.font = [UIFont systemFontOfSize:11];
                [qitajineButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [qitajineButton addTarget:self action:@selector(qiTaJinEClick:) forControlEvents:UIControlEventTouchUpInside];
-//                qitajineButton.adjustsFontSizeToFitWidth  = YES;
                 [modelView addSubview:qitajineButton];
                 
                 //其它金额具体指
@@ -465,14 +451,14 @@
     baiSeBeiJingView.frame = CGRectMake(0, topImageView.frame.origin.y + topImageView.frame.size.height, SCREEN_WIDTH, modelView.frame.origin.y + modelViewHeight + 10) ;
     
     CGRect frame = CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight);
-    HTPressableButton *fabuButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+    BFPaperButton *fabuButton = [[BFPaperButton alloc] initWithFrame:frame];
     [fabuButton setTitle:@"Rounded" forState:UIControlStateNormal];
-    //    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
-    fabuButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-    fabuButton.shadowColor = [UIColor colorWithRed:71/255.0f green:94/255.0f blue:181/255.0f alpha:1];
-    fabuButton.layer.masksToBounds = YES;
-    fabuButton.layer.cornerRadius = modelViewHeight/8;
+    fabuButton.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
     [fabuButton setTitle:@"发布" forState:UIControlStateNormal];
+    fabuButton.layer.cornerRadius = modelViewHeight/2;
+    fabuButton.cornerRadius = modelViewHeight/2;
+    fabuButton.liftedShadowOffset = CGSizeMake(0, 5);
+    fabuButton.loweredShadowOffset= CGSizeMake(0, 1.5);
     [fabuButton addTarget:self action:@selector(fabu) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -520,33 +506,20 @@
 {
     if (textField == howMuchMoney) {
         if ([howMuchMoney.text isEqualToString:@""]) {
-//            NSLog(@"meiyou");
+ 
             NeedMoney.text = [NSString stringWithFormat:@"  ¥"];
             TotalMoney.text =[NSString stringWithFormat:@" 合计 ¥"];
+            
         }
         else
         {
-            int needMoney ;
-//            NSLog(@"you");
-            int howmuch= [howMuchMoney.text intValue];
-            needMoney = 20;
-//            if (howmuch<=500) {
-//                needMoney =  5 + [howMuchMoney.text intValue]*0.0049;
-//            }
-//            else  if (howmuch<=5000) {
-//                needMoney =  10 + [howMuchMoney.text intValue]*0.0049;
-//            }
-//            else if (howmuch<=7000)
-//            {
-//                needMoney =  20 + [howMuchMoney.text intValue]*0.0049;
-//            }
-//            else if (howmuch<=20000)
-//            {
-//                needMoney =  20 + 35;
-//            }
-            //      needMoney = [howMuchMoney.text intValue] + 88;
-            NeedMoney.text = [NSString stringWithFormat:@"%d¥",needMoney];
-            TotalMoney.text = [NSString stringWithFormat:@"合计%d¥",needMoney + [howMuchMoney.text intValue]];
+            float needMoney ;
+ 
+            needMoney = 2 + [howMuchMoney.text floatValue]*0.005;
+
+ 
+            NeedMoney.text = [NSString stringWithFormat:@"%.2f¥",needMoney];
+            TotalMoney.text = [NSString stringWithFormat:@"合计%.2f¥",needMoney + [howMuchMoney.text intValue]];
         }
         
     }
@@ -595,9 +568,8 @@
     NSString *access_token = [userDefault objectForKey:@"access_token"];
     if (access_token==nil) {
 //        NSLog(@"123");
-        LoginViewController *Login = [[LoginViewController alloc]init];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:Login];
-        [self presentViewController:navi animated:NO completion:nil];
+        MustLogin *Login = [[MustLogin alloc]init];
+        [self presentViewController:Login animated:NO completion:nil];
     }
     else
     {
@@ -682,7 +654,7 @@
                                      @"service_item_id":type,
                                      @"time_limit":[NSString stringWithFormat:@"%d",needTimeSecond],
                                      @"status":@"101",
-                                     @"service_charge":@"1",
+                                     @"service_charge":NeedMoney.text,
                                      @"sent_by":user_id};
         NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders"];
         

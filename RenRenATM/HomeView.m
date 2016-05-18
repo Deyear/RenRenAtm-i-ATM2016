@@ -96,13 +96,13 @@
 #pragma mark - 其他辅助功能
 #pragma mark MenuHrizontalDelegate
 -(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex{
-    NSLog(@"第%d个Button点击了",aIndex);
+    NSLog(@"第%ld个Button点击了",(long)aIndex);
     [mScrollPageView moveScrollowViewAthIndex:aIndex];
 }
 
 #pragma mark ScrollPageViewDelegate
 -(void)didScrollPageViewChangedPage:(NSInteger)aPage{
-    NSLog(@"CurrentPage:%d",aPage);
+    NSLog(@"CurrentPage:%ld",(long)aPage);
     [mMenuHriZontal changeButtonStateAtIndex:aPage];
 //    if (aPage == 3) {
         //刷新当页数据

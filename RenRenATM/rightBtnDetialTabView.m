@@ -10,7 +10,6 @@
 
 #import "rightBtnDetialTabView.h"
 #import "AFNetworking/AFNetworking.h"
-#import "AllTableViewCell.h"
 #import "DingDanZhuangtai.h"
 #import "MJRefresh.h"
 
@@ -18,7 +17,7 @@
 {
     IBOutlet UILabel *tittleLabel;
     UIButton *gezhongButton;
-    UILabel *zhuangtaiLabel,*typeMoney,*whoFabuLabel;
+    UILabel *zhuangtaiLabel,*typeMoney,*whoFabuLabel,*timeLabel,*dateLabel;
     NSArray *Array;
 //    IBOutlet UITableView *_tableView;
     UITableView *uiTableView;
@@ -111,10 +110,10 @@
                     
                     //            NSLog(@"全部订单数据%@",downloadProgress);
                 } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-           NSLog(@"======================全部订单数据%@",responseObject);
+//           NSLog(@"======================全部订单数据%@",responseObject);
             Array = responseObject;
                   
-            NSLog(@"-------个数-------%lu",(unsigned long)Array.count);
+//            NSLog(@"-------个数-------%lu",(unsigned long)Array.count);
             if (Array.count == 0) {
                 UILabel *NilLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, SCREEN_HEIGHT/2-20-64, SCREEN_WIDTH - 60 , 40)];
                 NilLabel.text = @"暂无该类型订单~~~";
@@ -140,6 +139,7 @@
     uiTableView = [[UITableView alloc]initWithFrame:CGRectMake(0,64, SCREEN_WIDTH, SCREEN_HEIGHT - 80) style:UITableViewStylePlain];
     uiTableView.delegate =self;
     uiTableView.dataSource = self;
+    uiTableView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:239.0f/255.0f blue:245.0f/255.0f alpha:1];
     uiTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     uiTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:uiTableView];
@@ -178,52 +178,134 @@
 {
     
     NSString * str = @"cell";
-    AllTableViewCell  *cell =[tableView dequeueReusableCellWithIdentifier:str];
+    UITableViewCell  *cell =[tableView dequeueReusableCellWithIdentifier:str];
     
     if (!cell)
     {
         cell =[[[NSBundle mainBundle]loadNibNamed:@"ThirdTableViewCell" owner:nil options:nil]objectAtIndex:0];
         
-        zhuangtaiLabel = [[UILabel alloc]initWithFrame:CGRectMake(600*xdp, 60*ydp, 150*xdp, 40*xdp)];
+        zhuangtaiLabel = [[UILabel alloc]initWithFrame:CGRectMake(580*xdp, 60*ydp, 200*xdp, 40*xdp)];
         zhuangtaiLabel.font = [UIFont systemFontOfSize:15];
         zhuangtaiLabel.textColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
         [cell addSubview:zhuangtaiLabel];
         
+        dateLabel = [[UILabel alloc]initWithFrame:CGRectMake(0*xdp, 18, 60*xdp, 50)];
+        dateLabel.hidden = YES;
+        dateLabel.textAlignment = NSTextAlignmentRight;
+        dateLabel.numberOfLines = 0;
+        dateLabel.font = [UIFont systemFontOfSize:11];
+        [cell addSubview:dateLabel];
+        
         //左边的头像
-        UIImageView *leftAvatarView = [[UIImageView alloc]initWithFrame:CGRectMake(120*xdp, 40*ydp, 120*xdp, 120*xdp)];
+        UIImageView *leftAvatarView = [[UIImageView alloc]initWithFrame:CGRectMake(120*xdp, 18, 120*xdp, 50)];
         leftAvatarView.image = [UIImage imageNamed:@"individual_Five"];
         [cell addSubview:leftAvatarView];
         
-        typeMoney = [[UILabel alloc]initWithFrame:CGRectMake(250*xdp, 40*ydp, 330*xdp, 60*xdp)];
-        typeMoney.font = [UIFont systemFontOfSize:15];
+        //        订单类型和金额
+        typeMoney = [[UILabel alloc]initWithFrame:CGRectMake(250*xdp, 13, 330*xdp,  30)];
+        typeMoney.font = [UIFont systemFontOfSize:16];
         typeMoney.adjustsFontSizeToFitWidth  = YES;
         [cell addSubview:typeMoney];
         
-        whoFabuLabel = [[UILabel alloc]initWithFrame:CGRectMake(250*xdp, 100*ydp, 330*xdp, 60*xdp)];
+        whoFabuLabel = [[UILabel alloc]initWithFrame:CGRectMake(250*xdp, 43, 330*xdp, 30)];
         whoFabuLabel.font = [UIFont systemFontOfSize:15];
         [cell addSubview:whoFabuLabel];
         
         //上面的灰色
-        UIImageView *topGrayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 15*ydp)];
+        UIImageView *topGrayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 6)];
         topGrayView.image = [UIImage imageNamed:@"RenRenGray"];
         [cell addSubview:topGrayView];
-        
-        
-        
     }
     
-    //home_order_receiving_positioon home_order_receiving_time
-    //  home_order_receiving_distance
-    //创建个人中心 显示个人中心列表数据
+    
     
     NSUInteger row = [indexPath row];
     //    NSLog(@"%@",Array[row]);
-   
     NSArray  *all_service_itemArray1 = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零", nil];
     int type_ser = [Array[row][@"service_item_id"] intValue];
-    //    NSLog(@"\\\\\\\\\\\\\%d",type_ser);
-    
     typeMoney.text  =[NSString stringWithFormat:@"%@%@¥",all_service_itemArray1[type_ser],Array[row][@"money"]];
+    
+    //    发布时间
+    NSString *created_at = [NSString stringWithFormat:@"%@",Array[row][@"created_at"] ];
+    int fabut=[created_at intValue] +[@"28800" intValue];
+    long long int date2 = (long long int)fabut;
+    NSDate *date22 = [NSDate dateWithTimeIntervalSince1970:date2];
+    //    NSLog(@"---------time-------%@",date22);
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    unsigned int unitFlags = NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay;
+    NSDateComponents *d = [cal components:unitFlags fromDate:date22];
+//    NSInteger year = [d year];
+    NSInteger month = [d month];
+    NSInteger day  =  [d day];
+    
+    //计算上报时间差
+    NSDateFormatter *formatter1 = [[NSDateFormatter alloc] init];
+    [formatter1 setDateFormat:@"YYYY-MM-dd HH:mm:ss"];
+    NSDate *datenow = [NSDate date];
+    NSTimeZone *timeZone = [NSTimeZone systemTimeZone]; // 获取的是系统的时区
+    // local时间距离GMT的秒数
+    NSInteger interval = [timeZone secondsFromGMTForDate: datenow];
+    
+    // 这个就不用说了
+    NSDate *localeDate = [datenow dateByAddingTimeInterval: interval];
+    
+    long dd = (long)[localeDate timeIntervalSince1970] - [date22 timeIntervalSince1970];
+    NSString *timeString=@"";
+    
+    //        发布时间
+    if (dd/86400<=1)
+    {
+        timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(0*xdp, 18, 120*xdp, 50)];
+        timeLabel.textAlignment = NSTextAlignmentCenter;
+    }else{
+        timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(60*xdp, 18, 60*xdp, 50)];
+        timeLabel.textAlignment = NSTextAlignmentLeft;
+    }
+    timeLabel.hidden = YES;
+    timeLabel.numberOfLines = 0;
+    timeLabel.font = [UIFont systemFontOfSize:11];
+    [cell addSubview:timeLabel];
+    
+    if (dd/3600<1)
+    {
+        if (dd/60 < 1) {
+            timeLabel.text = @"刚刚";
+        }else{
+            timeString = [NSString stringWithFormat:@"%ld", dd/60];
+            timeString=[NSString stringWithFormat:@"%@分钟前", timeString];
+            timeLabel.text = [NSString stringWithFormat:@"%@",timeString];
+        }
+        timeLabel.hidden = NO;
+    }
+    if (dd/3600>=1&&dd/86400<=1)
+    {
+        timeString = [NSString stringWithFormat:@"%ld", dd/3600];
+        timeString=[NSString stringWithFormat:@"%@小时前", timeString];
+        timeLabel.text = [NSString stringWithFormat:@"%@",timeString];
+        timeLabel.hidden = NO;
+    }
+    if (dd/86400>1&&dd/86400<=2) {
+        timeString = [NSString stringWithFormat:@"%ld", dd/86400];
+        timeString=[NSString stringWithFormat:@"%@天前", timeString];
+        timeLabel.text = [NSString stringWithFormat:@"昨天"];
+        timeLabel.hidden = NO;
+    }
+    if (dd/86400>2&&dd/86400<=3)
+    {
+        timeString = [NSString stringWithFormat:@"%ld", dd/86400];
+        timeString=[NSString stringWithFormat:@"%@天前", timeString];
+        timeLabel.text = [NSString stringWithFormat:@"前天"];
+        timeLabel.hidden = NO;
+    }
+    if (dd/86400>3) {
+        timeString = [NSString stringWithFormat:@"%ld", dd/86400];
+        timeString=[NSString stringWithFormat:@"%@天前", timeString];
+        timeLabel.text = [NSString stringWithFormat:@"%ld日   ",(long)day];
+        dateLabel.text = [NSString stringWithFormat:@"%ld月          ",(long)month];
+        timeLabel.hidden = NO;
+        dateLabel.hidden = NO;
+    }
+    
     
     
     //    NSLog(@"----------------------------%@",typeMoney.text);
@@ -240,10 +322,6 @@
         //他人发布
         whoFabuLabel.text =[NSString stringWithFormat:@"%@发布",Array[row][@"sender"][@"username"]] ;
     }
-    
-    
-
-   
     
     //右侧状态标签
     if([status isEqualToString:@"101"])
@@ -268,6 +346,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
+
 
 
 

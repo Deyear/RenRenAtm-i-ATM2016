@@ -10,17 +10,12 @@
 #define TopViewHeight ((SCREEN_HEIGHT -44)/10*3)
 #define modelViewHeight ((SCREEN_HEIGHT -44)/12 )
 
-#import "SettingViewController.h"
-#import "LoginViewController.h"
 #import "AFNetworking.h"
-
-//立体控件————第三方
-#import "HTPressableButton.h"
-#import "UIColor+HTColor.h"
+#import "MustLogin.h"
 
 
-@interface xinyongkaquxianViewController ()<UITextFieldDelegate,CLLocationManagerDelegate>
-{
+@interface xinyongkaquxianViewController ()<UITextFieldDelegate,CLLocationManagerDelegate>{
+    
     CLLocationManager *_locationManager;
     UIImageView *AllImageView;
     UIButton *rightButton;
@@ -33,96 +28,122 @@
     
     UITextView *infoView;
     UITextField *daishoukuanrenField,*daishoukuanRenHaoMaField;
+
 }
 @end
 
 @implementation xinyongkaquxianViewController
+
 @synthesize success,type;
--(void)viewWillAppear:(BOOL)animated
-{
+
+
+#pragma mark - view
+-(void)viewWillAppear:(BOOL)animated{
+    
+    [self initDengLuLabelShow];         //是否登录
+    
+}
+
+#pragma mark - init  Value
+//定位
+- (void)initializeLocationService {
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    [_locationManager startUpdatingLocation];
+    
+}
+
+#pragma mark - init  View
+-(void)initDengLuLabelShow{
+
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *access_token = [userDefault objectForKey:@"access_token"];
     NSString *phoneNumber = [userDefault objectForKey:@"user_name"];
+    
     if (access_token==nil) {
+        
         dengLuLabel.text =@"点击登录人人ATM";
+        
     }
-    else
-    {
-        dengLuLabel.text =phoneNumber;
+    else{
+        
+        dengLuLabel.text = phoneNumber;
+        
     }
-    
-
-    NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
-    
-    NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-    
-//    NSLog(@"encodeResult:%@",encodeResult);
     
 }
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
+#pragma mark - Button Click Action
+
+#pragma mark - Other Action
+
+#pragma mark - locationManager 代理
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    
     [_locationManager stopUpdatingLocation];
+    
     CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        
         for (CLPlacemark * placemark in placemarks) {
-            NSString *string1,*string2,*string3,*string4;
-            if (placemark.locality == nil)
-            {
-                string1  = @"";
-            }
-            else
-            {
-                string1 = [NSString stringWithFormat:@"%@",placemark.locality];
-            }
-            if (placemark.subLocality == nil)
-            {
-                string2  = @"";
-            }
-            else
-            {
-                string2 = [NSString stringWithFormat:@"%@",placemark.subLocality];
-            }
-            if (placemark.thoroughfare == nil)
-            {
-                string3  = @"";
-            }
-            else
-            {
-                string3 = [NSString stringWithFormat:@"%@",placemark.thoroughfare];
-            }
-            if (placemark.subThoroughfare == nil)
-            {
-                string4  = @"";
-            }
-            else
-            {
-                string4 = [NSString stringWithFormat:@"%@",placemark.subThoroughfare];
-            }
-
             
-
-
+            NSString *string1,*string2,*string3,*string4;
+            if (placemark.locality == nil){
+                
+                string1  = @"";
+            
+            }else{
+                
+                string1 = [NSString stringWithFormat:@"%@",placemark.locality];
+            
+            }
+            
+            if (placemark.subLocality == nil){
+                
+                string2  = @"";
+            
+            }else{
+                
+                string2 = [NSString stringWithFormat:@"%@",placemark.subLocality];
+            
+            }
+            
+            if (placemark.thoroughfare == nil){
+            
+                string3  = @"";
+            
+            }
+            else{
+                
+                string3 = [NSString stringWithFormat:@"%@",placemark.thoroughfare];
+            
+            }
+            
+            if (placemark.subThoroughfare == nil){
+                
+                string4  = @"";
+            
+            }
+            else{
+                
+                string4 = [NSString stringWithFormat:@"%@",placemark.subThoroughfare];
+            
+            }
 
             placeField.text = [NSString stringWithFormat:@"%@%@%@%@",string1,string2,string3,string4];
+            
         }
+        
     }];
-   
     
 }
-- (void)initializeLocationService {
-    // 初始化定位管理器
-    _locationManager = [[CLLocationManager alloc] init];
-    // 设置代理
-    _locationManager.delegate = self;
-    // 设置定位精确度到米
-    _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-    // 设置过滤器为无
-    _locationManager.distanceFilter = kCLDistanceFilterNone;
-    // 开始定位
-    [_locationManager startUpdatingLocation];
-}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString *access_token = [userDefault objectForKey:@"access_token"];
     NSString *phoneNumber = [userDefault objectForKey:@"user_name"];
@@ -205,12 +226,6 @@
     daishoukuanLabel.adjustsFontSizeToFitWidth = YES;
     [baiSeBeiJingView addSubview:daishoukuanLabel];
     
-//    //wenhaobutton
-//    UIButton *wenhaoButton  = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH -35, daishoukuanLabel.frame.origin.y + daishoukuanLabel.frame.size.height +5,20, 20)];
-//    wenhaoButton.backgroundColor = [UIColor redColor];
-//    [wenhaoButton addTarget:self action:@selector(wenhao) forControlEvents:UIControlEventTouchUpInside];
-//    [baiSeBeiJingView addSubview:wenhaoButton];
-    
     //1分钟label
     UILabel *yifenzhongLabel = [[UILabel alloc]initWithFrame:CGRectMake(15, daishoukuanLabel.frame.origin.y + daishoukuanLabel.frame.size.height ,SCREEN_WIDTH /5*3, modelViewHeight/2
                                                                         )];
@@ -258,7 +273,7 @@
             UILabel *zuozhongXianLabel = [[UILabel alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-30)/4, modelViewHeight/4, 1, modelViewHeight/2)];
             zuozhongXianLabel.backgroundColor = [UIColor colorWithWhite:0.3 alpha:0.2];
             [modelView addSubview:zuozhongXianLabel];
-            NSArray *array = [NSArray arrayWithObjects:@"所需金额",@"费用",@"给予赏金",@"所在位置",@"所需时间", nil];
+            NSArray *array = [NSArray arrayWithObjects:@"所需金额",@"费用",@"给予赏金",@"所在位置",@"有效时间", nil];
             UILabel *fourZuoLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 60, modelView.frame.size.height)];
             fourZuoLabel.text = array[i];
             fourZuoLabel.font = [UIFont systemFontOfSize:14];
@@ -376,14 +391,12 @@
                 
                 //其它金额button
                 CGRect frame = CGRectMake((SCREEN_WIDTH-30)/4 + (SCREEN_WIDTH-30)/4*3/5*3 -15, (modelViewHeight  - 20)/2,  (SCREEN_WIDTH-30)/4*3/5 + 10, 20);
-                HTPressableButton *qitajineButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
-                qitajineButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-                qitajineButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:0.5];
+                BFPaperButton *qitajineButton = [[BFPaperButton alloc] initWithFrame:frame];
+                qitajineButton.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
                 [qitajineButton setTitle:@"其他金额" forState:UIControlStateNormal];
                 qitajineButton.titleLabel.font = [UIFont systemFontOfSize:11];
                 [qitajineButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                 [qitajineButton addTarget:self action:@selector(qiTaJinEClick:) forControlEvents:UIControlEventTouchUpInside];
-                //                qitajineButton.adjustsFontSizeToFitWidth  = YES;
                 [modelView addSubview:qitajineButton];
                 
                 //其它金额具体指Label
@@ -569,22 +582,19 @@
     
     //最下面的发布button
     CGRect frame = CGRectMake(15, SCREEN_HEIGHT - modelViewHeight-20, SCREEN_WIDTH -30, modelViewHeight);
-    HTPressableButton *fabuButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
+    BFPaperButton *fabuButton = [[BFPaperButton alloc] initWithFrame:frame];
     [fabuButton setTitle:@"Rounded" forState:UIControlStateNormal];
-//    [fabuButton setBackgroundImage:[UIImage imageNamed:@"RenRenTabbar"] forState:UIControlStateNormal];
-    fabuButton.buttonColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-    fabuButton.shadowColor = [UIColor colorWithRed:71/255.0f green:94/255.0f blue:181/255.0f alpha:1];
-    fabuButton.layer.masksToBounds = YES;
-    fabuButton.layer.cornerRadius = modelViewHeight/8;
+    fabuButton.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
+    fabuButton.layer.cornerRadius = modelViewHeight/2;
+    fabuButton.cornerRadius = modelViewHeight/2;
+    fabuButton.liftedShadowOffset = CGSizeMake(0, 5);
+    fabuButton.loweredShadowOffset= CGSizeMake(0, 1.5);
     [fabuButton setTitle:@"发布" forState:UIControlStateNormal];
     [fabuButton addTarget:self action:@selector(fabu) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:fabuButton];
     
-    
-    
-    
-        [self initializeLocationService];
+    [self initializeLocationService];
     
 }
 //让金额只能输入数字
@@ -618,10 +628,11 @@
 {
     if (textField == howMuchMoney) {
         if ([howMuchMoney.text isEqualToString:@""]) {
-//            NSLog(@"meiyou");
-//            NeedMoney.text = [NSString stringWithFormat:@" ¥"];
+          
             NeedMoney.text = @"0";
+            NeedMoney.text = [NSString stringWithFormat:@"  ¥"];
             TotalMoney.text =[NSString stringWithFormat:@" 合计 ¥"];
+        
         }
         else
         {
@@ -629,96 +640,95 @@
 //            NSLog(@"you");
             int howmuch= [howMuchMoney.text intValue];
             
-            
-            if ([type isEqualToString:@"1"]) {
-                if (howmuch<=500) {
-                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-            }
-            else if ([type isEqualToString:@"2"]) {
-                if (howmuch<=500) {
-                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-            }
-            else if ([type isEqualToString:@"3"]) {
-                if (howmuch<=500) {
-                    needMoney =  5;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 ;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 ;
-                }
-            }
-            else if ([type isEqualToString:@"5"]) {
-                if (howmuch<=500) {
-                    needMoney =  5;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 ;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 ;
-                }
+            needMoney = 2 + [howMuchMoney.text floatValue]*0.005;
 
-            }
-            else if ([type isEqualToString:@"6"]) {
-                if (howmuch<=500) {
-                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
-                }
-            }
-            else if ([type isEqualToString:@"7"]) {
-                if (howmuch<=500) {
-                    needMoney =  5;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 ;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 ;
-                }
-            }
-            else if ([type isEqualToString:@"8"]) {
-                if (howmuch<=500) {
-                    needMoney =  5;
-                }
-                else  if (howmuch<=5000) {
-                    needMoney =  10 ;
-                }
-                else if (howmuch<=20000)
-                {
-                    needMoney =  20 ;
-                }
-            }
+//            if ([type isEqualToString:@"1"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//            }
+//            else if ([type isEqualToString:@"2"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//            }
+//            else if ([type isEqualToString:@"3"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 ;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 ;
+//                }
+//            }
+//            else if ([type isEqualToString:@"5"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 ;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 ;
+//                }
+//
+//            }
+//            else if ([type isEqualToString:@"6"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 + 2 + [howMuchMoney.text floatValue]*0.0049;
+//                }
+//            }
+//            else if ([type isEqualToString:@"7"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 ;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 ;
+//                }
+//            }
+//            else if ([type isEqualToString:@"8"]) {
+//                if (howmuch<=500) {
+//                    needMoney =  5;
+//                }
+//                else  if (howmuch<=5000) {
+//                    needMoney =  10 ;
+//                }
+//                else if (howmuch<=20000)
+//                {
+//                    needMoney =  20 ;
+//                }
+//            }
 
-            //      needMoney = [howMuchMoney.text intValue] + 88;
-//            NeedMoney.text = [NSString stringWithFormat:@" %.2f¥",needMoney];
-            NeedMoney.text = [NSString stringWithFormat:@"%.2f",needMoney];
+             NeedMoney.text = [NSString stringWithFormat:@"%.2f",needMoney];
             TotalMoney.text = [NSString stringWithFormat:@"合计%.2f¥",needMoney + [howMuchMoney.text intValue]];
         }
       
@@ -768,9 +778,8 @@
     NSString *access_token = [userDefault objectForKey:@"access_token"];
     if (access_token==nil) {
 //        NSLog(@"123");
-        LoginViewController *Login = [[LoginViewController alloc]init];
-        UINavigationController *navi = [[UINavigationController alloc]initWithRootViewController:Login];
-        [self presentViewController:navi animated:NO completion:nil];
+        MustLogin *Login = [[MustLogin alloc]init];
+        [self presentViewController:Login animated:NO completion:nil];
     }
     else
     {
@@ -844,8 +853,7 @@
         [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
         
         if ([success isEqualToString:@"1"]) {
-            NSLog(@"11111111");
-
+ 
             NSDictionary *extra_fields = @{
                                            @"receiver":daishoukuanrenField.text,
                                            @"receiver_phone":daishoukuanRenHaoMaField.text
@@ -867,17 +875,16 @@
             NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/orders"];
             
             [session POST:str parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                //            NSLog(@"formData%@",formData);
             } progress:^(NSProgress * _Nonnull uploadProgress) {
-                //            NSLog(@"uploadProgress%@",uploadProgress);
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
+                 NSLog(@"===============responseObject===========%@",responseObject);
+              
                 [UIView animateKeyframesWithDuration:5 delay:0 options:UIViewKeyframeAnimationOptionCalculationModeLinear animations:^{
                     [self dismissViewControllerAnimated:YES completion:nil];
                 } completion:nil];
                 
-                //            NSLog(@"===============responseObject===========%@",responseObject);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"发布成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"发布成功"delegate:self cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
                 
                 [alert show];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -981,15 +988,7 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+
 
 -(void)qiTaJinEClick:(UIButton *)qiTaJinEClick
 {
@@ -1008,6 +1007,10 @@
     [alert show];
     
 }
+
+
+
+
 
 
 @end

@@ -220,7 +220,7 @@
 		if (_state == EGOOPullRefreshPulling && scrollView.contentOffset.y > -65.0f && scrollView.contentOffset.y < 0.0f && !_loading) {
 			[self setState:EGOOPullRefreshNormal];
 		} else if (_state == EGOOPullRefreshNormal && scrollView.contentOffset.y < -15.0f && !_loading) {
-            float moveY = fabsf(scrollView.contentOffset.y);
+            float moveY = fabs(scrollView.contentOffset.y);
             if (moveY > 65)
                 moveY = 65;
             _circleView.progress = (moveY-15) / (65-15);

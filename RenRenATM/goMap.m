@@ -37,12 +37,12 @@
     [super viewDidLoad];
  
     [self beforeInit];             //加载后的配置
+   
     [self searchGeocode];          //正向地理编码
-   }
 
+}
 
-
--(void)viewDidAppear:(BOOL)animated
+ -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
@@ -101,17 +101,19 @@
     
     _mapView.showsUserLocation = YES;                           //开启定位
     [self.view addSubview:_mapView];
-     [self initControls];                                       //初始化定位地图及右下角定位按钮
+    
+    [self initControls];                                       //初始化定位地图及右下角定位按钮
 
 }
 
 //初始化定位地图及右下角定位按钮
-- (void)initControls
-{
+- (void)initControls{
   
-    if (_mapView.userTrackingMode != MAUserTrackingModeFollow)
-    {   //改变定位模式,追踪用户的location更新
+    //改变定位模式,追踪用户的location更新
+    if (_mapView.userTrackingMode != MAUserTrackingModeFollow){
+        
         [_mapView setUserTrackingMode:MAUserTrackingModeFollow animated:YES];
+    
     }
     
     UIButton * _locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -128,19 +130,22 @@
 
 #pragma mark - 代理回调函数
 //实现正向地理编码的回调函数
-- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
-{
+- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response{
     
-    if(response.geocodes.count == 0)
-    {
+    if(response.geocodes.count == 0){
+        
         return;
+    
     }
 
-    strGeocodes = [[AMapGeoPoint alloc]init];                     //初始化正编码的地理坐标
+    //初始化正编码的地理坐标
+    strGeocodes = [[AMapGeoPoint alloc]init];
     for (AMapTip *p in response.geocodes) {
-        //        strGeocodes = [NSString stringWithFormat:@"%@\ngeocode: %@", strGeocodes, p.location];
+ 
         strGeocodes = p.location;
+    
     }
+
 }
 
 //弹出气泡的样式方法
@@ -166,7 +171,7 @@
 }
 
 
-#pragma mark - 代码——button点击事件
+#pragma mark — button点击事件
 //定位按钮点击事件
 -(void)locateAction
 {
@@ -184,7 +189,9 @@
 #pragma mark - layout——按钮点击事件
 //返回按钮的点击事件
 - (IBAction)goBack:(id)sender {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 

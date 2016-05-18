@@ -8,28 +8,29 @@
 
 
 #import "CenterViewController.h"
-#define FirstTitle @"接单"
-#define SecondTitle @"订单"
-#define ThirdTitle @"附近ATM"
-#define FourthTitle @"个人"
-#define ATMFuWuZhe @"服务者"
-#define FirstImageBefore @"接单1"
-#define FirstImageAfter @"接单2"
-#define SecondImageBefore @"订单1"
-#define SecondImageAfter @"订单2"
-#define ThirdImageBefore @"附近ATM1"
-#define ThirdImageAfter @"附近ATM2"
-#define FourthImageBefore @"个人1"
-#define FourthImageAfter @"个人2"
-#define atmImageABefore @"服务者1"
-#define atmImageAfter @"服务者2"
+#define Jiedan @"接单"
+#define Fadan @"发单"
+#define Dingdan @"订单"
+#define Fuwuzhe @"服务者"
+#define Geren @"个人"
 
-#import "FirstViewController.h"
+#define FirstImageBefore @"接单灰色"
+#define FirstImageAfter @"接单蓝色"
+#define SecondImageBefore @"发单灰色"
+#define SecondImageAfter @"发单蓝色"
+#define atmImageABefore @"订单灰色"
+#define atmImageAfter @"订单蓝色"
+#define ThirdImageBefore @"服务者灰色"
+#define ThirdImageAfter @"服务者蓝色"
+#define GeRenImageBefore @"个人灰色"
+#define GeRenImageAfter @"个人蓝色"
+
+#import "HomeVCTestViewController.h"
+#import "FaDanViewController.h"
 #import "SecondViewController.h"
 #import "ThreeViewController.h"
-#import "FourViewController.h"
-#import "HomeVCTestViewController.h"
-#import "zhongJianView.h"
+#import "UserInfoViewController.h"
+
 
 
 
@@ -52,15 +53,19 @@
     //初始化五个界面
     HomeVCTestViewController *firstVC = [[HomeVCTestViewController alloc] init];
     self.view.window.rootViewController =firstVC;
+    
+     FaDanViewController *fourthVC = [[FaDanViewController alloc] init];
+    self.view.window.rootViewController =fourthVC;
+    
     SecondViewController  *secondVC = [[SecondViewController alloc] init];
     self.view.window.rootViewController =secondVC;
+  
     ThreeViewController *thirdVC = [[ThreeViewController alloc] init];
     self.view.window.rootViewController =thirdVC;
-    FourViewController *fourthVC = [[FourViewController alloc] init];
-    self.view.window.rootViewController =fourthVC;
-    zhongJianView *_Atm = [[zhongJianView alloc]init];
-    self.view.window.rootViewController =_Atm;
-    NSArray *navArray = @[firstVC,secondVC,_Atm,thirdVC,fourthVC];
+
+    UserInfoViewController *UserInfoVC = [[UserInfoViewController alloc]init];
+    self.view.window.rootViewController =UserInfoVC;
+    NSArray *navArray = @[firstVC,fourthVC,secondVC,thirdVC,UserInfoVC];
     [self setViewControllers:navArray animated:NO];
    
     //tabBar字体显示
@@ -68,21 +73,28 @@
     
     //五个界面的点击变化icon状态
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
-        firstVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:FirstTitle image:[[UIImage imageNamed:FirstImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:FirstImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        secondVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:SecondTitle image:[[UIImage imageNamed:SecondImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:SecondImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        thirdVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:ThirdTitle image:[[UIImage imageNamed:ThirdImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:ThirdImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        fourthVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:FourthTitle image:[[UIImage imageNamed:FourthImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:FourthImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-        _Atm.tabBarItem = [[UITabBarItem alloc]initWithTitle:ATMFuWuZhe image:[[UIImage imageNamed:atmImageABefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:atmImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        firstVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Jiedan image:[[UIImage imageNamed:FirstImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:FirstImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        
+        fourthVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Fadan image:[[UIImage imageNamed:SecondImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:SecondImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        
+        secondVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Dingdan image:[[UIImage imageNamed:atmImageABefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:atmImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+        
+        thirdVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Fuwuzhe image:[[UIImage imageNamed:ThirdImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:ThirdImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+
+        UserInfoVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Geren image:[[UIImage imageNamed:GeRenImageBefore]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] selectedImage:[[UIImage imageNamed:GeRenImageAfter]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
     }
     else
     {
-        fourthVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:FourthTitle image:[UIImage imageNamed:FourthImageBefore] tag:101];
-        thirdVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:ThirdTitle image:[UIImage imageNamed:ThirdImageBefore] tag:102];
-        secondVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:SecondTitle image:[UIImage imageNamed:SecondImageBefore]  tag:103];
-        firstVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:FirstTitle image:[UIImage imageNamed:FirstImageBefore] tag:104];
-        _Atm.tabBarItem = [[UITabBarItem alloc]initWithTitle:ATMFuWuZhe image:[UIImage imageNamed:atmImageABefore] tag:105];
+        
+        firstVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Jiedan image:[UIImage imageNamed:FirstImageBefore] tag:101];
+        fourthVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Fadan image:[UIImage imageNamed:SecondImageBefore] tag:102];
+        secondVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Dingdan image:[UIImage imageNamed:atmImageABefore]  tag:103];
+        thirdVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Fuwuzhe image:[UIImage imageNamed:ThirdImageBefore] tag:104];
+        UserInfoVC.tabBarItem = [[UITabBarItem alloc]initWithTitle:Geren image:[UIImage imageNamed:GeRenImageBefore] tag:105];
     }
-
+    
+    
+    
 }
 
 

@@ -174,7 +174,7 @@
     }
     
     NSInteger vNewIndex = aIndexPath.row % 4 + 1;
-    vCell.headerImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"new%d",vNewIndex]];
+    vCell.headerImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"new%ld",(long)vNewIndex]];
     return vCell;
 }
 

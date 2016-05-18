@@ -20,65 +20,95 @@
 
 
 
-@interface xiangqingViewController ()
-{
+@interface xiangqingViewController (){
+    
     NSArray *all_service_itemArray;
     UILabel *nameLabel;
+
 }
 @end
 
 @implementation xiangqingViewController
+
 @synthesize xiangqingArray;
+
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
+    
+    [self initValues];                    //初始化各种值
+    
+    [self initTopView];                   //导航View
+
+    [self initAllView];                   //初始化界面
+    
+}
+
+#pragma mark - init Value
+-(void)initValues{
 
     all_service_itemArray = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零", nil];
+
+}
+
+#pragma mark - init Views
+//导航View
+-(void)initTopView{
+    
     //顶部图片
     UIImageView *topImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 64)];
     topImageView.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-
     [self.view addSubview:topImageView];
-
+    
     //创建返回按钮
     UIButton *backButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 20, 44, 44)];
     [backButton setImage:[UIImage imageNamed:@"back-Small"] forState:UIControlStateNormal];
     [backButton addTarget:self action:@selector(BackView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:backButton];
-
+    
     //全局的灰色
     UIImageView *topGrayView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, SCREEN_HEIGHT -64)];
     topGrayView.image = [UIImage imageNamed:@"RenRenGray"];
     [self.view addSubview:topGrayView];
+    
+}
+
+//初始化所有的界面
+-(void)initAllView{
 
     //上面的白色背景view
     UIImageView *whiteImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 220*ydp)];
     whiteImageView.backgroundColor = [UIColor whiteColor];
     whiteImageView.userInteractionEnabled = YES;
     [self.view addSubview:whiteImageView];
-
+    
     //名字label
     nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(22*xdp, 33*ydp, 400*xdp, 40*ydp)];
     nameLabel.font = [UIFont boldSystemFontOfSize:17];
-//    nameLabel.text = xiangqingArray[@"sender"][@"username"];
-//    nameLabel.text = @"请接单";
-     NSString *str1 = [xiangqingArray[@"sender"][@"username"] substringWithRange:NSMakeRange(0, 7)];
+    NSString *str1 = [xiangqingArray[@"sender"][@"username"] substringWithRange:NSMakeRange(0, 7)];
     nameLabel.text = [NSString stringWithFormat:@"%@****",str1];
-//    nameLabel.backgroundColor = [UIColor greenColor];
     [whiteImageView addSubview:nameLabel];
     
-        //五角星评分
+    //五角星评分
     NSInteger fenshu = [xiangqingArray[@"senderAvgOfGeneralEvaluation"] integerValue];
     for (int i = 0 ; i<5; i++) {
         
         UIImageView *FiveView = [[UIImageView alloc]initWithFrame:CGRectMake(22*xdp + 35*xdp*i, 80*ydp, 35*xdp, 35*xdp)];
         FiveView.userInteractionEnabled = NO;
+        
         if (i < fenshu) {
+        
             FiveView.image = [UIImage imageNamed:@"home_order_receiving_star1"];
+        
         }else{
             FiveView.image = [UIImage imageNamed:@"home_order_receiving_star2"];
+            
         }
+        
         FiveView.userInteractionEnabled = NO;
+        
         [whiteImageView addSubview:FiveView];
+    
     }
     
     //五分label
@@ -102,13 +132,18 @@
     UIButton *placeLabel = [[UIButton alloc]initWithFrame:CGRectMake(80*xdp, 155*ydp, 490*xdp, 30*xdp)];
     placeLabel.titleLabel.font = [UIFont systemFontOfSize:15];
     [placeLabel setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    
     if ([xiangqingArray[@"dealt_at"] isEqual:[NSNull null]]) {
+    
         [placeLabel setTitle:@"暂无详细交易地点" forState:UIControlStateNormal];
+    
     }
-    else
-    {
+    else{
+        
         [placeLabel setTitle:[NSString stringWithFormat:@"%@",xiangqingArray[@"dealt_at"]] forState:UIControlStateNormal];
+    
     }
+    
     [placeLabel addTarget:self action:@selector(clickMap:) forControlEvents:UIControlEventTouchUpInside];
     [whiteImageView addSubview:placeLabel];
     
@@ -119,10 +154,9 @@
     
     //接受订单
     CGRect frame = CGRectMake(570*xdp, 40*ydp, 160*xdp, 50*xdp);
-    HTPressableButton *jieshoudingdanButton = [[HTPressableButton alloc] initWithFrame:frame buttonStyle:HTPressableButtonStyleRounded];
-    jieshoudingdanButton.buttonColor = [UIColor whiteColor];
+    BFPaperButton *jieshoudingdanButton = [[BFPaperButton alloc] initWithFrame:frame  ];
+    jieshoudingdanButton.backgroundColor = [UIColor whiteColor];
     jieshoudingdanButton.shadowColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
-    [jieshoudingdanButton setDisabledButtonColor:[UIColor ht_sunflowerColor]];
     [jieshoudingdanButton setTitle:@"接收订单" forState:UIControlStateNormal];
     [jieshoudingdanButton setTitleColor:[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] forState:UIControlStateNormal];
     jieshoudingdanButton.titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -130,19 +164,16 @@
     [jieshoudingdanButton addTarget:self action:@selector(jiedan) forControlEvents:UIControlEventTouchUpInside];
     [whiteImageView addSubview: jieshoudingdanButton];
     
- 
-    
-    //----------------------------------上下两个view-------------------------//
-    
     
     //下面的白色背景
     UIImageView *whiteImageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(0,  64 +260*ydp, SCREEN_WIDTH, 550*ydp)];
     whiteImageView2.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:whiteImageView2];
     
-//创建数组
+    //创建数组
     NSArray *typeArray = [[NSArray alloc]initWithObjects:@"订单类型",@"需求时限",@"发布时间",@"需求面额",@"给予赏金",@"跑腿服务费", nil];
     for (int i = 0; i < typeArray.count; i++) {
+        
         //一条线
         UILabel *shuxianLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, i*90*ydp, SCREEN_WIDTH, 1)];
         shuxianLabel.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.1];
@@ -156,6 +187,7 @@
         [whiteImageView2 addSubview:typeLabel];
         
     }
+    
     //type订单类型
     UILabel *typeleixingLabel =[[UILabel alloc]initWithFrame:CGRectMake(230*xdp,40*ydp, 180*xdp, 40*ydp)];
     int item = [[NSString stringWithFormat:@"%@",xiangqingArray[@"service_item_id"] ]intValue];
@@ -183,7 +215,6 @@
     long long int date2 = (long long int)fabut;
     NSDate *date22 = [NSDate dateWithTimeIntervalSince1970:date2];
     typefabutimeLabel.text = [[NSString stringWithFormat:@"%@",date22] substringToIndex:19];
-
     typefabutimeLabel.textColor = [UIColor grayColor];
     typefabutimeLabel.font = [UIFont systemFontOfSize:15];
     typefabutimeLabel.adjustsFontSizeToFitWidth = YES;
@@ -215,95 +246,106 @@
     typejiaoyijineLabel.font = [UIFont systemFontOfSize:15];
     typejiaoyijineLabel.adjustsFontSizeToFitWidth = YES;
     [whiteImageView2 addSubview:typejiaoyijineLabel];
-}
-//接单
--(void)jiedan
-{
     
-//    NSLog(@"接单判断");
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"确定接收该订单" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-    [alert show];
-
-
-
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-        if(buttonIndex == 0)
-        {
-//            NSLog(@"ooo");
-           
-        }
-    else if
-        (buttonIndex == 1)
-    {
-//        NSLog(@"111");
-            NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-            NSString *access_token = [userDefault objectForKey:@"access_token"];
-            NSString *user_id = [userDefault objectForKey:@"user_id"];
-//            NSString *user_name = [userDefault objectForKey:@"user_name"];
-            NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
-        
-            NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
-            NSString *token = [NSString stringWithFormat:@"Basic %@",encodeResult];
-//            NSLog(@"encodeResult:%@",token);
-            NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders/%@",@"4",[NSString stringWithFormat:@"%@",xiangqingArray[@"id"]]];
-//            NSLog(@"%@",str);
-        
-        
-            NSDictionary *paratemetrs = @{@"received_by":user_id,
-                                          @"status":@"201"};
-        
-            AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
-            session.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
-            session.requestSerializer = [AFJSONRequestSerializer serializer];
-            session.responseSerializer = [AFJSONResponseSerializer serializer];
-            [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
-        
-            [session PATCH:str parameters:paratemetrs success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//                NSLog(@"=============response===========%@",responseObject);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"抢单成功" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alert show];
-                //创建通知
-                NSNotification *notification =[NSNotification notificationWithName:@"tongzhi111" object:nil userInfo:nil];
-                //通过通知中心发送通知
-                [[NSNotificationCenter defaultCenter] postNotification:notification];
-                [self dismissViewControllerAnimated:YES completion:nil];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//                NSLog(@"%@",error);
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"数据异常，该单无法接收" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                [alert show];	
-            }];
-        }
-}
-#pragma mark 导航条返回事件
--(void)BackView
-{
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
--(void)clickMap:(UIButton *)sender
-{
+#pragma mark - Button Click Action
+//点击地理位置，显示地图
+-(void)clickMap:(UIButton *)sender{
+    
     goMap *vc= [[goMap alloc]init];
     vc.dic = sender.titleLabel.text;
     [self presentViewController:vc animated:YES completion:nil];
-    NSLog(@"点击了");
+ 
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//返回事件
+-(void)BackView{
+    
+    [self dismissViewControllerAnimated:NO completion:nil];
+    
 }
-*/
 
+//接单
+-(void)jiedan{
+    
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:nil
+                          message:@"确定接收该订单"
+                          delegate:self
+                          cancelButtonTitle:@"取消"
+                          otherButtonTitles:@"确定", nil];
+ 
+    [alert show];
+    
+ }
+
+
+#pragma mark - Other Action
+
+#pragma mark - alertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    
+    if(buttonIndex == 0){
+        
+    }
+    else if(buttonIndex == 1){
+    
+        NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+        NSString *access_token = [userDefault objectForKey:@"access_token"];
+        NSString *user_id = [userDefault objectForKey:@"user_id"];
+        NSData* originData = [[NSString stringWithFormat:@"%@%@",access_token,@":"] dataUsingEncoding:NSASCIIStringEncoding];
+        NSString* encodeResult = [originData base64EncodedStringWithOptions:NSDataBase64EncodingEndLineWithLineFeed];
+        NSString *token = [NSString stringWithFormat:@"Basic %@",encodeResult];
+        NSString *str = [NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders/%@",@"4",[NSString stringWithFormat:@"%@",xiangqingArray[@"id"]]];
+         NSDictionary *paratemetrs = @{@"received_by":user_id,
+                                      @"status":@"201"};
+        
+        AFHTTPSessionManager *session = [AFHTTPSessionManager manager];
+        session.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+        session.requestSerializer = [AFJSONRequestSerializer serializer];
+        session.responseSerializer = [AFJSONResponseSerializer serializer];
+        [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
+        
+        [session PATCH:str
+            parameters:paratemetrs
+               success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+ 
+                   UIAlertView *alert = [[UIAlertView alloc]
+                                         initWithTitle:nil
+                                         message:@"抢单成功"
+                                         delegate:nil
+                                         cancelButtonTitle:@"确定"
+                                         otherButtonTitles:nil, nil];
+                   
+                   [alert show];
+                   
+                   //创建通知
+                   NSNotification *notification =[NSNotification notificationWithName:@"tongzhi111" object:nil userInfo:nil];
+                   //通过通知中心发送通知
+                   [[NSNotificationCenter defaultCenter] postNotification:notification];
+          
+                    [self dismissViewControllerAnimated:YES completion:nil];
+       
+               }
+               failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+ 
+                   UIAlertView *alert = [[UIAlertView alloc]
+                                         initWithTitle:nil message:@"数据异常，该单无法接收"
+                                         delegate:nil
+                                            cancelButtonTitle:@"确定"
+                                  otherButtonTitles:nil, nil];
+            
+                   [alert show];
+            
+               }];
+        
+    }
+    
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+ }
 @end

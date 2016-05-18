@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -10,16 +10,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DingDanZhuangtai">
             <connections>
                 <outlet property="ShouKuanHaoMa" destination="xMV-F6-Ntl" id="hrE-2R-mG5"/>
-                <outlet property="ShouKuanRen" destination="Inp-jA-aaq" id="fuy-Dz-gbn"/>
+                <outlet property="ShouKuanRen" destination="Inp-jA-aaq" id="Ess-fn-Bhw"/>
                 <outlet property="ThirdView" destination="acf-zz-vCm" id="Jxa-fV-JVQ"/>
                 <outlet property="erFen" destination="IH8-rh-smT" id="8wf-md-wgy"/>
+                <outlet property="faBuAgain" destination="5pu-hb-KZM" id="N9U-o6-FgP"/>
                 <outlet property="finishedOne" destination="eJV-3X-KwK" id="lfk-VM-pjM"/>
                 <outlet property="finishedThree" destination="Lah-M3-riE" id="qw0-Kr-37a"/>
                 <outlet property="finishedTwo" destination="rwY-86-lLz" id="OpF-b2-fpR"/>
                 <outlet property="jiaoYi" destination="PFw-fk-Aug" id="HYE-VK-1ZF"/>
                 <outlet property="jieDan" destination="zSm-oV-Wb2" id="xCf-Li-gs6"/>
                 <outlet property="jieshoudingdanButton" destination="gWM-hz-Nga" id="lls-Cf-LF0"/>
-                <outlet property="nameLabel" destination="9Pe-6v-IrZ" id="SSS-wg-bkd"/>
+                <outlet property="nameLabel" destination="9Pe-6v-IrZ" id="X2T-Ai-6Ke"/>
                 <outlet property="placeLabel" destination="erg-gh-zA8" id="uPH-Io-51M"/>
                 <outlet property="sanFen" destination="4Ex-BC-V2D" id="EsB-LD-xcG"/>
                 <outlet property="siFen" destination="Tzx-ai-Q7n" id="bRs-pb-xhY"/>
@@ -74,7 +75,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.2784313725" green="0.4549019608" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="9mU-X6-NCt" firstAttribute="top" secondItem="0jb-Cm-ggt" secondAttribute="top" constant="20" id="5GM-6f-Sxe"/>
                         <constraint firstAttribute="height" constant="64" id="8ab-xu-dQG"/>
@@ -227,10 +228,10 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWM-hz-Nga">
-                    <rect key="frame" x="-55" y="466.5" width="429" height="44"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="20" y="461.5" width="280" height="35"/>
+                    <color key="backgroundColor" red="0.2784313725" green="0.4549019608" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="44" id="g1a-Yh-bQT"/>
+                        <constraint firstAttribute="height" constant="35" id="g1a-Yh-bQT"/>
                     </constraints>
                     <state key="normal" title="取消订单">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -242,13 +243,13 @@
                 <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rIo-rp-aTL" userLabel="v1">
                     <rect key="frame" x="0.0" y="66" width="320" height="110"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="1.png" translatesAutoresizingMaskIntoConstraints="NO" id="rwY-86-lLz">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="已被接单.png" translatesAutoresizingMaskIntoConstraints="NO" id="rwY-86-lLz">
                             <rect key="frame" x="140" y="8" width="40" height="40"/>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lah-M3-riE">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="交易完成.png" translatesAutoresizingMaskIntoConstraints="NO" id="Lah-M3-riE">
                             <rect key="frame" x="260" y="8" width="40" height="40"/>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="2.png" translatesAutoresizingMaskIntoConstraints="NO" id="eJV-3X-KwK">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="下单成功.png" translatesAutoresizingMaskIntoConstraints="NO" id="eJV-3X-KwK">
                             <rect key="frame" x="20" y="8" width="40" height="40"/>
                         </imageView>
                         <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rs1-su-fZD" userLabel="线1">
@@ -462,19 +463,34 @@
                         <constraint firstItem="vOk-zG-5y3" firstAttribute="height" secondItem="Fxw-t0-Ytm" secondAttribute="height" id="ypS-MV-gPM"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5pu-hb-KZM">
+                    <rect key="frame" x="20" y="502" width="280" height="35"/>
+                    <color key="backgroundColor" red="0.2784313725" green="0.4549019608" blue="0.72156862749999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="再次发布">
+                        <color key="titleColor" red="0.9882352941176471" green="0.49803921568627452" blue="0.0039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="faBuAction:" destination="-1" eventType="touchUpInside" id="beg-bV-XIT"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.86666666670000003" green="0.86666666670000003" blue="0.86666666670000003" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="X2C-gg-SHT" firstAttribute="top" secondItem="rIo-rp-aTL" secondAttribute="bottom" constant="10" id="0d1-aI-BDd"/>
                 <constraint firstAttribute="trailing" secondItem="acf-zz-vCm" secondAttribute="trailing" id="1kC-ia-Y6o"/>
                 <constraint firstItem="rIo-rp-aTL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2FS-iq-eCp"/>
+                <constraint firstItem="5pu-hb-KZM" firstAttribute="height" secondItem="gWM-hz-Nga" secondAttribute="height" id="2Vz-mv-61A"/>
                 <constraint firstAttribute="trailing" secondItem="X2C-gg-SHT" secondAttribute="trailing" id="66a-LE-HrK"/>
+                <constraint firstItem="5pu-hb-KZM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="6F7-l4-yXY"/>
                 <constraint firstAttribute="trailing" secondItem="rIo-rp-aTL" secondAttribute="trailing" id="Ba6-ww-Xde"/>
+                <constraint firstAttribute="trailing" secondItem="5pu-hb-KZM" secondAttribute="trailing" constant="20" id="D09-9U-HmB"/>
                 <constraint firstItem="acf-zz-vCm" firstAttribute="top" secondItem="X2C-gg-SHT" secondAttribute="bottom" constant="10" id="D0s-wD-bNq"/>
-                <constraint firstItem="gWM-hz-Nga" firstAttribute="width" secondItem="acf-zz-vCm" secondAttribute="height" multiplier="68:25" id="MW9-IL-gLY"/>
+                <constraint firstItem="gWM-hz-Nga" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="MnU-fx-kRJ"/>
                 <constraint firstItem="rIo-rp-aTL" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="110:568" id="OIE-NK-P1T"/>
+                <constraint firstItem="5pu-hb-KZM" firstAttribute="top" secondItem="gWM-hz-Nga" secondAttribute="bottom" constant="5" id="SXc-s8-aXY"/>
                 <constraint firstItem="ndV-v4-mqL" firstAttribute="trailing" secondItem="Lah-M3-riE" secondAttribute="trailing" multiplier="1.02" id="VeH-YI-ko5"/>
                 <constraint firstAttribute="trailing" secondItem="0jb-Cm-ggt" secondAttribute="trailing" id="VzR-hf-cEZ"/>
+                <constraint firstAttribute="trailing" secondItem="gWM-hz-Nga" secondAttribute="trailing" constant="20" id="Y8i-Iw-ZcY"/>
                 <constraint firstItem="0jb-Cm-ggt" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dKU-jH-R0y"/>
                 <constraint firstItem="rIo-rp-aTL" firstAttribute="top" secondItem="0jb-Cm-ggt" secondAttribute="bottom" id="ecn-4A-X0S"/>
                 <constraint firstItem="0jb-Cm-ggt" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fKT-BM-fuX"/>
@@ -483,18 +499,18 @@
                 <constraint firstItem="X2C-gg-SHT" firstAttribute="height" secondItem="rIo-rp-aTL" secondAttribute="height" multiplier="105:110" id="jXh-gT-DMs"/>
                 <constraint firstItem="acf-zz-vCm" firstAttribute="height" secondItem="X2C-gg-SHT" secondAttribute="height" multiplier="150:100" id="qHo-lM-3yb"/>
                 <constraint firstItem="gWM-hz-Nga" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="qYm-37-dh8"/>
-                <constraint firstItem="gWM-hz-Nga" firstAttribute="top" secondItem="acf-zz-vCm" secondAttribute="bottom" constant="10" id="uXN-X4-6RH"/>
+                <constraint firstItem="gWM-hz-Nga" firstAttribute="top" secondItem="acf-zz-vCm" secondAttribute="bottom" constant="5" id="uXN-X4-6RH"/>
             </constraints>
             <point key="canvasLocation" x="205" y="283"/>
         </view>
     </objects>
     <resources>
-        <image name="1.png" width="66" height="66"/>
-        <image name="2.png" width="66" height="66"/>
-        <image name="3.png" width="66" height="66"/>
         <image name="back-Small" width="9" height="17"/>
         <image name="call" width="22" height="22"/>
         <image name="home_order_receiving_positioon" width="24" height="24"/>
         <image name="home_order_receiving_star2.png" width="28" height="28"/>
+        <image name="下单成功.png" width="66" height="66"/>
+        <image name="交易完成.png" width="66" height="66"/>
+        <image name="已被接单.png" width="66" height="66"/>
     </resources>
 </document>

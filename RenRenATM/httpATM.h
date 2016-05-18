@@ -7,7 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+
 
 @interface httpATM : NSObject
-+(void)setphone:(NSString*)phone  setint:(void (^)(NSDictionary * dic))blok;
+
+ 
++(void)setint:(void (^)(NSArray * dic))blok;
+
++(void)setUserid: (AMapNearbySearchResponse *)geTiIDs setGeTiXinxi :(void (^)(NSArray * geTiInFoArray))blok;
+
+
 @end
