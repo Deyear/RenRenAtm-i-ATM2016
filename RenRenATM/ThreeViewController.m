@@ -29,7 +29,7 @@
     UIControl *mapBackView1;
     UIView *labelsV;
     UIView *showListAboutAtmView;                             //显示服务者列表
-    NSTimer *oneSecondsTimer,*downOneSecondsTimer;            //计时器
+    NSTimer *oneSecondsTimer,*downOneSecondsTimer,*getGeTiTimer;            //计时器
     UIImageView *instructImage,*instructDownImage;            //向上指示，向下指示
     UIView *lineView,*ownBackView,*serviesBackView;           //线、个人背景，服务者背景
     UITableView *ownListTabView,*serviesListTabView;
@@ -39,6 +39,7 @@
     UILabel *userNameLabel;                                   //电话号码
     AMapNearbySearchManager *nearbyManager;                  //附近派单
     NSString *service;
+    NSMutableArray *userIDsMutableArray;                     //存储个体服务者的id
  
  }
 
@@ -62,24 +63,40 @@
     
     [self initViewsInshowListAboutAtmView];    //初始化服务者视图上的view
     
+    [self addATM];                            //店铺服务者的气泡
+    
  }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+
+    [super viewWillDisappear:animated];
+    
+    [nearbyManager stopAutoUploadNearbyInfo];
+    nearbyManager.delegate = nil;
+    
+}
 
 #pragma mark - init values
 -(void)initValues{
     
     [self allKey];            //所有的appkey
 
-    _search = [[AMapSearchAPI alloc] init];            //初始化检索对象
-    _search.delegate = self;
-    
-    nearbyManager = [AMapNearbySearchManager sharedInstance];   //附近搜索功能
-    nearbyManager.delegate = self;
+    [self initNearby];
 
+    
     self.locationManager = [[AMapLocationManager alloc] init]; //定位
     self.locationManager.delegate = self;
     
     [self xianShiGeTiFuWuZhe];               //显示个体服务者
     
+     if ([service  isEqual: @"个体服务者"]) {
+     
+         [self initNearbyLocation];               //上传个体位置
+
+      }
+    
+
     labelsV = [[UIView alloc]init];
     
     
@@ -92,6 +109,7 @@
 
 }
 
+
 //所有的APPKey
 -(void)allKey{
 
@@ -102,6 +120,16 @@
 
 }
 
+-(void)initNearby{
+    
+    _search = [[AMapSearchAPI alloc] init];            //初始化检索对象
+    _search.delegate = self;
+    
+    nearbyManager = [AMapNearbySearchManager sharedInstance];
+    nearbyManager.delegate = self;
+    
+    
+}
 -(void)xianShiGeTiFuWuZhe{
 
     //本地获取的值
@@ -121,55 +149,25 @@
 //        
 //    }
     
-    if ([service  isEqual: @"店铺服务者"]) {
-        
-        [self initNearbyLocation];          //附近个体服务者进行上传坐标
-        
-        [self addATM];                             //初始化服务者图标
-
-    }else{
+//    if ([service  isEqual: @"店铺服务者"]) {
+//        
+////        [self initNearbyLocation];          //附近个体服务者进行上传坐标
+//        
+//        [self addATM];                             //初始化服务者图标
+//
+//    }else{
+//    
+//        [self initNearbyLocation];          //附近个体服务者进行上传坐标
+//        
+//        ownListTabView.hidden = YES;
+//        serviesListTabView.hidden = YES;
+//    
+//    }
     
-        [self initNearbyLocation];          //附近个体服务者进行上传坐标
-        
-        ownListTabView.hidden = YES;
-        serviesListTabView.hidden = YES;
-    
-    }
-    
-    [self initGetGeTiLocation];              //得到个体服务者的地图信息
-
-}
-
-//上传附近的个体服务者的位置
--(void)initNearbyLocation{
-    
-    if (nearbyManager.isAutoUploading){
-       
-        [nearbyManager stopAutoUploadNearbyInfo];//关闭自动上传
-   
-    }
-    else{
-
-        [nearbyManager startAutoUploadNearbyInfo];//开启自动上传
-    
-    }
+//    [self initGetGeTiLocation];              //得到个体服务者的地图信息
 
 }
 
-//得到附近的个体服务者的位置
--(void)initGetGeTiLocation{
-    
-//    构造AMapNearbySearchRequest对象，配置周边搜索参数
-    AMapNearbySearchRequest *request = [[AMapNearbySearchRequest alloc] init];
-    
-    request.center = [AMapGeoPoint locationWithLatitude:currentLatitude longitude:currentLongtitude]; //中心点
-    request.radius = 3000;                                           //搜索半径
-    request.timeRange = 5;                                         //查询的时间
-    request.searchType = AMapNearbySearchTypeLiner;                   //直线距离
-    [_search AMapNearbySearch:request];
-    
- //    NSLog(@"\n\n中心%@\n\n",request.center);
-}
 
 -(void)initTimer{
     
@@ -180,8 +178,38 @@
                                                      userInfo:nil
                                                       repeats:YES];
     
+    //获取服务者
+    oneSecondsTimer = [NSTimer scheduledTimerWithTimeInterval:10
+                                                       target:self
+                                                     selector:@selector(getGeTi)
+                                                     userInfo:nil
+                                                      repeats:YES];
+    
+
+    
 }
 
+-(void)getGeTi{
+
+//    [self initGetGeTiLocation];              //获取个体服务者的地理位置
+//
+//    [self addGeTi];
+//    
+//    AMapNearbyUploadInfo *info = [[AMapNearbyUploadInfo alloc] init];
+//    info.userID = user_id;
+//    info.coordinate = CLLocationCoordinate2DMake(39, 114);
+//    
+//    if ([nearbyManager uploadNearbyInfo:info])
+//    {
+//        NSLog(@"YES");
+//    }
+//    else
+//    {
+//        NSLog(@"NO");
+//    }
+
+
+}
 -(void)initDownTimer{
     
     //向下计时器计时器
@@ -360,6 +388,7 @@
     
     //个人列表
     ownListTabView = [[UITableView alloc]initWithFrame:CGRectMake(0,5, SCREEN_WIDTH,ownBackView.frame.size.height-5) style:UITableViewStylePlain];
+    ownListTabView.backgroundColor = [UIColor redColor];
     ownListTabView.delegate =self;
     ownListTabView.dataSource = self;
     ownListTabView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:239.0f/255.0f blue:245.0f/255.0f alpha:1];
@@ -369,6 +398,7 @@
     
     //服务者列表
     serviesListTabView = [[UITableView alloc]initWithFrame:CGRectMake(0,5, SCREEN_WIDTH,ownBackView.frame.size.height-5) style:UITableViewStylePlain];
+    serviesListTabView.backgroundColor = [UIColor redColor];
     serviesListTabView.delegate =self;
     serviesListTabView.dataSource = self;
     serviesListTabView.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:239.0f/255.0f blue:245.0f/255.0f alpha:1];
@@ -518,6 +548,8 @@
         
         [self addATM];
         
+        [self addGeTi];
+
     }
     
 }
@@ -525,6 +557,16 @@
 //个人按钮Click Action
 -(void)ownListOfOrdersButtonClick:(UIButton *)sender{
 
+    if ([service  isEqual: @"店铺服务者"]) {
+    
+        [self initGetGeTiLocation];              //获取个体服务者的搜索范围
+
+    }
+    
+    [self addGeTi];
+    
+
+    
     [self addGeTi];
 
     [UIView animateWithDuration:0.5 animations:^{
@@ -659,25 +701,46 @@
 
 -(void)addGeTi{
     
-    [httpATM setUserid:_geTiresponse setGeTiXinxi:^(NSArray *geTiInFoArray) {
-        
-        if ([service  isEqual: @"店铺服务者"]) {
-        
-            tableArray = geTiInFoArray;
+    NSLog(@"\n\n-----2------userIDsMutableArray----%@",userIDsMutableArray);
 
-        }else{
-        
-            tableArray = @[];
-            
-        }
-
-        
-        [ownListTabView reloadData];
-        
-        NSLog(@"%lu",(unsigned long)geTiInFoArray.count);
-        
-    }];
-    
+//    [httpATM setUserid:_geTiresponse setGeTiXinxi:^(NSArray *geTiInFoArray) {
+//        
+//        if ([service  isEqual: @"店铺服务者"]) {
+//        
+//            tableArray = geTiInFoArray;
+//            
+//            if (tableArray.count>0) {
+//                
+//                for (int i = 0; i<tableArray.count; i++) {
+//                    
+//                   MAPointAnnotation *pointAnnotation2 = [[MAPointAnnotation alloc] init];
+//                    float latitude = [tableArray[i][@"latitude"] floatValue];
+//                    CGFloat longitude = [tableArray[i][@"longitude"] floatValue];
+//                    //取得所有商铺位置坐标
+//                    pointAnnotation2.coordinate = CLLocationCoordinate2DMake(latitude ,longitude);
+//                    pointAnnotation2.title = tableArray[i][@"username"];
+//                    pointAnnotation2.subtitle = @"(个体)";
+//                    
+//                    //添加大头针
+//                    [_mapView addAnnotation:pointAnnotation2];
+//                    
+//                }
+//                
+//            }
+//
+//        }else{
+//        
+//            tableArray = @[];
+//            
+//        }
+//
+//        
+//        [ownListTabView reloadData];
+//        
+////        NSLog(@"%lu",(unsigned long)geTiInFoArray.count);
+//        
+//    }];
+//    
 }
 
 -(void)addShangPu{
@@ -741,22 +804,27 @@
         }
         
         //添加商铺的图标
+//        BOOL a=[[annotation subtitle] isEqualToString:@"(个体)"];
         BOOL b=[[annotation subtitle] isEqualToString:@"(服务商铺)"];
         BOOL c=[[annotation subtitle] isEqualToString:@"银行"];
         bool d=[[annotation subtitle] isEqualToString:@"ATM"];
        
         if(b){
            
-            annotationView.image = [UIImage imageNamed:@"map_shoing"];
+            annotationView.image = [UIImage imageNamed:@"店铺图标"];
         
         }else if(c){
         
-            annotationView.image = [UIImage imageNamed:@"map_bank"];
+            annotationView.image = [UIImage imageNamed:@"银行图标"];
         
         }else if (d){
         
-            annotationView.image = [UIImage imageNamed:@"map_atm"];
+            annotationView.image = [UIImage imageNamed:@"ATM图标"];
         
+        }else{
+        
+            annotationView.image = [UIImage imageNamed:@"个体服务者图标"];
+
         }
         
         // 不需要气泡弹出
@@ -803,6 +871,67 @@
     CustomCalloutView *cu;
     cu = view.subviews.firstObject;
     UILabel *currenLabel = cu.subviews.firstObject;
+    
+//    NSLog(@"\n\n\n\n\%@\n\n\n\n",currenLabel);
+   
+    if (tableArray.count>0) {
+        
+        for (int i = 0; i<tableArray.count; i++) {
+            
+            if (currenLabel.text == tableArray[i][@"username"]) {
+                NSArray *servicesArr = tableArray[i][@"services"];
+                //                NSLog(@"-------superview-------------%@",servicesArr );
+                labelsV = [[UIView alloc]initWithFrame:CGRectMake(-80,10 , 80, 40+12* servicesArr.count)];
+                labelsV.backgroundColor = [UIColor whiteColor];
+                
+                labelsV.layer.borderColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                labelsV.layer.cornerRadius = 6;
+                //    边框颜色
+                labelsV.layer.shadowColor = [[UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1] CGColor];
+                labelsV.layer.shadowOpacity = 1.0;
+                labelsV.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+                labelsV.makeScale(1.1).spring.animate(2.0);
+                
+                UILabel *type = [[UILabel alloc]initWithFrame:CGRectMake(0, 11,88, 10)];
+                type.text = @"服务内容：";
+                type.textAlignment = NSTextAlignmentCenter;
+                type.textAlignment = NSTextAlignmentCenter;
+                type.backgroundColor = [UIColor whiteColor];
+                type.font = [UIFont systemFontOfSize:13];
+                type.textColor = [UIColor blackColor];
+                [labelsV addSubview:type];
+                
+                //有点击事件的背景view的
+                mapBackView1=[[UIControl alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+                mapBackView1.backgroundColor=[UIColor whiteColor];
+                mapBackView1.alpha=0.1;
+                [mapBackView1 addTarget:self action:@selector(backClick:) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview: mapBackView1];
+                
+                for (int i=0; i<servicesArr.count; i++){
+                    
+                    NSDictionary *nameDic = servicesArr[i];
+                    NSString *name = nameDic[@"name"];
+                    
+                    _label = [[UILabel alloc]initWithFrame:CGRectMake(0, (30+12*i)*1.1, 88, 10)];
+                    _label.text = name;
+                    _label.textAlignment = NSTextAlignmentCenter;
+                    _label.backgroundColor = [UIColor whiteColor];
+                    _label.font = [UIFont systemFontOfSize:12];
+                    _label.textColor = [UIColor colorWithRed: 0 green:0 blue:0 alpha:0.5];
+                    [labelsV addSubview:_label];
+                    labelsV.hidden = NO;
+                    
+                    [view addSubview:labelsV];
+                }
+                
+            }else{
+                //                [labelsV removeFromSuperview];
+            }
+            
+        }
+        
+    }
     
     if (userArray.count>0) {
         
@@ -878,6 +1007,8 @@
 {
     
     return tableArray.count;
+    NSLog(@"\n\n\ntableArray.count  %lu",(unsigned long)tableArray.count);
+//    return 2;
     
 }
 
@@ -1012,44 +1143,81 @@
 }
 
 #pragma mark -  AMapNearbyUploadInfo ———— 代理
-- (void)onNearbyInfoUploadedWithError:(NSError *)error{
-    
-//    NSLog(@"\n--崩了-----error%@",error);
-}
 
-//上传个人服务者的坐标
-- (AMapNearbyUploadInfo *)nearbyInfoForUploading:(AMapNearbySearchManager *)manager{
-    
-    
-//    NSLog(@"\n%@\n%f\n%f",user_id,currentLatitude,currentLongtitude);
+
+- (AMapNearbyUploadInfo *)nearbyInfoForUploading:(AMapNearbySearchManager *)manager
+{
     AMapNearbyUploadInfo *info = [[AMapNearbyUploadInfo alloc] init];
-    
     info.userID = user_id;
-    
+
     info.coordinate = CLLocationCoordinate2DMake(currentLatitude, currentLongtitude);
     
+    
     return info;
+}
+
+- (void)onUserInfoClearedWithError:(NSError *)error
+{
+    if (error)
+    {
+        NSLog(@"clear error: %@", error);
+    }
+    else
+    {
+        NSLog(@"clear OK");
+    }
+}
+
+//判断是否上传
+- (void)onNearbyInfoUploadedWithError:(NSError *)error
+{
+    if (error)
+    {
+        NSLog(@"upload error: %@", error);
+    }
+    else
+    {
+        NSLog(@"");
+    }
+}
+
+#pragma mark -
+
+- (void)onNearbySearchDone:(AMapNearbySearchRequest *)request response:(AMapNearbySearchResponse *)response
+{
+    
+    userIDsMutableArray = [[NSMutableArray alloc ] init];
+
+     NSLog(@"\n\n   response  %@\n\n", [response formattedDescription]);
+    
+//    [self.mapView removeAnnotations:self.mapView.annotations];
+    
+//    _geTiresponse = [response formattedDescription];
+    for (AMapNearbyUserInfo *info in response.infos)
+    {
+        [ownListTabView reloadData];
+        
+        MAPointAnnotation *anno = [[MAPointAnnotation alloc] init];
+        anno.title = [NSString stringWithFormat:@"%@(距离 %.1f 米)", info.userID, info.distance];
+        anno.subtitle = [[NSDate dateWithTimeIntervalSince1970:info.updatetime] descriptionWithLocale:[NSLocale currentLocale]];
+        
+        anno.coordinate = CLLocationCoordinate2DMake(info.location.latitude, info.location.longitude);
+        
+//        [self.mapView addAnnotation:anno];
+    [userIDsMutableArray addObject:[NSString stringWithFormat:@"%@",info.userID]];
+
+        NSLog(@"\n\n----1-------userIDsMutableArray----%@",userIDsMutableArray);
+
+    }
+    
+//    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
     
 }
 
 
--(void)onNearbySearchDone:(AMapNearbySearchRequest *)request response:(AMapNearbySearchResponse *)response{
-    
-    _geTiresponse = response;
-    
-//    NSLog(@"\n附近的个体服务者\n%@",response.infos);
-    
-//    [httpATM setUserid:response setGeTiXinxi:^(NSArray *geTiInFoArray) {
-//        
-////         userArray = geTiInFoArray;
-//        
-//        [ownListTabView reloadData];
-//        
-//        NSLog(@"%lu",(unsigned long)geTiInFoArray.count);
-//        
-//    }];
-    
-}
+
+
+
 
 #pragma mark -  AMapPOISearch ———— 代理
 - (void)AMapSearchRequest:(id)request didFailWithError:(NSError *)error{
@@ -1100,6 +1268,47 @@
     }
     
 }
+
+
+
+
+
+
+
+
+//上传附近的个体服务者的位置
+-(void)initNearbyLocation{
+    
+    if (nearbyManager.isAutoUploading)
+    {
+        [nearbyManager stopAutoUploadNearbyInfo];
+    }
+    else
+    {
+        [nearbyManager startAutoUploadNearbyInfo];
+    }
+ 
+}
+
+//得到附近的个体服务者的位置
+-(void)initGetGeTiLocation{
+    
+    
+    //    构造AMapNearbySearchRequest对象，配置周边搜索参数
+    AMapNearbySearchRequest *request = [[AMapNearbySearchRequest alloc] init];
+    
+    request.center = [AMapGeoPoint locationWithLatitude:currentLatitude longitude:currentLongtitude]; //中心点
+//    request.center = [AMapGeoPoint locationWithLatitude:39.0001 longitude:114.0002]; //中心点
+
+    request.radius = 3000;                                           //搜索半径
+    request.timeRange = 5;                                         //查询的时间
+    request.searchType = AMapNearbySearchTypeLiner;                   //直线距离
+    [_search AMapNearbySearch:request];
+    
+//        NSLog(@"\n\n中心%@\n\n",request.center);
+}
+
+
 
 
  @end

@@ -6,7 +6,7 @@
 //
 //
 //
-#define LinkPageOne @"yindao.png"
+#define LinkPageOne @"LaunchImage6P.png"
 #define LinkPageTwo @"guide_2.jpg"
 #define LinkPageThree @"guide_3.jpg"
 #import "AppDelegate.h"
@@ -60,21 +60,7 @@
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     user_id = [userDefault objectForKey:@"user_id"];
-//    NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
-    
-    
-    //Required
-//     如需继续使用pushConfig.plist文件声明appKey等配置内容，请依旧使用[JPUSHService setupWithOption:launchOptions]方式初始化。
-    
-//        NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@/orders?relation=sender,receiver,evaluations",user_id];
-//     _JiGuangchannel = str;
-//    
-//        [JPUSHService setupWithOption:launchOptions
-//                               appKey:JiGuangappKey
-//                              channel:nil
-//                     apsForProduction:JiGuangisProduction
-//                advertisingIdentifier:advertisingId];
-//    
+ 
     return YES;
 }
 
@@ -98,43 +84,6 @@
 
 }
 
-//- (void)applicationDidBecomeActive:(UIApplication *)application {
-//    
-//    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-//    
-//    [defaultCenter addObserver:self selector:@selector(networkDidReceiveMessage:) name:kJPFNetworkDidReceiveMessageNotification object:nil];
-//    
-//    
-//    // Required
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-// 
-//        
-//        if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-//            //可以添加自定义categories
-//            [JPUSHService registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-//                                                              UIUserNotificationTypeSound |
-//                                                              UIUserNotificationTypeAlert)
-//                                                  categories:nil];
-//        } else {
-//            //categories 必须为nil
-//            [JPUSHService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-//                                                              UIRemoteNotificationTypeSound |
-//                                                              UIRemoteNotificationTypeAlert)
-//                                                  categories:nil];
-//        
-//
-//      }
-//#else
-//    //categories 必须为nil
-//    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-//                                                   UIRemoteNotificationTypeSound |
-//                                                   UIRemoteNotificationTypeAlert)
-//                                       categories:nil];
-//#endif
-//    
-//    application.applicationIconBadgeNumber = 0;
-// 
-//}
 
 - (void)applicationWillTerminate:(UIApplication *)application {
 
@@ -290,7 +239,7 @@
         }
         
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        
+                
         [userDefaults setObject:service forKey:@"serviceType"];
         
     }];
@@ -375,7 +324,7 @@
         [self.window addSubview:scrollView];
         
         //“立即体验”按钮
-        enterBtn = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-100)/2, SCREEN_HEIGHT - 35, 100, 30)];
+        enterBtn = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-100)/2, SCREEN_HEIGHT - 80, 100, 30)];
         [enterBtn setTitle:@"立即体验" forState:UIControlStateNormal];
         [enterBtn setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
         enterBtn.backgroundColor = [UIColor clearColor];

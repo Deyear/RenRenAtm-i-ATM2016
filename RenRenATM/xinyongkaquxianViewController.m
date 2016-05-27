@@ -23,7 +23,8 @@
     UITextField *howMuchMoney,*qiTaJinEValue;
     UITextField *NeedMoney,*TotalMoney,*qitajinejutizhilabel,*xiaoshiField,*fenzhongField;
     NSString *dengluqianhou;
-    UILabel *dengLuLabel,*placeField;
+    UILabel *dengLuLabel ;
+    UITextField *placeField;
     UIButton *shiwuyuanButton,*wuyuanButton,*shiyuanButton;
     
     UITextView *infoView;
@@ -420,9 +421,9 @@
             }
             if (i ==3) {
                 //所在位置
-                placeField = [[UILabel alloc]initWithFrame:CGRectMake(100, 0, (SCREEN_WIDTH -140), modelViewHeight)];
+                placeField = [[UITextField alloc]initWithFrame:CGRectMake(100, 0, (SCREEN_WIDTH -140), modelViewHeight)];
                 placeField.text = [NSString stringWithFormat:@"所在位置"];
-                placeField.numberOfLines = 0;
+//                placeField.numberOfLines = 0;
                 placeField.textColor = [UIColor grayColor];
 //                placeField.font = [UIFont systemFontOfSize: 15];
                 placeField.textAlignment = NSTextAlignmentCenter;

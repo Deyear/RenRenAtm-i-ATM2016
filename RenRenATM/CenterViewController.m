@@ -28,7 +28,8 @@
 #import "HomeVCTestViewController.h"
 #import "FaDanViewController.h"
 #import "SecondViewController.h"
-#import "ThreeViewController.h"
+#import "FuJinFuWuViewController.h"
+//#import "ThreeViewController.h"
 #import "UserInfoViewController.h"
 
 
@@ -60,7 +61,7 @@
     SecondViewController  *secondVC = [[SecondViewController alloc] init];
     self.view.window.rootViewController =secondVC;
   
-    ThreeViewController *thirdVC = [[ThreeViewController alloc] init];
+    FuJinFuWuViewController *thirdVC = [[FuJinFuWuViewController alloc] init];
     self.view.window.rootViewController =thirdVC;
 
     UserInfoViewController *UserInfoVC = [[UserInfoViewController alloc]init];

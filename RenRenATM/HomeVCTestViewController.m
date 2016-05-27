@@ -201,6 +201,11 @@
                                     TITLEKEY:@"换零",
                                     TITLEWIDTH:[NSNumber numberWithFloat:60]
                                     },
+                                  @{NOMALKEY: @"23242424",
+                                    HEIGHTKEY:@"",
+                                    TITLEKEY:@"快递",
+                                    TITLEWIDTH:[NSNumber numberWithFloat:60]
+                                    },
                                   ];
     
     if (mMenuHriZontal == nil) {
@@ -449,7 +454,7 @@
     
     //谁交易类型和金额
     NSString *moneyWho= Array[row][@"sender"][@"username"];
-    NSArray  *all_service_itemArray = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零", nil];
+    NSArray  *all_service_itemArray = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零",@"快递", nil];
     NSString *moneyType=all_service_itemArray[[Array[row][@"service_item_id"] intValue]];
     NSString *moneyCount = Array[row][@"money"];
     
@@ -540,6 +545,7 @@
 -(void)didMenuHrizontalClickedButtonAtIndex:(NSInteger)aIndex{
  
     int whichType = [[NSString stringWithFormat:@"%ld",(long)aIndex] intValue] + 1 ;
+    NSLog(@"\n\n%ld",(long)aIndex);
     typeStr = [NSString stringWithFormat:@"%d",whichType];
  
     [self reLoadTable];

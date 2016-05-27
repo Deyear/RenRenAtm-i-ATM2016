@@ -86,22 +86,27 @@
 		41EAFFA31C47311B00091B6A /* ThirdTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 41EAFFA11C47311B00091B6A /* ThirdTableViewCell.xib */; };
 		720ED5951CBC8BED005F210A /* goMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 720ED5931CBC8BED005F210A /* goMap.m */; };
 		720ED5961CBC8BED005F210A /* goMap.xib in Resources */ = {isa = PBXBuildFile; fileRef = 720ED5941CBC8BED005F210A /* goMap.xib */; };
+		72177F881CEEDF48008B15C2 /* ATM图标.png in Resources */ = {isa = PBXBuildFile; fileRef = 72177F841CEEDF48008B15C2 /* ATM图标.png */; };
+		72177F891CEEDF48008B15C2 /* 个体服务者图标.png in Resources */ = {isa = PBXBuildFile; fileRef = 72177F851CEEDF48008B15C2 /* 个体服务者图标.png */; };
+		72177F8A1CEEDF48008B15C2 /* 店铺图标.png in Resources */ = {isa = PBXBuildFile; fileRef = 72177F861CEEDF48008B15C2 /* 店铺图标.png */; };
+		72177F8B1CEEDF48008B15C2 /* 银行图标.png in Resources */ = {isa = PBXBuildFile; fileRef = 72177F871CEEDF48008B15C2 /* 银行图标.png */; };
 		722639381CA1405C00815842 /* forgotPass.m in Sources */ = {isa = PBXBuildFile; fileRef = 722639361CA1405C00815842 /* forgotPass.m */; };
 		722639391CA1405C00815842 /* forgotPass.xib in Resources */ = {isa = PBXBuildFile; fileRef = 722639371CA1405C00815842 /* forgotPass.xib */; };
 		722DAAF31CE48A6900ED425C /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722DAAF21CE48A6900ED425C /* CFNetwork.framework */; };
 		722DAAF51CE48A9500ED425C /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 722DAAF41CE48A9500ED425C /* CoreFoundation.framework */; };
 		722DC5DB1CCF179100A81B96 /* 指示.png in Resources */ = {isa = PBXBuildFile; fileRef = 722DC5DA1CCF179100A81B96 /* 指示.png */; };
 		722DC5E31CCF6B4A00A81B96 /* 向下指示箭头.png in Resources */ = {isa = PBXBuildFile; fileRef = 722DC5E21CCF6B4A00A81B96 /* 向下指示箭头.png */; };
+		724B48FE1CF3FBAE0080E1E1 /* FuJinFuWuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 724B48FD1CF3FBAE0080E1E1 /* FuJinFuWuViewController.m */; };
 		727E73E71CE57622004EA4D4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 727E73E61CE57622004EA4D4 /* Info.plist */; };
 		727E73EA1CE5767C004EA4D4 /* PushConfig List.plist in Resources */ = {isa = PBXBuildFile; fileRef = 727E73E91CE5767C004EA4D4 /* PushConfig List.plist */; };
 		727E73EB1CE5786A004EA4D4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 410E31101C2EFAC8009A9DF9 /* libstdc++.6.0.9.tbd */; };
 		727E73EF1CE57898004EA4D4 /* JPUSHService.h in Frameworks */ = {isa = PBXBuildFile; fileRef = 727E73ED1CE57898004EA4D4 /* JPUSHService.h */; };
-		727E73F01CE580D3004EA4D4 /* jpush-ios-2.1.6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 727E73EC1CE57898004EA4D4 /* jpush-ios-2.1.6.a */; };
 		7281C88C1C95076400957F3F /* MustLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 7281C88A1C95076400957F3F /* MustLogin.m */; };
 		7281C88D1C95076400957F3F /* MustLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7281C88B1C95076400957F3F /* MustLogin.xib */; };
 		728F33AD1CA8F39300FED90B /* home_order_receiving_star1.png in Resources */ = {isa = PBXBuildFile; fileRef = 728F33AB1CA8F39300FED90B /* home_order_receiving_star1.png */; };
 		728F33AE1CA8F39300FED90B /* home_order_receiving_star2.png in Resources */ = {isa = PBXBuildFile; fileRef = 728F33AC1CA8F39300FED90B /* home_order_receiving_star2.png */; };
 		7295422C1C905565002CA582 /* rightBtnDetialTabView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7295422B1C905565002CA582 /* rightBtnDetialTabView.xib */; };
+		7295C57D1CED9F2D0014B127 /* jpush-ios-2.1.6.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 722DAAEF1CE488FA00ED425C /* jpush-ios-2.1.6.a */; };
 		729D12C41CAD24B300C7F3D0 /* caitiao.png in Resources */ = {isa = PBXBuildFile; fileRef = 729D12C31CAD24B300C7F3D0 /* caitiao.png */; };
 		72A763761CE1722E00DE9DA6 /* FaDanAgainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A763751CE1722E00DE9DA6 /* FaDanAgainViewController.m */; };
 		72A7637A1CE184B000DE9DA6 /* KuaiDiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72A763791CE184B000DE9DA6 /* KuaiDiViewController.m */; };
@@ -301,6 +306,10 @@
 		720ED5921CBC8BED005F210A /* goMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = goMap.h; sourceTree = "<group>"; };
 		720ED5931CBC8BED005F210A /* goMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = goMap.m; sourceTree = "<group>"; };
 		720ED5941CBC8BED005F210A /* goMap.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = goMap.xib; sourceTree = "<group>"; };
+		72177F841CEEDF48008B15C2 /* ATM图标.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ATM图标.png"; sourceTree = "<group>"; };
+		72177F851CEEDF48008B15C2 /* 个体服务者图标.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "个体服务者图标.png"; sourceTree = "<group>"; };
+		72177F861CEEDF48008B15C2 /* 店铺图标.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "店铺图标.png"; sourceTree = "<group>"; };
+		72177F871CEEDF48008B15C2 /* 银行图标.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "银行图标.png"; sourceTree = "<group>"; };
 		722639351CA1405C00815842 /* forgotPass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forgotPass.h; sourceTree = "<group>"; };
 		722639361CA1405C00815842 /* forgotPass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forgotPass.m; sourceTree = "<group>"; };
 		722639371CA1405C00815842 /* forgotPass.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = forgotPass.xib; sourceTree = "<group>"; };
@@ -310,6 +319,8 @@
 		722DAAF41CE48A9500ED425C /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		722DC5DA1CCF179100A81B96 /* 指示.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "指示.png"; sourceTree = "<group>"; };
 		722DC5E21CCF6B4A00A81B96 /* 向下指示箭头.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "向下指示箭头.png"; sourceTree = "<group>"; };
+		724B48FC1CF3FBAE0080E1E1 /* FuJinFuWuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuJinFuWuViewController.h; sourceTree = "<group>"; };
+		724B48FD1CF3FBAE0080E1E1 /* FuJinFuWuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuJinFuWuViewController.m; sourceTree = "<group>"; };
 		727E73E61CE57622004EA4D4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		727E73E91CE5767C004EA4D4 /* PushConfig List.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PushConfig List.plist"; sourceTree = "<group>"; };
 		727E73EC1CE57898004EA4D4 /* jpush-ios-2.1.6.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "jpush-ios-2.1.6.a"; path = "../../Downloads/JPush-iOS-SDK-2.1-2.6/lib/jpush-ios-2.1.6.a"; sourceTree = "<group>"; };
@@ -404,7 +415,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				727E73F01CE580D3004EA4D4 /* jpush-ios-2.1.6.a in Frameworks */,
+				7295C57D1CED9F2D0014B127 /* jpush-ios-2.1.6.a in Frameworks */,
 				727E73EF1CE57898004EA4D4 /* JPUSHService.h in Frameworks */,
 				727E73EB1CE5786A004EA4D4 /* libstdc++.6.0.9.tbd in Frameworks */,
 				410E310F1C2EFAC0009A9DF9 /* libz.tbd in Frameworks */,
@@ -492,6 +503,8 @@
 		410EB0B51C296EEF00510DB9 /* FuWuZhe */ = {
 			isa = PBXGroup;
 			children = (
+				724B48FC1CF3FBAE0080E1E1 /* FuJinFuWuViewController.h */,
+				724B48FD1CF3FBAE0080E1E1 /* FuJinFuWuViewController.m */,
 				72DF87DD1CBF470500710E2C /* 气泡 */,
 				410EB0CA1C296F5000510DB9 /* ThreeViewController.h */,
 				410EB0CB1C296F5000510DB9 /* ThreeViewController.m */,
@@ -644,6 +657,17 @@
 			name = "xiangqingViewController——goMap";
 			sourceTree = "<group>";
 		};
+		72177F831CEEDF48008B15C2 /* 地图 */ = {
+			isa = PBXGroup;
+			children = (
+				72177F841CEEDF48008B15C2 /* ATM图标.png */,
+				72177F851CEEDF48008B15C2 /* 个体服务者图标.png */,
+				72177F861CEEDF48008B15C2 /* 店铺图标.png */,
+				72177F871CEEDF48008B15C2 /* 银行图标.png */,
+			);
+			path = "地图";
+			sourceTree = "<group>";
+		};
 		722639341CA1401B00815842 /* ForgotPass */ = {
 			isa = PBXGroup;
 			children = (
@@ -687,6 +711,7 @@
 		72324ABE1CC60E4300912BBF /* Image */ = {
 			isa = PBXGroup;
 			children = (
+				72177F831CEEDF48008B15C2 /* 地图 */,
 				72EEF0C01CDB295000EA6FE9 /* 勾叉图标 */,
 				72B3FC0D1CD0A30D008D2727 /* 个人图片 */,
 				722DC5D91CCF179100A81B96 /* 指示图片 */,
@@ -1070,10 +1095,10 @@
 		72E595DC1CC8BD060079E2BA /* next */ = {
 			isa = PBXGroup;
 			children = (
-				72C96FA31CD9BC8B00BD8C14 /* BecomeService */,
 				72E595DD1CC8BD4E0079E2BA /* NextViewController.h */,
 				72E595DE1CC8BD4E0079E2BA /* NextViewController.m */,
 				72E595DF1CC8BD4E0079E2BA /* NextViewController.xib */,
+				72C96FA31CD9BC8B00BD8C14 /* BecomeService */,
 			);
 			name = next;
 			sourceTree = "<group>";
@@ -1101,10 +1126,10 @@
 		72F898CB1CC761DC00E90ED7 /* Register */ = {
 			isa = PBXGroup;
 			children = (
-				72E595DC1CC8BD060079E2BA /* next */,
 				72F898CC1CC7621000E90ED7 /* ZhuCeViewController.h */,
 				72F898CD1CC7621000E90ED7 /* ZhuCeViewController.m */,
 				72F898CE1CC7621000E90ED7 /* ZhuCeViewController.xib */,
+				72E595DC1CC8BD060079E2BA /* next */,
 			);
 			name = Register;
 			sourceTree = "<group>";
@@ -1212,6 +1237,8 @@
 				72A8CC221CCDE12700C9056C /* 零钱.png in Resources */,
 				41EAFF921C45E4EA00091B6A /* normal.png in Resources */,
 				41EAFF931C45E4EA00091B6A /* helight.png in Resources */,
+				72177F891CEEDF48008B15C2 /* 个体服务者图标.png in Resources */,
+				72177F8B1CEEDF48008B15C2 /* 银行图标.png in Resources */,
 				41EAFF971C45E4EA00091B6A /* girl4.png in Resources */,
 				72B3FC171CD0A30D008D2727 /* 成为服务者.png in Resources */,
 				41EAFF941C45E4EA00091B6A /* girl2.png in Resources */,
@@ -1274,6 +1301,8 @@
 				72A8CC1D1CCDE12700C9056C /* 外汇.png in Resources */,
 				72D127FC1CCA2ACE002D4527 /* 发单蓝色.png in Resources */,
 				411AF44D1C48B73C00504B6F /* MJRefresh.bundle in Resources */,
+				72177F8A1CEEDF48008B15C2 /* 店铺图标.png in Resources */,
+				72177F881CEEDF48008B15C2 /* ATM图标.png in Resources */,
 				72B3FC161CD0A30D008D2727 /* 修改密码.png in Resources */,
 				7295422C1C905565002CA582 /* rightBtnDetialTabView.xib in Resources */,
 				722639391CA1405C00815842 /* forgotPass.xib in Resources */,
@@ -1351,6 +1380,7 @@
 				7281C88C1C95076400957F3F /* MustLogin.m in Sources */,
 				41AFA7871C3F501800DD4171 /* AFHTTPSessionManager.m in Sources */,
 				72C78A9A1CCDB6B200ED964E /* FaDanViewController.m in Sources */,
+				724B48FE1CF3FBAE0080E1E1 /* FuJinFuWuViewController.m in Sources */,
 				41EAFF6D1C45DE2000091B6A /* HomeView.m in Sources */,
 				410EB0A01C296A0700510DB9 /* ViewController.m in Sources */,
 				41EAFF701C45DE2000091B6A /* LoadMoreCell.m in Sources */,

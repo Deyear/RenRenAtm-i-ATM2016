@@ -27,7 +27,8 @@
     UITextField *howMuchMoney,*qiTaJinEValue;
     UITextField *NeedMoney,*TotalMoney,*qitajinejutizhilabel,*xiaoshiField,*fenzhongField;
     NSString *dengluqianhou;
-    UILabel *dengLuLabel,*placeField,*waiHuiJinE;
+    UILabel *dengLuLabel,*waiHuiJinE;
+    UITextField*placeField;
     UIButton *lingYuanButton,*wuyuanButton,*shiyuanButton;
     UIAlertView *alertqianming;
     UIImageView *topImageView ;
@@ -352,11 +353,11 @@
         if (i==5) {
             
             //所在位置Label
-            placeField = [[UILabel alloc]initWithFrame:CGRectMake((modelView.frame.size.width - 75 -  (SCREEN_WIDTH -140) ) / 2 +75, 0, (SCREEN_WIDTH -140), modelViewHeight)];
+            placeField = [[UITextField alloc]initWithFrame:CGRectMake((modelView.frame.size.width - 75 -  (SCREEN_WIDTH -140) ) / 2 +75, 0, (SCREEN_WIDTH -140), modelViewHeight)];
             //                placeField.backgroundColor = [UIColor redColor];
             placeField.text = [NSString stringWithFormat:@"所在位置"];
             placeField.textColor = [UIColor grayColor];
-            placeField.numberOfLines = 0;
+//            placeField.numberOfLines = 0;
             //                placeField.font = [UIFont systemFontOfSize: 15];
             placeField.textAlignment = NSTextAlignmentCenter;
             placeField.adjustsFontSizeToFitWidth = YES;

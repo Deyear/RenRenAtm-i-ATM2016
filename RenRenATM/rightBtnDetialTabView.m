@@ -44,6 +44,7 @@
     
     self.view.backgroundColor = [UIColor colorWithRed:71.0f/255.0f green:116.0f/255.0f blue:184.0f/255.0f alpha:1];
     tittleLabel.text = titleName;
+    tittleLabel.textAlignment = NSTextAlignmentCenter;
     
     //刷新监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(shuaxin) name:@"tongzhi111" object:nil];
@@ -221,7 +222,7 @@
     
     NSUInteger row = [indexPath row];
     //    NSLog(@"%@",Array[row]);
-    NSArray  *all_service_itemArray1 = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零", nil];
+    NSArray  *all_service_itemArray1 = [[NSArray alloc]initWithObjects:@"",@"信用卡取现",@"银行卡取现",@"代收款",@"外汇",@"存钱",@"转账",@"换整",@"换零",@"快递", nil];
     int type_ser = [Array[row][@"service_item_id"] intValue];
     typeMoney.text  =[NSString stringWithFormat:@"%@%@¥",all_service_itemArray1[type_ser],Array[row][@"money"]];
     

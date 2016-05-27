@@ -14,12 +14,14 @@
 #import "agreeView.h"
 
 
-@interface BecomeServiceViewController ()<AMapSearchDelegate,UITextFieldDelegate>{
+@interface BecomeServiceViewController ()<AMapSearchDelegate,UITextFieldDelegate,CLLocationManagerDelegate>{
 
     IBOutlet UIView *timeAndLocationBackView;
     
     BFPaperButton *submitButton ; //提交按钮
     
+    CLLocationManager *_locationManager;                      //定位
+
     NSString *ONE,*TWO,*THREE,*FOUR,*FIVE,*SIX,*SEVEN,*EIGHT;  //1~0
 
     NSString *phoneNumber,*herePassword,*hereCaptcha;
@@ -65,6 +67,8 @@
     
     [self initValue];                   //初始化值
     
+    [self initializeLocationService];   //定位
+    
     [self initButton];                  //初始化提交按钮
     
 //    [self searchGeocode];               //地理反编码初始化
@@ -73,6 +77,17 @@
 
 
 #pragma mark - init
+//定位
+- (void)initializeLocationService {
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    [_locationManager startUpdatingLocation];
+    
+}
+
 -(void)initValue{
 
     phoneNumber = username;
@@ -579,6 +594,66 @@
 
 }
 
+#pragma mark - locationManager
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    
+    [_locationManager stopUpdatingLocation];
+    
+    CLGeocoder * geoCoder = [[CLGeocoder alloc] init];
+    [geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        for (CLPlacemark * placemark in placemarks) {
+            
+            NSString *string1,*string2,*string3,*string4;
+            if (placemark.locality == nil){
+                
+                string1  = @"";
+                
+            }else{
+                
+                string1 = [NSString stringWithFormat:@"%@",placemark.locality];
+                
+            }
+            
+            if (placemark.subLocality == nil){
+                
+                string2  = @"";
+                
+            }else{
+                
+                string2 = [NSString stringWithFormat:@"%@",placemark.subLocality];
+                
+            }
+            
+            if (placemark.thoroughfare == nil){
+                
+                string3  = @"";
+                
+            }
+            else{
+                
+                string3 = [NSString stringWithFormat:@"%@",placemark.thoroughfare];
+                
+            }
+            
+            if (placemark.subThoroughfare == nil){
+                
+                string4  = @"";
+                
+            }
+            else{
+                
+                string4 = [NSString stringWithFormat:@"%@",placemark.subThoroughfare];
+                
+            }
+            
+            _LocationName.text = [NSString stringWithFormat:@"%@%@%@%@",string1,string2,string3,string4];
+            
+        }
+        
+    }];
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

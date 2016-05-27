@@ -15,7 +15,7 @@
 
 
 
-#define cellHeight SCREEN_HEIGHT/10   //单元格的行高
+#define cellHeight 39   //单元格的行高
 #define ydp (SCREEN_HEIGHT/1400)      //高度的单位值
 #define xdp (SCREEN_WIDTH/750)        //宽度的单位值
 
@@ -42,7 +42,7 @@
 //    分类下面的八行按钮
     UIControl *detialListView;
 //    
-    UIScrollView *TwoScrollerView;
+    UIScrollView *TwoScrollerView,*rightScrollerView;
 //    
     UITableView *uiTableView;
 //    
@@ -151,6 +151,17 @@
     TwoScrollerView.backgroundColor =[UIColor clearColor];
     TwoScrollerView.delegate = self;
     
+    rightScrollerView =[[UIScrollView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, TwoScrollerView.frame.size.height )];
+    //设置容量
+    rightScrollerView.contentSize = CGSizeMake(SCREEN_WIDTH, 60*9);
+    rightScrollerView.userInteractionEnabled = YES;
+    rightScrollerView.pagingEnabled = YES;
+    rightScrollerView.bounces = NO;
+    rightScrollerView.showsHorizontalScrollIndicator=NO;
+    rightScrollerView.showsVerticalScrollIndicator = NO;
+    rightScrollerView.backgroundColor =[UIColor clearColor];
+//    rightScrollerView.delegate = self;
+    [TwoScrollerView addSubview:rightScrollerView];
     
     [self.view addSubview:TwoScrollerView];
     
@@ -228,46 +239,58 @@
 //构造右边的分类界面
 -(void)viewTwoRight
 {
-    //左边的图片显示
-    NSArray *imageArray =[ [NSArray alloc]initWithObjects:@"individual_One",@"individual_Two",@"individual_Six",@"individual_Five",@"individual_Seven",@"individual_Eight",@"individual_Four",@"individual_Three", nil];
-    //左边的内容显示
-    NSArray *nameArray = [[NSArray alloc]initWithObjects:@"信用卡取现",@"银行卡取现",@"我要转账",@"我要存钱",@"我要换零钱",@"我要换整钱",@"我要换外汇",@"代收款", nil];
-    //灰色背景图片
-    UIImageView *RightView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, TwoScrollerView.frame.size.height)];
-    RightView.image = [UIImage imageNamed:@"RenRenGray"];
-    [TwoScrollerView addSubview:RightView];
     
-    for (int i = 0;  i<8; i++) {
-        detialListView = [[UIControl alloc]initWithFrame:CGRectMake(0, TwoScrollerView.frame.size.height/8 * i, SCREEN_WIDTH, TwoScrollerView.frame.size.height/8)];
+    UIView *v1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_HEIGHT, 60 * 9 )];
+    v1.backgroundColor = [UIColor colorWithRed:240.0f/255.0f green:239.0f/255.0f blue:245.0f/255.0f alpha:1];
+    [rightScrollerView addSubview:v1];
+    //左边的图片显示
+    NSArray *imageArray =[ [NSArray alloc]initWithObjects:@"individual_One",@"individual_Two",@"individual_Six",@"individual_Five",@"individual_Seven",@"individual_Eight",@"individual_Four",@"individual_Three",@"快", nil];
+    //左边的内容显示
+    NSArray *nameArray = [[NSArray alloc]initWithObjects:@"信用卡取现",@"银行卡取现",@"我要转账",@"我要存钱",@"我要换零钱",@"我要换整钱",@"我要换外汇",@"代收款",@"快递", nil];
+    
+    for (int i = 0;  i<9; i++) {
+        detialListView = [[UIControl alloc]initWithFrame:CGRectMake(0,60*i, SCREEN_WIDTH, 59)];
         detialListView.backgroundColor = [UIColor whiteColor];
         
         //给每一个sixView添加一个tag
         [detialListView setTag:i + 10000];
         [detialListView addTarget:self action:@selector(SelectedSixView:) forControlEvents:UIControlEventTouchUpInside];
         
-        [RightView addSubview:detialListView];
-        RightView.userInteractionEnabled = YES;
+        [v1 addSubview:detialListView];
+        v1.userInteractionEnabled = YES;
  
-         UIImageView *leftView= [[UIImageView alloc]initWithFrame:CGRectMake(10, 0, cellHeight-20, cellHeight-20)];
-        leftView.image = [UIImage imageNamed:imageArray[i]];
-        [detialListView addSubview:leftView];
+        UIImageView *leftView;
         
-         UILabel *NameLabel = [[UILabel alloc]initWithFrame:CGRectMake(leftView.frame.size.width + 15, cellHeight/2-20, 100, 20)];
+        if (i == 8) {
+         
+            leftView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, cellHeight-10, cellHeight-10)];
+            leftView.image = [UIImage imageNamed:imageArray[i]];
+            [detialListView addSubview:leftView];
+            
+        }else{
+        
+            leftView= [[UIImageView alloc]initWithFrame:CGRectMake(10, 15, cellHeight, cellHeight)];
+            leftView.image = [UIImage imageNamed:imageArray[i]];
+            [detialListView addSubview:leftView];
+        
+        }
+        
+         UILabel *NameLabel = [[UILabel alloc]initWithFrame:CGRectMake(leftView.frame.size.width + 15, 39/2, 100, 20)];
         NameLabel.text = nameArray[i];
         NameLabel.font = [UIFont systemFontOfSize:15];
         [detialListView addSubview: NameLabel];
         
         //右侧箭头显示
-        UIImageView *rightView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 40, (cellHeight - 20)/2, 20, 20)];
+        UIImageView *rightView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH - 40, 39 / 2, 20, 20)];
         rightView.image = [UIImage imageNamed:@"right-Small"];
         [detialListView addSubview:rightView];
         [detialListView viewWithTag:i];
 //        NSLog(@"+++++++++++++%ld",(long)sixView.tag);
-        if (i==0||i==1||i==3||i==4) {
-            UILabel *xianLabelSix = [[UILabel alloc]initWithFrame:CGRectMake(NameLabel.frame.origin.x, cellHeight-1, SCREEN_WIDTH-NameLabel.frame.origin.x, 1)];
+//        if (i==0||i==1||i==3||i==4) {
+            UILabel *xianLabelSix = [[UILabel alloc]initWithFrame:CGRectMake(NameLabel.frame.origin.x, 59, SCREEN_WIDTH-NameLabel.frame.origin.x, 1)];
             xianLabelSix.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.1];
             [detialListView addSubview: xianLabelSix];
-        }
+//        }
     }
     
 }
@@ -320,9 +343,15 @@
         }else if (sender.tag == 10007){
            vc.type = @"3";
              vc.titleName = @"代收款";
+        }else if (sender.tag == 10008){
+            vc.type = @"9";
+            vc.titleName = @"快递";
         }
+
         [self presentViewController:vc animated:YES completion:nil];
        }
+    
+    NSLog(@"%ld",(long)sender.tag);
 }
 
 

@@ -15,7 +15,7 @@
  
 +(void)setint:(void (^)(NSArray * dic))blok;
 
-+(void)setUserid: (AMapNearbySearchResponse *)geTiIDs setGeTiXinxi :(void (^)(NSArray * geTiInFoArray))blok;
++(void)setUserid: (NSMutableArray *)geTiIDs setGeTiXinxi :(void (^)(NSArray * geTiInFoArray))blok;
 
 
 @end

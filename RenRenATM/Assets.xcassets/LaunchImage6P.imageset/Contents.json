@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "yindao.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "LaunchImage6P@3x.png",
       "scale" : "2x"
     },
     {

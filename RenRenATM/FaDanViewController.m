@@ -139,10 +139,13 @@
     NSArray *twoAndtwoContentArray = [NSArray arrayWithObjects:@"贷款取现、便捷",@"取现、快人一步",@"有事、离不开身",@"外汇、轻松掌握", nil];
     
     for (int i = 0; i<4; i++) {
-        UIButton *TwoAndTwoView = [[UIButton alloc] initWithFrame:CGRectMake(10 +(i%2)*(SCREEN_WIDTH -20)/2,(i/2)*(TwoAndTwoViewHeight + 4) , (SCREEN_WIDTH -20)/2, TwoAndTwoViewHeight+4)];
+        
+        UIButton *TwoAndTwoView = [[UIButton alloc] initWithFrame:CGRectMake(0 +(i%2)*(SCREEN_WIDTH /2 -1),(i/2)*(TwoAndTwoViewHeight + 3) , SCREEN_WIDTH/2, TwoAndTwoViewHeight+4)];
         [TwoAndTwoView addTarget:self action:@selector(fabu:) forControlEvents:UIControlEventTouchUpInside];
         TwoAndTwoView.backgroundColor  = [UIColor whiteColor];
         TwoAndTwoView.tag = i+101;
+        TwoAndTwoView.layer.borderWidth = 1;
+        TwoAndTwoView.layer.borderColor =[UIColor lightGrayColor].CGColor;
         [scrollViewUpToBottom addSubview:TwoAndTwoView];
         
         //加图片 名字 内容
@@ -170,7 +173,7 @@
 -(void)followingFiveButton{
     
     NSArray *FourIconArray = [NSArray arrayWithObjects:@"存钱",@"人",@"快",@"零钱", @"挣钱",nil];
-    NSArray *FourNameArray = [NSArray arrayWithObjects:@"我要存钱",@"我要转账",@"我的快递",@"我要换零钱",@"我要换整钱", nil];
+    NSArray *FourNameArray = [NSArray arrayWithObjects:@"我要存钱",@"我要转账",@"我要发快递",@"我要换零钱",@"我要换整钱", nil];
     
     for (int i = 0; i<5; i++) {
  

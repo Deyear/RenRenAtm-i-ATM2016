@@ -168,6 +168,12 @@
             [alert show];
             
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+            
+            [userDefaults removeObjectForKey:@"access_token"];
+            [userDefaults removeObjectForKey:@"user_name"];
+            [userDefaults removeObjectForKey:@"user_id"];
+            [userDefaults removeObjectForKey:@"password"];
+
             [userDefaults setObject:responseObject[@"access_token"] forKey:@"access_token"];
             [userDefaults setObject:shoujihaoFeild.text forKey:@"user_name"];
             [userDefaults setObject:responseObject[@"user_id"]  forKey:@"user_id"];

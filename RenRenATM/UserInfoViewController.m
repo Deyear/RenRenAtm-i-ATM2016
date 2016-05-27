@@ -235,9 +235,17 @@
         
     }else if (clickTag == 3){
     
+        UIAlertView *alertView = [[UIAlertView alloc]
+                                  initWithTitle:@"联系邮箱："
+                                  message:@"rrbank@hzhanghuan.com"
+                                  delegate:nil
+                                  cancelButtonTitle:@"确定"
+                                  otherButtonTitles:nil];
+        [alertView show];
+
         //联系客服
-        CallServiesViewController *vc = [[CallServiesViewController alloc]init];
-        [self presentViewController:vc animated:YES completion:nil];
+//        CallServiesViewController *vc = [[CallServiesViewController alloc]init];
+//        [self presentViewController:vc animated:YES completion:nil];
 
     }else if (clickTag == 4){
         

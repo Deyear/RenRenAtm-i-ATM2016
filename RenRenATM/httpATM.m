@@ -37,7 +37,7 @@
     }];
 }
 
-+(void)setUserid: (AMapNearbySearchResponse *)geTiIDs setGeTiXinxi :(void (^)(NSArray * geTiInFoArray))blok{
++(void)setUserid: (NSMutableArray *)geTiIDs setGeTiXinxi :(void (^)(NSArray * geTiInFoArray))blok{
 
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     NSString * access_token = [userDefault objectForKey:@"access_token"];
@@ -54,15 +54,15 @@
     session.responseSerializer = [AFJSONResponseSerializer serializer];
     [session.requestSerializer setValue:token forHTTPHeaderField:@"Authorization"];
     
-    if(geTiIDs.infos.count == 0){
+    if(geTiIDs.count == 0){
         
          return;
         
     }else{
         
-         for (AMapNearbyUserInfo *info in geTiIDs.infos){
+         for (NSString *info in geTiIDs){
             
-             NSString *userids = [NSString stringWithFormat:@"%@",info.userID];
+             NSString *userids = [NSString stringWithFormat:@"%@",info];
 
         NSString * str =[NSString stringWithFormat:@"http://114.215.203.95:82/v1/users/%@?relation=roles,services",userids];
         
